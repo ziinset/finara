@@ -79,6 +79,6 @@ class OnboardingController extends GetxController
 
   void onGetStarted() {
     // Navigate to the next screen (e.g., home or registration)
-    Get.offAllNamed('/home');
+    Get.toNamed('/register');
   }
 }

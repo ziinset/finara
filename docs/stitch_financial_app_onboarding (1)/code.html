@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Create Account</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#643b42",
+                    "on-surface": "#241a12",
+                    "primary": "#26442f",
+                    "primary-fixed-dim": "#accfb2",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#f3dfd2",
+                    "secondary-container": "#fdd73b",
+                    "on-secondary-fixed-variant": "#554500",
+                    "secondary-fixed-dim": "#e8c426",
+                    "inverse-on-surface": "#ffede2",
+                    "surface-dim": "#ead6c9",
+                    "secondary-fixed": "#ffe173",
+                    "surface-container-highest": "#f3dfd2",
+                    "on-tertiary-container": "#f4bbc3",
+                    "on-background": "#241a12",
+                    "surface-container-low": "#fff1e9",
+                    "tertiary-fixed-dim": "#f1b8c0",
+                    "on-primary-fixed-variant": "#2f4d37",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#02210f",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#705d00",
+                    "tertiary-fixed": "#ffd9de",
+                    "on-primary-container": "#b0d3b6",
+                    "on-tertiary-fixed": "#311118",
+                    "tertiary-container": "#744950",
+                    "outline-variant": "#c2c8c0",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#c8ebcd",
+                    "on-secondary-container": "#715d00",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "outline": "#727972",
+                    "on-surface-variant": "#424842",
+                    "inverse-primary": "#accfb2",
+                    "surface-bright": "#fff8f5",
+                    "surface-tint": "#46654e",
+                    "surface-container-high": "#f9e4d7",
+                    "tertiary": "#5a3239",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#3d5c45",
+                    "background": "#fff8f5",
+                    "on-error": "#ffffff",
+                    "surface": "#fff8f5",
+                    "inverse-surface": "#3a2e25",
+                    "surface-container": "#ffeadd",
+                    "on-secondary-fixed": "#221b00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1rem",
+                    "3xl": "1.5rem",
+                    "4xl": "2.5rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "120px",
+                    "base": "8px",
+                    "xl": "64px",
+                    "gutter": "16px",
+                    "md": "24px",
+                    "margin-mobile": "24px",
+                    "sm": "12px",
+                    "xs": "4px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Inter"],
+                    "headline-xl": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "poppins": ["Poppins", "sans-serif"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #F1F3E9; /* Specific hex as per instructions */
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        .hero-section {
+            height: 45vh;
+            position: relative;
+        }
+        .form-container {
+            background-color: #3D5C45; /* primary-container */
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            min-height: 55vh;
+            padding: 40px 24px;
+        }
+        .custom-input {
+            height: 54px;
+            border-radius: 12px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            margin-bottom: 16px;
+        }
+        .custom-input input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 13px;
+            font-weight: 500;
+            color: #3D5C45;
+            padding-left: 12px;
+        }
+        .custom-input .icon {
+            color: #3D5C45;
+            font-size: 20px;
+        }
+        .btn-submit {
+            background-color: #ffffff;
+            color: #3D5C45;
+            height: 54px;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<!-- Top App Bar (Suppressing as per Task Request for focused Screen) -->
+<!-- Content starts here -->
+<main class="flex flex-col min-h-screen">
+<!-- Hero Section -->
+<section class="hero-section flex items-center justify-center overflow-hidden mb-[-1px]">
+<!-- Background Vector Chart -->
+<div class="absolute inset-0 z-0 flex items-center justify-center opacity-40"><div class="absolute right-10 top-1/4 w-32 h-32 opacity-30">https://lh3.googleusercontent.com/aida-public/AB6AXuAR-_oN_beBdczJkOKsdsXnJTIqiChlqsOElPWUDllEjAapbHSAjtarRogvzrtV-a1mhUPT1Ggcq93p-ziZvdW3okO8FWb-5pLiNwVc6CNTO1_W90duWAD5uq3njmOSt7qNG1XPmNLkyrD0NjwOUHDe2YD09MoufXxDsp3LMhgTPS1m_aq5nePopD9duaPHEX9xretrcyFdKOT-4WLUR6BaWS4e80pQjZHQkkN0lrgmKIWtnzzATSD-5uhIENWwdVAFZuTL3ZFgxHAM</div></div>
+<!-- Character Image -->
+<div class="relative z-10 w-full h-full flex items-end justify-center">
+<div class="h-[85%] flex items-end justify-center -translate-x-4"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6I2nuhwuIkPV9bxkXjKrLKoHJvrrZEAk2jG75UNWpmuKEWxNF-IeRPyzQ1Ynz4IJ5_yjH38CfG2TQGBdiBteEIfsogyDCJHsR8O2XE2qPdLU8xqt98UHL-d_cbs5SUUE4WK3E6ouOSnJOclj4dz-_JVwExPwx-N9qloEFeaor7l-50_uhTXyfZCBoJne_8dhENidBndO0Q6j65OqNfVVrCi0R7bnxBBBGh2wVnonHfg9PjwV11xI4OOUkH4eEIrJElAhuPX_uhqPQ" alt="Character illustration" class="h-full w-auto object-contain"></div>
+</div>
+</section>
+<!-- Form Container -->
+<section class="form-container flex-grow shadow-2xl">
+<div class="max-w-md mx-auto">
+<header class="mb-8 text-center">
+<h1 class="text-white font-semibold text-[26px] leading-tight mb-2">Buat Akun Sekarang</h1>
+<p class="text-white text-opacity-70 font-light text-[12px]">Daftar untuk mulai kelola progres keuanganmu dengan rapi</p>
+</header>
+<form id="registrationForm" onsubmit="return false;">
+<!-- Name Field -->
+<div class="custom-input flex items-center">
+<span class="material-symbols-outlined icon" data-icon="person" style="color: rgb(73, 139, 89);">person</span>
+<input class="placeholder:text-gray-400" placeholder="Nama Lengkap" type="text" value="Kharisma Aretha" style="color: rgb(73, 139, 89);">
+</div>
+<!-- Email Field -->
+<div class="custom-input flex items-center">
+<span class="material-symbols-outlined icon" data-icon="mail" style="color: rgb(73, 139, 89);">mail</span>
+<input class="placeholder:text-gray-400" placeholder="Email" type="email" value="Rismaaretha10@gmail.com" style="color: rgb(73, 139, 89);">
+</div>
+<!-- Password Field -->
+<div class="custom-input flex items-center justify-between">
+<div class="flex items-center flex-grow">
+<span class="material-symbols-outlined icon" data-icon="lock" style="color: rgb(73, 139, 89);">lock</span>
+<input class="placeholder:text-gray-400" placeholder="Password" type="password" value="password123" style="color: rgb(73, 139, 89);">
+</div>
+<button class="text-[#3D5C45] focus:outline-none" type="button">
+<span class="material-symbols-outlined icon" data-icon="visibility" style="color: rgb(73, 139, 89);">visibility</span>
+</button>
+</div>
+<!-- Submit Button -->
+<button class="btn-submit hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg" type="submit" style="color: rgb(58, 96, 67);">
+                        Daftar Sekarang
+                    </button>
+</form>
+<footer class="mt-8 text-center text-white text-[15px]">
+<span class="font-normal">Sudah punya akun? </span>
+<a class="font-semibold hover:underline" href="#">Login</a>
+</footer>
+</div>
+</section>
+</main>
+<!-- Interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.custom-input');
+
+            inputs.forEach(container => {
+                const input = container.querySelector('input');
+
+                input.addEventListener('focus', () => {
+                    container.classList.add('ring-2', 'ring-secondary-container');
+                });
+
+                input.addEventListener('blur', () => {
+                    container.classList.remove('ring-2', 'ring-secondary-container');
+                });
+            });
+
+            // Handle Password Visibility Toggle
+            const toggleBtn = document.querySelector('button[type="button"]');
+            const passwordInput = document.querySelector('input[type="password"]');
+
+            if(toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', () => {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+
+                    const iconSpan = toggleBtn.querySelector('.material-symbols-outlined');
+                    iconSpan.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+                });
+            }
+        });
+    </script>
+
+
+</body></html>

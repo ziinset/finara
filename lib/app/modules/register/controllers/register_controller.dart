@@ -149,6 +149,6 @@ class RegisterController extends GetxController
   }
 
   void onLoginTap() {
-    Get.back();
+    Get.toNamed('/login');
   }
 }

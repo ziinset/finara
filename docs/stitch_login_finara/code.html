@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Finara Login</title>
+<!-- Font Configuration -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            app: {
+              bg: '#F1F2E9',
+              card: '#3B5B41',
+              text: '#7FBC8D',
+              icon: '#498B59'
+            }
+          },
+          borderRadius: {
+            '4xl': '40px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Phosphor Icons -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/thin/style.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/light/style.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/duotone/style.css">
+<style data-purpose="custom-utilities">
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #F1F2E9;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .status-bar {
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .illustration-container {
+      position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      min-height: 0;
+    }
+
+    .character-img {
+      max-height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body class="bg-app-bg text-white relative flex flex-col h-screen overflow-hidden max-w-[412px] mx-auto w-full shadow-xl">
+<!-- BEGIN: StatusBar -->
+<div class="status-bar text-black w-full absolute top-0 z-10">
+<span class="">12:30</span>
+<div class="flex gap-1.5 items-center">
+<i class="ph-fill ph-cell-signal-full text-lg"></i>
+<i class="ph-fill ph-wifi-high text-lg"></i>
+<i class="ph-fill ph-battery-full text-xl"></i>
+</div>
+</div>
+<!-- END: StatusBar -->
+<!-- BEGIN: TopSection -->
+<section class="illustration-container w-full pt-16 pb-4">
+<!-- SVG Logo -->
+<div class="absolute right-8 top-20 w-20 h-20">{{DATA:DOCUMENT:DOCUMENT_2}}</div>
+<img alt="Character holding phone" class="character-img -mb-2 relative z-0 left-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeNOm8WKS0eK_rAhc4954hd1zUPwK5vSn5W69cZFISQ1iJkVYa02Aj1GVCAL8CNIsggR25Av5IdW2PDDbX64Nezt6gT1e7bq-jtRvtMV2PRnPDG530rohlWhhLaWTZ2Ld9yaT3KM0acEHSqtzQdjzgbujgE0AgZ3z-Nh_rcxIQ1jUCpY967_0dPGelDI6wWPZui0VFEczkmjo9z7DfIPV9vBJX1T13vywe86cIvUZx66_OpLvN3piiMjN74GaRpmiDv2entJH0CSc">
+</section>
+<!-- END: TopSection -->
+<!-- BEGIN: BottomSection -->
+<main class="bg-app-card rounded-t-4xl w-full flex-shrink-0 flex flex-col px-8 pt-10 pb-8 z-10">
+<!-- Header Titles -->
+<div class="text-center mb-8">
+<h1 class="text-[26px] font-semibold leading-tight mb-2">Selamat Datang Kembali</h1>
+<p class="text-[13px] font-light">Masuk untuk melihat progres keuanganmu</p>
+</div>
+<!-- Login Form -->
+<form class="flex flex-col gap-5 w-full">
+<!-- Username Input -->
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<i class="ph-fill ph-user text-app-icon text-xl"></i>
+</div>
+<input class="w-full bg-white rounded-2xl py-4 pl-12 pr-4 text-[13px] font-medium text-app-text border-none focus:ring-0 outline-none" readonly="" type="text" value="Kharisma Aretha">
+</div>
+<!-- Password Input -->
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<i class="ph-fill ph-lock-key text-app-icon text-xl"></i>
+</div>
+<input class="w-full bg-white rounded-2xl py-4 pl-12 pr-12 text-[13px] font-medium text-app-text border-none focus:ring-0 outline-none tracking-[4px]" readonly="" type="password" value="12345678">
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
+<i class="ph-fill ph-eye-slash text-app-icon text-xl"></i>
+</div>
+</div>
+<!-- Forgot Password -->
+<div class="w-full text-left mt-[-4px]">
+<a class="text-[16px] font-medium text-white hover:underline" href="#">Lupa sandi?</a>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-white text-app-card rounded-2xl py-4 mt-2 font-bold text-[16px]" type="button">
+        Daftar Sekarang
+      </button>
+</form>
+<!-- Footer Links -->
+<div class="mt-8 text-center">
+<span class="text-[16px] font-normal text-white">Sudah punya akun? </span>
+<a class="text-[16px] font-semibold text-white hover:underline" href="#">Daftar</a>
+</div>
+</main>
+<!-- END: BottomSection -->
+
+
+</body></html>

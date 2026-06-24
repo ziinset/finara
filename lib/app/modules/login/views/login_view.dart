@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
 /// Design system colors extracted from the HTML reference.
@@ -24,17 +25,61 @@ class LoginView extends GetView<LoginController> {
       ),
       child: Scaffold(
         backgroundColor: _LoginColors.background,
-        body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              // ── Top Section: Illustration ──
-              Expanded(child: _buildIllustrationSection(context)),
+        body: Stack(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  // ── Top Section: Illustration ──
+                  Expanded(child: _buildIllustrationSection(context)),
 
-              // ── Bottom Section: Green card with form ──
-              _buildFormCard(context),
-            ],
-          ),
+                  // ── Bottom Section: Green card with form ──
+                  _buildFormCard(context),
+                ],
+              ),
+            ),
+
+            // ── [DEV-ONLY] Tombol Skip — hapus/comment blok ini setelah selesai development ──
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 12,
+              right: 16,
+              child: GestureDetector(
+                onTap: () => Get.offAllNamed(Routes.HOME),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: _LoginColors.cardGreen.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: _LoginColors.cardGreen.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: _LoginColors.cardGreen,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: _LoginColors.cardGreen,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // ── [DEV-ONLY] Akhir tombol Skip ──
+          ],
         ),
       ),
     );

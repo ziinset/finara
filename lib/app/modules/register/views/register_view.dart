@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/register_controller.dart';
 
 /// Design system colors from DESIGN.md ("Organic Fintech" palette).
@@ -25,17 +26,61 @@ class RegisterView extends GetView<RegisterController> {
         backgroundColor: _AppColors.background,
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                // ── Hero Section (45% height) ──
-                _buildHeroSection(context),
+          child: Stack(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    // ── Hero Section (45% height) ──
+                    _buildHeroSection(context),
 
-                // ── Form Container (fills remaining) ──
-                Expanded(child: _buildFormContainer(context)),
-              ],
-            ),
+                    // ── Form Container (fills remaining) ──
+                    Expanded(child: _buildFormContainer(context)),
+                  ],
+                ),
+              ),
+
+              // ── [DEV-ONLY] Tombol Skip — hapus/comment blok ini setelah selesai development ──
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 12,
+                right: 16,
+                child: GestureDetector(
+                  onTap: () => Get.offAllNamed(Routes.HOME),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _AppColors.primary.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: _AppColors.primary.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Skip',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: _AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                          color: _AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // ── [DEV-ONLY] Akhir tombol Skip ──
+            ],
           ),
         ),
       ),

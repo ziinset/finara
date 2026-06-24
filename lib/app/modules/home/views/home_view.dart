@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart'; // Added for Cupertino icons
 import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
-import 'home_content_view.dart';
-import 'notes_content_view.dart';
-import 'chart_content_view.dart';
-import 'profile_content_view.dart';
+import '../../catatan/views/catatan_view.dart';
+import '../../profile/views/profile_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -19,10 +17,10 @@ class HomeView extends GetView<HomeController> {
     const Color unselectedGrey = Colors.grey;
 
     final List<Widget> pages = [
-      const HomeContentView(),
-      const NotesContentView(),
-      const ChartContentView(),
-      const ProfileContentView(),
+      const Center(child: Text('Beranda')),
+      const CatatanView(),
+      const Center(child: Text('Grafik')),
+      const ProfileView(),
     ];
 
     return Scaffold(

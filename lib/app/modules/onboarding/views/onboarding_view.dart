@@ -8,17 +8,17 @@ import '../controllers/onboarding_controller.dart';
 /// Design-system colors from DESIGN.md — "Organic Growth" palette.
 class _C {
   _C._();
-  static const Color primary = Color(0xFF223C27);
+  static const Color primary = Color(0xFF3A6043);
   static const Color onPrimary = Color(0xFFFFFFFF);
   static const Color secondary = Color(0xFF5D5F58);
   static const Color tertiaryFixed = Color(0xFFFFE25F);
   static const Color onTertiaryContainer = Color(0xFF4B3F00);
-  static const Color background = Color(0xFFEAEADE);
+  static const Color background = Color(0xFFEBEBE0);
 
   // Semantic / component-specific
   static const Color headingText = Color(0xFF4A3933);
   static const Color badgeBg = Color(0xFFFFFFFF);
-  static const Color badgeText = Color(0xFF40342B);
+  static const Color badgeText = Color(0xFF4A3933);
 }
 
 class OnboardingView extends GetView<OnboardingController> {
@@ -87,14 +87,14 @@ class OnboardingView extends GetView<OnboardingController> {
     double hScale,
   ) {
     // Scale element sizes proportionally
-    final double logoW = 32 * hScale;
-    final double logoH = 44 * vScale;
-    final double plusSize = (48 * vScale).clamp(36.0, 56.0);
-    final double plusIcon = (26 * vScale).clamp(20.0, 32.0);
-    final double badgePadH = (20 * hScale).clamp(12.0, 24.0);
-    final double badgePadV = (12 * vScale).clamp(8.0, 16.0);
-    final double badgeFontSize = (14 * hScale).clamp(11.0, 16.0);
-    final double badgeIconSize = (16 * hScale).clamp(12.0, 20.0);
+    final double logoW = 42 * hScale;
+    final double logoH = 56 * vScale;
+    final double plusSize = (60 * vScale).clamp(44.0, 72.0);
+    final double plusIcon = (32 * vScale).clamp(24.0, 40.0);
+    final double badgePadH = (24 * hScale).clamp(16.0, 32.0);
+    final double badgePadV = (14 * vScale).clamp(10.0, 20.0);
+    final double badgeFontSize = (15 * hScale).clamp(12.0, 18.0);
+    final double badgeIconSize = (18 * hScale).clamp(14.0, 24.0);
 
     return Container(
       width: double.infinity,
@@ -104,7 +104,7 @@ class OnboardingView extends GetView<OnboardingController> {
         children: [
           // ── Logo (top-left) ──
           Positioned(
-            top: topPad + 16 * vScale,
+            top: topPad + 32 * vScale,
             left: 24 * hScale,
             child: _animated(
               fade: controller.logoFade,
@@ -171,8 +171,8 @@ class OnboardingView extends GetView<OnboardingController> {
 
           // ── Yellow "+" floating button ──
           Positioned(
-            top: sectionH * 0.14,
-            right: w * 0.28,
+            top: sectionH * 0.08,
+            right: w * 0.32,
             child: _animated(
               fade: controller.plusButtonFade,
               slide: controller.plusButtonSlide,
@@ -201,14 +201,14 @@ class OnboardingView extends GetView<OnboardingController> {
 
           // ── Character illustration ──
           Positioned(
-            right: -w * 0.04,
-            bottom: -sectionH * 0.05,
+            right: -w * 0.06,
+            bottom: -sectionH * 0.08,
             child: _animated(
               fade: controller.characterFade,
               slide: controller.characterSlide,
               child: Image.asset(
                 'assets/images/ilustrasi_cewek_onboarding.png',
-                height: sectionH * 0.75,
+                height: sectionH * 1.15,
                 fit: BoxFit.contain,
               ),
             ),
@@ -248,9 +248,9 @@ class OnboardingView extends GetView<OnboardingController> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Transform.rotate(
-                        angle: -0.785, // arrow ↗
+                        angle: 0.0, // arrow ↑
                         child: Icon(
-                          Icons.arrow_forward,
+                          Icons.arrow_upward,
                           size: badgeIconSize,
                           color: _C.badgeText,
                         ),
@@ -288,8 +288,8 @@ class OnboardingView extends GetView<OnboardingController> {
     double hScale,
   ) {
     // ── Responsive typography ──
-    final double headlineFontSize = (42 * vScale).clamp(26.0, 48.0);
-    final double bodyFontSize = (16 * vScale).clamp(13.0, 18.0);
+    final double headlineFontSize = (50 * vScale).clamp(36.0, 60.0);
+    final double bodyFontSize = (15 * vScale).clamp(13.0, 18.0);
     final double btnFontSize = (16 * vScale).clamp(14.0, 18.0);
     final double btnHeight = (56 * vScale).clamp(44.0, 64.0);
     final double hPad = (24 * hScale).clamp(16.0, 32.0);
@@ -319,10 +319,10 @@ class OnboardingView extends GetView<OnboardingController> {
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: headlineFontSize,
-                          fontWeight: FontWeight.w600,
-                          height: 1.12,
+                          fontWeight: FontWeight.w600, // SemiBold
+                          height: 1.1,
                           color: _C.headingText,
-                          letterSpacing: -0.8,
+                          letterSpacing: -1.0,
                         ),
                       ),
 
@@ -360,7 +360,7 @@ class OnboardingView extends GetView<OnboardingController> {
                               elevation: 0,
                               shadowColor: _C.primary.withValues(alpha: 0.25),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                             child: Text(

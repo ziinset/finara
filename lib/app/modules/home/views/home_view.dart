@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart'; // Added for Cupertino icons
 
 import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
-import 'home_content_view.dart';
-import 'notes_content_view.dart';
-import 'chart_content_view.dart';
-import 'profile_content_view.dart';
+import '../../catatan/views/catatan_view.dart';
+import '../../statistik/views/statistik_view.dart';
+import '../../profile/views/profile_view.dart';
+import 'home_dashboard_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -19,10 +18,10 @@ class HomeView extends GetView<HomeController> {
     const Color unselectedGrey = Colors.grey;
 
     final List<Widget> pages = [
-      const HomeContentView(),
-      const NotesContentView(),
-      const ChartContentView(),
-      const ProfileContentView(),
+      const HomeDashboardView(),
+      const CatatanView(),
+      const StatistikView(),
+      const ProfileView(),
     ];
 
     return Scaffold(
@@ -283,23 +282,5 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
     );
-  }
-}
-
-/// A custom notched shape that shifts the notch by a given horizontal offset.
-/// This is necessary because BottomAppBar uses the Scaffold's coordinate system for the FAB,
-/// but draws the notch in its own local coordinate system. If the BottomAppBar has a left margin,
-/// the notch will be drawn too far to the right by default.
-class _CustomNotchedRectangle extends NotchedShape {
-  final double shiftX;
-
-  const _CustomNotchedRectangle(this.shiftX);
-
-  @override
-  Path getOuterPath(Rect host, Rect? guest) {
-    if (guest != null) {
-      guest = guest.shift(Offset(-shiftX, 0));
-    }
-    return const CircularNotchedRectangle().getOuterPath(host, guest);
   }
 }

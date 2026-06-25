@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
@@ -69,34 +70,76 @@ class HomeDashboardView extends GetView<HomeController> {
 
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ─── Header Profile Row ───
-                _buildProfileHeader(context),
-                const SizedBox(height: 20),
+                // ─── Header Section with Solid Green Background ───
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF426C4C),
+                  ),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ─── Header Profile Row ───
+                      _buildProfileHeader(context),
+                      const SizedBox(height: 24),
 
-                // ─── Total Balance Card ───
-                _buildBalanceCard(context, balance, income, expense, bonusBalance),
-                const SizedBox(height: 20),
+                      // ─── Total Balance Card ───
+                      _buildBalanceCard(context, balance, income, expense, bonusBalance),
+                    ],
+                  ),
+                ),
 
-                // ─── Period Selector Chips ───
-                _buildPeriodSelector(),
-                const SizedBox(height: 24),
+                // ─── Smooth Blend Transition ───
+                Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.0, 0.3, 0.6, 1.0],
+                      colors: [
+                        Color(0xFF426C4C),
+                        Color(0x99426C4C),
+                        Color(0x44426C4C),
+                        Color(0xFFF4F6F5),
+                      ],
+                    ),
+                  ),
+                ),
 
-                // ─── Top 3 Spending Categories ───
-                if (expense > 0) ...[
-                  _buildTopSpendingCategories(topCategories),
-                  const SizedBox(height: 24),
-                ],
+                // ─── Bottom Section with White Background ───
+                Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF4F6F5),
+                  ),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 100),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ─── Period Selector Cards ───
+                      _buildPeriodSelector(),
+                      const SizedBox(height: 24),
 
-                // ─── Transaksi Terbaru ───
-                _buildRecentTransactions(recentTransactions),
-                const SizedBox(height: 24),
+                      // ─── Top 3 Spending Categories ───
+                      if (expense > 0) ...[
+                        _buildTopSpendingCategories(topCategories),
+                        const SizedBox(height: 24),
+                      ],
 
-                // ─── Insight & Quote Card ───
-                _buildInsightCard(),
+                      // ─── Transaksi Terbaru ───
+                      _buildRecentTransactions(recentTransactions),
+                      const SizedBox(height: 24),
+
+                      // ─── Insight & Quote Card ───
+                      _buildInsightCard(),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -113,30 +156,14 @@ class HomeDashboardView extends GetView<HomeController> {
           children: [
             // Profile image / Avatar
             Container(
-              width: 50,
-              height: 50,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF86A38F), Color(0xFF3A6043)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: Colors.white.withOpacity(0.3), // Outer transparent circle
               ),
-              child: const Center(
-                child: Icon(
-                  Icons.sports_soccer_outlined, // Soccer ball style matching image
-                  color: Colors.white,
-                  size: 26,
-                ),
+              child: const CircleAvatar(
+                radius: 28,
+                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop'),
               ),
             ),
             const SizedBox(width: 12),
@@ -144,72 +171,24 @@ class HomeDashboardView extends GetView<HomeController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Mr Henderson',
+                  'Selamat datang',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF40342B),
+                    fontSize: 13,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white70,
                   ),
                 ),
                 Text(
-                  'Bet player2k',
+                  'Kharisma Aretha Mahardika',
                   style: TextStyle(
-                    fontSize: 13,
-                    color: const Color(0xFF40342B).withOpacity(0.65),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
             ),
           ],
-        ),
-
-        // Translucent Pill Capsule Actions
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFF3A6043).withOpacity(0.08),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFF3A6043).withOpacity(0.12)),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () => controller.toggleCardExpanded(),
-                child: Icon(
-                  controller.isCardExpanded.value
-                      ? Icons.unfold_less
-                      : Icons.unfold_more,
-                  color: const Color(0xFF3A6043),
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                width: 1,
-                height: 14,
-                color: const Color(0xFF3A6043).withOpacity(0.2),
-              ),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () {
-                  Get.snackbar(
-                    'Ubah Profil',
-                    'Fitur edit profil akan segera hadir!',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: const Color(0xFF3A6043),
-                    colorText: Colors.white,
-                    margin: const EdgeInsets.all(16),
-                  );
-                },
-                child: const Icon(
-                  Icons.edit_outlined,
-                  color: Color(0xFF3A6043),
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -227,17 +206,11 @@ class HomeDashboardView extends GetView<HomeController> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(cardRadius),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF3A6043), // Organic dark green
-            Color(0xFF26442F), // Deep forest green
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white.withOpacity(0.3),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF3A6043).withOpacity(0.25),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -245,21 +218,19 @@ class HomeDashboardView extends GetView<HomeController> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(cardRadius),
-        child: Stack(
-          children: [
-            // ─── Watermark Trophy Overlay ───
-            Positioned(
-              right: -10,
-              bottom: -15,
-              child: Opacity(
-                opacity: 0.08,
-                child: const Icon(
-                  Icons.emoji_events_outlined,
-                  size: 170,
-                  color: Colors.white,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: Stack(
+            children: [
+              // ─── Uang Logo Overlay ───
+              Positioned(
+                right: -10,
+                top: 45,
+                child: Image.asset(
+                  'assets/images/uang.png',
+                  width: 160,
                 ),
               ),
-            ),
 
             // Card Content Padding
             Padding(
@@ -285,7 +256,7 @@ class HomeDashboardView extends GetView<HomeController> {
                               size: 16,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                           const Text(
                             'Main account',
                             style: TextStyle(
@@ -296,153 +267,180 @@ class HomeDashboardView extends GetView<HomeController> {
                           ),
                         ],
                       ),
-                      // Dropdown Currency Indicator
+                      // Unfold & Edit Actions
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.12),
+                          color: const Color(0xFF3A6043),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white.withOpacity(0.08)),
+                          border: Border.all(color: Colors.white.withOpacity(0.15)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircleAvatar(
-                              radius: 8,
-                              backgroundColor: Colors.tealAccent.shade400,
-                              child: const Text(
-                                'R',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            const Text(
-                              'IDR',
-                              style: TextStyle(
+                            GestureDetector(
+                              onTap: () => controller.toggleCardExpanded(),
+                              child: Icon(
+                                controller.isCardExpanded.value
+                                    ? Icons.unfold_less
+                                    : Icons.unfold_more,
                                 color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
+                                size: 16,
                               ),
                             ),
-                            const SizedBox(width: 3),
-                            const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.white,
-                              size: 14,
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 1,
+                              height: 12,
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                            const SizedBox(width: 6),
+                            GestureDetector(
+                              onTap: () {
+                                Get.snackbar(
+                                  'Ubah Profil',
+                                  'Fitur edit profil akan segera hadir!',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: const Color(0xFF3A6043),
+                                  colorText: Colors.white,
+                                  margin: const EdgeInsets.all(16),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.edit_outlined,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
 
                   // ─── Main Balance Text ───
                   Text(
                     _formatRupiah(balance),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w900,
                       letterSpacing: -0.5,
                     ),
                   ),
 
                   // Animated Expansion Block
                   AnimatedCrossFade(
-                    firstChild: const SizedBox(height: 8),
+                    firstChild: const SizedBox(height: 4),
                     secondChild: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 18),
+                        const SizedBox(height: 12),
                         // ─── Translucent Pemasukan & Pengeluaran Pill Bar ───
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.08),
+                            color: Colors.white.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white.withOpacity(0.08)),
+                            border: Border.all(color: Colors.white.withOpacity(0.15)),
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle,
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.green,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.arrow_downward,
+                                        color: Colors.white,
+                                        size: 12,
+                                      ),
                                     ),
-                                    child: const Icon(
-                                      Icons.arrow_downward,
-                                      color: Colors.white,
-                                      size: 12,
+                                    const SizedBox(width: 6),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Pemasukan',
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(0.7),
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            _formatRupiah(income),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'Pemasukan: ',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    _formatRupiah(income),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Container(
                                 width: 1,
-                                height: 16,
+                                height: 24,
+                                margin: const EdgeInsets.symmetric(horizontal: 8),
                                 color: Colors.white.withOpacity(0.15),
                               ),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.arrow_upward,
+                                        color: Colors.white,
+                                        size: 12,
+                                      ),
                                     ),
-                                    child: const Icon(
-                                      Icons.arrow_upward,
-                                      color: Colors.white,
-                                      size: 12,
+                                    const SizedBox(width: 6),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Pengeluaran',
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(0.7),
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            _formatRupiah(expense),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'Pengeluaran: ',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    _formatRupiah(expense),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 14),
 
                         // ─── Bottom CTA Card Buttons ───
                         Row(
@@ -463,7 +461,7 @@ class HomeDashboardView extends GetView<HomeController> {
                                   padding: const EdgeInsets.symmetric(vertical: 13),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
+                                    borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.08),
@@ -500,8 +498,8 @@ class HomeDashboardView extends GetView<HomeController> {
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(vertical: 13),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.25),
-                                    borderRadius: BorderRadius.circular(30),
+                                    color: const Color(0xFF426C4C),
+                                    borderRadius: BorderRadius.circular(12),
                                     border: Border.all(color: Colors.white.withOpacity(0.15)),
                                   ),
                                   alignment: Alignment.center,
@@ -520,15 +518,16 @@ class HomeDashboardView extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                    crossFadeState: controller.isCardExpanded.value
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: const Duration(milliseconds: 300),
-                  ),
-                ],
+                      crossFadeState: controller.isCardExpanded.value
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -537,32 +536,38 @@ class HomeDashboardView extends GetView<HomeController> {
   Widget _buildPeriodSelector() {
     final periods = ['Hari Ini', 'Minggu Ini', 'Bulan Ini'];
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: periods.map((period) {
         final isSelected = controller.selectedPeriod.value == period;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        return Expanded(
           child: GestureDetector(
             onTap: () => controller.changePeriod(period),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF3A6043)
-                    : const Color(0xFF3A6043).withOpacity(0.06),
-                borderRadius: BorderRadius.circular(20),
+                color: isSelected ? const Color(0xFF3A6043) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF3A6043)
-                      : const Color(0xFF3A6043).withOpacity(0.12),
+                  color: isSelected ? const Color(0xFF3A6043) : Colors.grey.shade300,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  )
+                ],
               ),
-              child: Text(
-                period,
-                style: TextStyle(
-                  color: isSelected ? Colors.white : const Color(0xFF3A6043),
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                  fontSize: 13,
+              child: Center(
+                child: Text(
+                  period,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.grey.shade700,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ),

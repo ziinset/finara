@@ -6,6 +6,20 @@ import '../controllers/home_controller.dart';
 class HomeDashboardView extends GetView<HomeController> {
   const HomeDashboardView({super.key});
 
+  @override
+  Widget build(BuildContext context) => const _HomeDashboardViewBody();
+}
+
+class _HomeDashboardViewBody extends StatefulWidget {
+  const _HomeDashboardViewBody();
+
+  @override
+  State<_HomeDashboardViewBody> createState() => _HomeDashboardViewBodyState();
+}
+
+class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
+  HomeController get controller => Get.find<HomeController>();
+
   // Helper to format currency to Indonesian Rupiah (Rp)
   String _formatRupiah(num number) {
     final cleanString = number.toInt().toString();
@@ -22,9 +36,9 @@ class HomeDashboardView extends GetView<HomeController> {
   IconData _getCategoryIcon(String category) {
     switch (category) {
       case 'Makan':
-        return Icons.restaurant;
+        return Icons.restaurant_outlined;
       case 'Transportasi':
-        return Icons.directions_car_filled_outlined;
+        return Icons.directions_car_outlined;
       case 'Belanja':
         return Icons.shopping_bag_outlined;
       case 'Pemasukan':
@@ -47,6 +61,55 @@ class HomeDashboardView extends GetView<HomeController> {
       default:
         return Colors.grey;
     }
+  }
+
+  final ValueNotifier<String> _selectedMonthNotifier = ValueNotifier<String>('Bulan ini');
+  final List<String> _months = ['Bulan ini', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+  Widget _buildMonthSelector() {
+    return ValueListenableBuilder<String>(
+      valueListenable: _selectedMonthNotifier,
+      builder: (context, selectedMonth, child) {
+        return SizedBox(
+          height: 38,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: _months.length,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemBuilder: (context, index) {
+              final month = _months[index];
+              final isSelected = month == selectedMonth;
+              return GestureDetector(
+                onTap: () => _selectedMonthNotifier.value = month,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  decoration: BoxDecoration(
+                    color: isSelected ? const Color(0xFF3A6043) : const Color(0xFFF0F0F0),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    month,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    _selectedMonthNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,58 +136,22 @@ class HomeDashboardView extends GetView<HomeController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ─── Header Section with Solid Green Background ───
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF426C4C),
-                  ),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // ─── Header Profile Row ───
-                      _buildProfileHeader(context),
-                      const SizedBox(height: 24),
+                _buildNewHeaderCard(context, balance, income, expense),
+                const SizedBox(height: 20),
 
-                      // ─── Total Balance Card ───
-                      _buildBalanceCard(context, balance, income, expense, bonusBalance),
-                    ],
-                  ),
-                ),
-
-                // ─── Smooth Blend Transition ───
-                Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.0, 0.3, 0.6, 1.0],
-                      colors: [
-                        Color(0xFF426C4C),
-                        Color(0x99426C4C),
-                        Color(0x44426C4C),
-                        Color(0xFFF4F6F5),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildMonthSelector(),
+                const SizedBox(height: 24),
 
                 // ─── Bottom Section with White Background ───
                 Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF4F6F5),
+                    color: Colors.white,
                   ),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 100),
+                  padding: const EdgeInsets.only(top: 0, bottom: 100),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ─── Period Selector Cards ───
-                      _buildPeriodSelector(),
-                      const SizedBox(height: 24),
-
                       // ─── Top 3 Spending Categories ───
                       if (expense > 0) ...[
                         _buildTopSpendingCategories(topCategories),
@@ -148,538 +175,365 @@ class HomeDashboardView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            // Profile image / Avatar
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.3), // Outer transparent circle
-              ),
-              child: const CircleAvatar(
-                radius: 28,
-                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop'),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Selamat datang',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white70,
-                  ),
-                ),
-                Text(
-                  'Kharisma Aretha Mahardika',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBalanceCard(
-    BuildContext context,
-    num balance,
-    num income,
-    num expense,
-    double bonusBalance,
-  ) {
-    final double cardRadius = 24.0;
+  Widget _buildNewHeaderCard(BuildContext context, num balance, num income, num expense) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(cardRadius),
-        color: Colors.white.withOpacity(0.3),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(32), bottomRight: Radius.circular(32)),
+        gradient: RadialGradient(
+          center: Alignment.topLeft,
+          radius: 1.5,
+          colors: [
+            Color(0xFF7CAE8D), // Lighter top-left
+            Color(0xFF3A6043), // Main green
+            Color(0xFF2A4530), // Darker bottom-right
+          ],
+        ),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(cardRadius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-          child: Stack(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Top Row: Profile, Greeting, Notification
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // ─── Uang Logo Overlay ───
-              Positioned(
-                right: -10,
-                top: 45,
-                child: Image.asset(
-                  'assets/images/uang.png',
-                  width: 160,
-                ),
+              const CircleAvatar(
+                radius: 22,
+                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop'),
               ),
-
-            // Card Content Padding
-            Padding(
-              padding: const EdgeInsets.all(22.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ─── Card Header Row ───
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.wallet_outlined,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Text(
-                            'Main account',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Unfold & Edit Actions
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3A6043),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white.withOpacity(0.15)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                              onTap: () => controller.toggleCardExpanded(),
-                              child: Icon(
-                                controller.isCardExpanded.value
-                                    ? Icons.unfold_less
-                                    : Icons.unfold_more,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            Container(
-                              width: 1,
-                              height: 12,
-                              color: Colors.white.withOpacity(0.3),
-                            ),
-                            const SizedBox(width: 6),
-                            GestureDetector(
-                              onTap: () {
-                                Get.snackbar(
-                                  'Ubah Profil',
-                                  'Fitur edit profil akan segera hadir!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: const Color(0xFF3A6043),
-                                  colorText: Colors.white,
-                                  margin: const EdgeInsets.all(16),
-                                );
-                              },
-                              child: const Icon(
-                                Icons.edit_outlined,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-
-                  // ─── Main Balance Text ───
-                  Text(
-                    _formatRupiah(balance),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-
-                  // Animated Expansion Block
-                  AnimatedCrossFade(
-                    firstChild: const SizedBox(height: 4),
-                    secondChild: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 12),
-                        // ─── Translucent Pemasukan & Pengeluaran Pill Bar ───
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white.withOpacity(0.15)),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(2),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.green,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.arrow_downward,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Pemasukan',
-                                            style: TextStyle(
-                                              color: Colors.white.withOpacity(0.7),
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          Text(
-                                            _formatRupiah(income),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 14,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 1,
-                                height: 24,
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                color: Colors.white.withOpacity(0.15),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(2),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.red,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.arrow_upward,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Pengeluaran',
-                                            style: TextStyle(
-                                              color: Colors.white.withOpacity(0.7),
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          Text(
-                                            _formatRupiah(expense),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 14,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-
-                        // ─── Bottom CTA Card Buttons ───
-                        Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.snackbar(
-                                    'Pemasukan',
-                                    'Fitur catat pemasukan akan segera dibuka!',
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.white,
-                                    colorText: Colors.black,
-                                    margin: const EdgeInsets.all(16),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 13),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.08),
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 3),
-                                      )
-                                    ],
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Switch wallet',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.snackbar(
-                                    'Pengeluaran',
-                                    'Fitur catat pengeluaran akan segera dibuka!',
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.black.withOpacity(0.4),
-                                    colorText: Colors.white,
-                                    margin: const EdgeInsets.all(16),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 13),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF426C4C),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: Colors.white.withOpacity(0.15)),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Wallet',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                      crossFadeState: controller.isCardExpanded.value
-                          ? CrossFadeState.showSecond
-                          : CrossFadeState.showFirst,
-                      duration: const Duration(milliseconds: 300),
-                    ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Haloo!!', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                    Text('Kharisma Aretha', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
+              const SizedBox(width: 12),
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                child: const Icon(Icons.notifications_none, color: Colors.white, size: 22),
+              ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPeriodSelector() {
-    final periods = ['Hari Ini', 'Minggu Ini', 'Bulan Ini'];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: periods.map((period) {
-        final isSelected = controller.selectedPeriod.value == period;
-        return Expanded(
-          child: GestureDetector(
-            onTap: () => controller.changePeriod(period),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF3A6043) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: isSelected ? const Color(0xFF3A6043) : Colors.grey.shade300,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  )
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  period,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.grey.shade700,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                    fontSize: 13,
+          const SizedBox(height: 24),
+          
+          // Inner Transparent Card
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withOpacity(0.2)),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: -10,
+                  top: 0,
+                  child: Image.asset(
+                    'assets/images/uang.png',
+                    width: 110,
                   ),
                 ),
-              ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Main account row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.account_balance_wallet, color: Colors.white.withOpacity(0.8), size: 16),
+                            const SizedBox(width: 8),
+                            Text('Main account', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14)),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2A4530),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.unfold_more, color: Colors.white, size: 14),
+                              Container(
+                                width: 1, 
+                                height: 12, 
+                                color: Colors.white30, 
+                                margin: const EdgeInsets.symmetric(horizontal: 6)
+                              ),
+                              const Icon(Icons.edit, color: Colors.white, size: 12),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      _formatRupiah(balance),
+                      style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    // Picture 2 Layout for Income & Expense
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(color: Color(0xFF4CAF50), shape: BoxShape.circle),
+                                  child: const Icon(Icons.arrow_downward, color: Colors.white, size: 12),
+                                ),
+                                const SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Pemasukan', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                                    Text(_formatRupiah(income), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ),
+                          Container(width: 1, height: 24, color: Colors.white.withOpacity(0.3)),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(color: Color(0xFFE53935), shape: BoxShape.circle),
+                                  child: const Icon(Icons.arrow_upward, color: Colors.white, size: 12),
+                                ),
+                                const SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Pengeluaran', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                                    Text(_formatRupiah(expense), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Buttons inside transparent card
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 13),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.swap_horiz, color: Colors.white, size: 16),
+                                SizedBox(width: 8),
+                                Text('Switch wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 13),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.account_balance_wallet, color: Colors.white, size: 16),
+                                SizedBox(width: 8),
+                                Text('Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        );
-      }).toList(),
+        ],
+      ),
     );
   }
 
   Widget _buildTopSpendingCategories(List categories) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    final greyColor = const Color(0xFFD5D5D5); // Slightly darker grey
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Kategori Terbesar',
+            'Pengeluaran Terbesar',
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
               color: Color(0xFF40342B),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           ...categories.map((cat) {
             final String name = cat['name'] ?? '';
             final double percentage = (cat['percentage'] as num?)?.toDouble() ?? 0.0;
             final num amount = cat['amount'] ?? 0;
             if (percentage == 0) return const SizedBox.shrink();
 
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 14.0),
+            // Description map per category
+            final Map<String, String> categoryDesc = {
+              'Belanja': 'Pengeluaran belanja bulan ini',
+              'Makan': 'Pengeluaran makan & minuman',
+              'Transportasi': 'Biaya transportasi & bensin',
+            };
+            final desc = categoryDesc[name] ?? 'Kategori pengeluaran';
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: greyColor, width: 2.5),
+              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
+                  // Top white section
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Icon
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
                             _getCategoryIcon(name),
-                            size: 18,
-                            color: _getCategoryColor(name),
+                            color: Colors.grey.shade800,
+                            size: 22,
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            name,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF40342B),
+                        ),
+                        const SizedBox(width: 14),
+                        // Left: Title + desc
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                desc,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Right: Percentage + progress bar
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '${percentage.toInt()}%',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15,
+                                color: Colors.black87,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            _formatRupiah(amount),
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: const Color(0xFF40342B).withOpacity(0.6),
+                            const SizedBox(height: 6),
+                            SizedBox(
+                              width: 80,
+                              child: LinearProgressIndicator(
+                                value: percentage / 100,
+                                backgroundColor: Colors.grey.shade200,
+                                color: const Color(0xFF3A6043),
+                                minHeight: 7,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '${percentage.toInt()}%',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF40342B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: LinearProgressIndicator(
-                      value: percentage / 100,
-                      backgroundColor: Colors.grey.withOpacity(0.12),
-                      valueColor: AlwaysStoppedAnimation<Color>(_getCategoryColor(name)),
-                      minHeight: 8,
+                  // Bottom grey section — all 4 corners rounded inside
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+                    decoration: BoxDecoration(
+                      color: greyColor,
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Text(
+                      '- ${_formatRupiah(amount)}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
                   ),
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
   }
 
   Widget _buildRecentTransactions(List transactions) {
-    return Column(
-      children: [
-        Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
@@ -802,13 +656,16 @@ class HomeDashboardView extends GetView<HomeController> {
               );
             },
           ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildInsightCard() {
     final quote = controller.quotes[controller.activeQuoteIndex.value];
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFFFFEADD).withOpacity(0.85), // Warm sandy box
@@ -894,6 +751,7 @@ class HomeDashboardView extends GetView<HomeController> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

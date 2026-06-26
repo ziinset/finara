@@ -472,7 +472,7 @@ class HomeDashboardView extends GetView<HomeController> {
                                   ),
                                   alignment: Alignment.center,
                                   child: const Text(
-                                    'Catat Masuk',
+                                    'Switch wallet',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -504,7 +504,7 @@ class HomeDashboardView extends GetView<HomeController> {
                                   ),
                                   alignment: Alignment.center,
                                   child: const Text(
-                                    '+ Catat Keluar',
+                                    'Wallet',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

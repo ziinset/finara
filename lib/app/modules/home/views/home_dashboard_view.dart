@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
+import 'notification_view.dart';
 
 class HomeDashboardView extends GetView<HomeController> {
   const HomeDashboardView({super.key});
@@ -63,8 +64,8 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
     }
   }
 
-  final ValueNotifier<String> _selectedMonthNotifier = ValueNotifier<String>('Bulan ini');
-  final List<String> _months = ['Bulan ini', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  final ValueNotifier<String> _selectedMonthNotifier = ValueNotifier<String>('Januari');
+  final List<String> _months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
   Widget _buildMonthSelector() {
     return ValueListenableBuilder<String>(
@@ -131,16 +132,17 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
           final List topCategories = data['topCategories'] ?? [];
           final List recentTransactions = data['recentTransactions'] ?? [];
 
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildNewHeaderCard(context, balance, income, expense),
-                const SizedBox(height: 20),
-
-                _buildMonthSelector(),
-                const SizedBox(height: 24),
+          return Container(
+            color: Colors.white,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildNewHeaderCard(context, balance, income, expense),
+                  const SizedBox(height: 20),
+                  _buildFinancialInsightBanner(),
+                  const SizedBox(height: 24),
 
                 // ─── Bottom Section with White Background ───
                 Container(
@@ -148,7 +150,7 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  padding: const EdgeInsets.only(top: 0, bottom: 100),
+                  padding: const EdgeInsets.only(top: 0, bottom: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -161,13 +163,11 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                       // ─── Transaksi Terbaru ───
                       _buildRecentTransactions(recentTransactions),
                       const SizedBox(height: 24),
-
-                      // ─── Insight & Quote Card ───
-                      _buildInsightCard(),
                     ],
                   ),
                 ),
               ],
+            ),
             ),
           );
         }),
@@ -214,10 +214,13 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                 ),
               ),
               const SizedBox(width: 12),
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: Colors.white.withValues(alpha: 0.2),
-                child: const Icon(Icons.notifications_none, color: Colors.white, size: 22),
+              GestureDetector(
+                onTap: () => Get.to(() => const NotificationView()),
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  child: const Icon(Icons.notifications_none, color: Colors.white, size: 22),
+                ),
               ),
             ],
           ),
@@ -226,7 +229,7 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
           // Inner Transparent Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 12),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.12),
               borderRadius: BorderRadius.circular(24),
@@ -236,53 +239,26 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               children: [
                 Positioned(
                   right: -10,
-                  top: 0,
+                  top: 20,
                   child: Image.asset(
                     'assets/images/uang.png',
-                    width: 110,
+                    width: 145,
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Main account row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.account_balance_wallet, color: Colors.white.withOpacity(0.8), size: 16),
-                            const SizedBox(width: 8),
-                            Text('Main account', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14)),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2A4530),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.unfold_more, color: Colors.white, size: 14),
-                              Container(
-                                width: 1, 
-                                height: 12, 
-                                color: Colors.white30, 
-                                margin: const EdgeInsets.symmetric(horizontal: 6)
-                              ),
-                              const Icon(Icons.edit, color: Colors.white, size: 12),
-                            ],
-                          ),
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Text('Main account', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 16, fontWeight: FontWeight.w600)),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Text(
                       _formatRupiah(balance),
                       style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     
                     // Picture 2 Layout for Income & Expense
                     Container(
@@ -344,15 +320,15 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 13),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.swap_horiz, color: Colors.white, size: 16),
+                                Icon(Icons.swap_horiz, color: Color(0xFF3A6043), size: 16),
                                 SizedBox(width: 8),
-                                Text('Switch wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                Text('Switch wallet', style: TextStyle(color: Color(0xFF3A6043), fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -362,7 +338,7 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 13),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
+                              color: const Color(0xFF6B8C6C),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: const Row(
@@ -387,6 +363,87 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
     );
   }
 
+  Widget _buildFinancialInsightBanner() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF5A8565), // Highlight
+              Color(0xFF3A6043), // Base
+              Color(0xFF26422D), // Shadow
+            ],
+            stops: [0.0, 0.4, 1.0],
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Amankan Masa Depan,\nKelola Keuangan Lebih Terarah',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3A6043),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Ayo mulai',
+                          style: TextStyle(color: Colors.white, fontSize: 11),
+                        ),
+                        SizedBox(width: 4),
+                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 10),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 1,
+              child: Transform.scale(
+                scale: 1.8,
+                child: Image.asset(
+                  'assets/images/koin.png',
+                  width: 80,
+                  height: 80,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.monetization_on,
+                    color: Colors.amber,
+                    size: 50,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildTopSpendingCategories(List categories) {
     final greyColor = const Color(0xFFD5D5D5); // Slightly darker grey
 
@@ -395,13 +452,43 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Pengeluaran Terbesar',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w900,
-              color: Color(0xFF40342B),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Pengeluaran Terbesar',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xFF40342B),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
+                ),
+                child: ValueListenableBuilder<String>(
+                  valueListenable: _selectedMonthNotifier,
+                  builder: (context, selected, _) {
+                    return DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: selected,
+                        isDense: true,
+                        icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+                        style: const TextStyle(fontSize: 12, color: Colors.black87, fontWeight: FontWeight.bold),
+                        onChanged: (val) {
+                          if (val != null) _selectedMonthNotifier.value = val;
+                        },
+                        items: _months.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
           ...categories.map((cat) {
@@ -417,37 +504,42 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               'Transportasi': 'Biaya transportasi & bensin',
             };
             final desc = categoryDesc[name] ?? 'Kategori pengeluaran';
+            final lighterGrey = const Color(0xFFE8E8E8);
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: greyColor, width: 2.5),
+                color: lighterGrey,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Top white section
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: lighterGrey, width: 2),
+                    ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Icon
                         Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFE5F8ED),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             _getCategoryIcon(name),
-                            color: Colors.grey.shade800,
-                            size: 22,
+                            color: const Color(0xFF2DC872),
+                            size: 20,
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        const SizedBox(width: 12),
                         // Left: Title + desc
                         Expanded(
                           child: Column(
@@ -457,7 +549,7 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                                 name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Colors.black87,
                                 ),
                               ),
@@ -465,14 +557,14 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                               Text(
                                 desc,
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 10,
                                   color: Colors.grey.shade500,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 10),
                         // Right: Percentage + progress bar
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -481,18 +573,18 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                               '${percentage.toInt()}%',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: Colors.black87,
                               ),
                             ),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 4),
                             SizedBox(
-                              width: 80,
+                              width: 60,
                               child: LinearProgressIndicator(
                                 value: percentage / 100,
                                 backgroundColor: Colors.grey.shade200,
                                 color: const Color(0xFF3A6043),
-                                minHeight: 7,
+                                minHeight: 6,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
@@ -501,18 +593,13 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                       ],
                     ),
                   ),
-                  // Bottom grey section — all 4 corners rounded inside
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-                    decoration: BoxDecoration(
-                      color: greyColor,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
+                  // Bottom grey section
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(
                       '- ${_formatRupiah(amount)}',
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.black87,
                         fontWeight: FontWeight.w800,
                       ),
@@ -599,22 +686,37 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.015),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     )
                   ],
                 ),
                 child: Row(
                   children: [
-                    // Icon Category Circle
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: _getCategoryColor(category).withOpacity(0.12),
-                      child: Icon(
-                        _getCategoryIcon(category),
-                        color: _getCategoryColor(category),
-                        size: 20,
+                    // Icon Category Circle with Progress
+                    SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            value: isExpense ? 1.0 : 0.35,
+                            backgroundColor: Colors.grey.shade100,
+                            color: isExpense ? Colors.red.shade400 : Colors.green.shade400,
+                            strokeWidth: 3,
+                          ),
+                          CircleAvatar(
+                            radius: 18,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              _getCategoryIcon(category),
+                              color: _getCategoryColor(category),
+                              size: 18,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 14),

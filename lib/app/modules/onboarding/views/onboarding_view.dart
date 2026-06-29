@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../controllers/onboarding_controller.dart';
 
-/// Design system colors from DESIGN.md ("Organic Fintech" palette).
-class _AppColors {
-  static const Color background = Color(0xFFE9E9DE);
-  static const Color primary = Color(0xFF3D5C45);
-  static const Color primaryDark = Color(0xFF26442F);
+/// Design-system colors from DESIGN.md — "Organic Growth" palette.
+class _C {
+  _C._();
+  static const Color primary = Color(0xFF3A6043);
   static const Color onPrimary = Color(0xFFFFFFFF);
-  static const Color textHeading = Color(0xFF40342B);
-  static const Color textBody = Color(0xFF7A7067);
-  static const Color accent = Color(0xFFFFD93D);
-  static const Color surfaceContainer = Color(0xFFFFEADD);
+  static const Color secondary = Color(0xFF5D5F58);
+  static const Color tertiaryFixed = Color(0xFFFFE25F);
+  static const Color onTertiaryContainer = Color(0xFF4B3F00);
+  static const Color background = Color(0xFFEBEBE0);
+
+  // Semantic / component-specific
+  static const Color headingText = Color(0xFF4A3933);
+  static const Color badgeBg = Color(0xFFFFFFFF);
+  static const Color badgeText = Color(0xFF4A3933);
 }
 
 class OnboardingView extends GetView<OnboardingController> {
@@ -21,8 +26,19 @@ class OnboardingView extends GetView<OnboardingController> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    final mq = MediaQuery.of(context);
+    final screenH = mq.size.height;
+    final screenW = mq.size.width;
+    final topPad = mq.padding.top;
+    final botPad = mq.padding.bottom;
+
+    // ── Responsive scale factor based on a 812pt reference height (iPhone X) ──
+    final double vScale = (screenH / 812).clamp(0.55, 1.3);
+    final double hScale = (screenW / 375).clamp(0.55, 1.3);
+
+    // ── Illustration section gets ~55% of available height on reference,
+    //    but adapts for short screens ──
+    final double illustrationHeight = screenH * (vScale < 0.85 ? 0.48 : 0.55);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
@@ -30,71 +46,26 @@ class OnboardingView extends GetView<OnboardingController> {
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: _AppColors.background,
-        body: SafeArea(
-          top: false,
-          child: SizedBox(
-            height: screenHeight,
-            child: Stack(
-              children: [
-                // ── Main scrollable content ──
-                Column(
-                  children: [
-                    // ── Header / Logo ──
-                    _buildHeader(context),
-
-                    // ── Hero Illustration Area ──
-                    Expanded(
-                      flex: 55,
-                      child: _buildHeroSection(context, screenWidth),
-                    ),
-
-                    // ── Text Content & Action Area ──
-                    _buildBottomContent(context),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Top logo bar — mimics the HTML <header> with the "Bloom" brand.
-  Widget _buildHeader(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller.animationController,
-      builder: (context, child) {
-        return SlideTransition(
-          position: controller.logoSlide,
-          child: FadeTransition(
-            opacity: controller.logoFade,
-            child: child,
-          ),
-        );
-      },
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Row(
+        backgroundColor: _C.background,
+        body: SizedBox.expand(
+          child: Column(
             children: [
-              Icon(
-                Icons.spa,
-                color: _AppColors.primaryDark,
-                size: 24,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                'Bloom',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                  color: _AppColors.primaryDark,
-                  letterSpacing: -0.3,
+              // ─── Top illustration section (fixed height) ───
+              SizedBox(
+                height: illustrationHeight,
+                child: _buildIllustrationSection(
+                  context,
+                  screenW,
+                  illustrationHeight,
+                  topPad,
+                  vScale,
+                  hScale,
                 ),
+              ),
+
+              // ─── Bottom content section (fills remaining, scrollable) ───
+              Expanded(
+                child: _buildBottomContent(context, botPad, vScale, hScale),
               ),
             ],
           ),
@@ -103,264 +74,349 @@ class OnboardingView extends GetView<OnboardingController> {
     );
   }
 
-  /// Hero section with layered illustration images.
-  Widget _buildHeroSection(BuildContext context, double screenWidth) {
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: [
-        // ── Background cards layer ──
-        AnimatedBuilder(
-          animation: controller.animationController,
-          builder: (context, child) {
-            return SlideTransition(
-              position: controller.heroSlide,
-              child: FadeTransition(
-                opacity: controller.heroFade,
-                child: child,
+  // ──────────────────────────────────────────────────────────────────────────
+  //  TOP SECTION — logo + overlapping card illustrations + character + badge
+  // ──────────────────────────────────────────────────────────────────────────
+
+  Widget _buildIllustrationSection(
+    BuildContext context,
+    double w,
+    double sectionH,
+    double topPad,
+    double vScale,
+    double hScale,
+  ) {
+    // Scale element sizes proportionally
+    final double logoW = 42 * hScale;
+    final double logoH = 56 * vScale;
+    final double plusSize = (60 * vScale).clamp(44.0, 72.0);
+    final double plusIcon = (32 * vScale).clamp(24.0, 40.0);
+    final double badgePadH = (24 * hScale).clamp(16.0, 32.0);
+    final double badgePadV = (14 * vScale).clamp(10.0, 20.0);
+    final double badgeFontSize = (15 * hScale).clamp(12.0, 18.0);
+    final double badgeIconSize = (18 * hScale).clamp(14.0, 24.0);
+
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(color: _C.background),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // ── Logo (top-left) ──
+          Positioned(
+            top: topPad + 32 * vScale,
+            left: 24 * hScale,
+            child: _animated(
+              fade: controller.logoFade,
+              slide: controller.logoSlide,
+              child: SvgPicture.asset(
+                'assets/svg/logo.svg',
+                width: logoW,
+                height: logoH,
               ),
-            );
-          },
-          child: Positioned.fill(
-            child: Center(
+            ),
+          ),
+
+          // ── Black card — behind, tilted left ──
+          Positioned(
+            left: -w * 0.05,
+            top: sectionH * 0.14,
+            child: _animated(
+              fade: controller.blackCardFade,
+              slide: controller.blackCardSlide,
+              child: Transform.rotate(
+                angle: -0.21, // ≈ -12°
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [_naturalShadow()],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: SvgPicture.asset(
+                      'assets/svg/kartu-hitam-onboarding.svg',
+                      width: w * 0.62,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // ── Green card — overlapping, tilted right ──
+          Positioned(
+            right: -w * 0.02,
+            bottom: sectionH * 0.04,
+            child: _animated(
+              fade: controller.greenCardFade,
+              slide: controller.greenCardSlide,
+              child: Transform.rotate(
+                angle: 0.052, // ≈ 3°
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [_naturalShadow()],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: SvgPicture.asset(
+                      'assets/svg/kartu-hijau-onboarding.svg',
+                      width: w * 0.78,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // ── Yellow "+" floating button ──
+          Positioned(
+            top: sectionH * 0.08,
+            right: w * 0.32,
+            child: _animated(
+              fade: controller.plusButtonFade,
+              slide: controller.plusButtonSlide,
               child: Container(
-                width: screenWidth * 0.85,
-                constraints: const BoxConstraints(maxWidth: 360),
-                child: Image.network(
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuBQxpvq0qv--3hzblXu4WUr-811fBMH65dXLgEmDcn9Kkb9j1s8oYuSSWhGkztbhEF-TrJAP7Vk-XQ12ZD4LKf2pjQmK8Aj21b-DS7c7Q1Xo9RfttAtqkX8NXRe994Lbisrj2OaQ95Cs-g4R1BEbaOEMoZV2bRx1nXcWnVYS69_FPR7bmMRb8oiTS10n_BqpowW3tidvOobVOeTkzXncGd7RaC2bJY9Qdx_fF422Irqo-Z5zFcQSVJubStpsEtb4m25x_yNtrX9t5zb',
-                  fit: BoxFit.contain,
-                  opacity: const AlwaysStoppedAnimation(0.9),
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildPlaceholderCard(screenWidth);
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return _buildPlaceholderCard(screenWidth);
-                  },
+                width: plusSize,
+                height: plusSize,
+                decoration: BoxDecoration(
+                  color: _C.tertiaryFixed,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: _C.tertiaryFixed.withValues(alpha: 0.35),
+                      blurRadius: 14,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.add_rounded,
+                  color: _C.onTertiaryContainer,
+                  size: plusIcon,
                 ),
               ),
             ),
           ),
-        ),
 
-        // ── Main character illustration ──
-        AnimatedBuilder(
-          animation: controller.animationController,
-          builder: (context, child) {
-            return SlideTransition(
-              position: controller.characterSlide,
-              child: FadeTransition(
-                opacity: controller.characterFade,
-                child: child,
+          // ── Character illustration ──
+          Positioned(
+            right: -w * 0.06,
+            bottom: -sectionH * 0.08,
+            child: _animated(
+              fade: controller.characterFade,
+              slide: controller.characterSlide,
+              child: Image.asset(
+                'assets/images/ilustrasi_cewek_onboarding.png',
+                height: sectionH * 1.15,
+                fit: BoxFit.contain,
               ),
-            );
-          },
-          child: Positioned.fill(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Image.network(
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuB06ywqykBPkc_QN_Js5cbyH63wUjwtS-2rjHO_9tze63lEHlWHF4eENniX-QQpJnaoXMAmFm_ER4LTmS1WIcBwiriXvzb43mdqRb-1FWmVeC3N2EsZmO3GROEHx1Jq9mz_PGmXD2mDpv9UQbEr1lpZJpnr5bF7BUwhUTKEAzJ2oHRyiB_CZTrt6Ra1OoLb9UMBlwaRTOB64hzeo0kCG0YsjeMZad7_hIaynSt-CJGjQoBfXHvOuTe_FyVm6bloMOxsNuAG5JRtJ-bR',
-                  fit: BoxFit.contain,
-                  height: double.infinity,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildCharacterPlaceholder();
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return _buildCharacterPlaceholder();
-                  },
+            ),
+          ),
+
+          // ── Floating badge ("Lorem ipsum") ──
+          Positioned(
+            bottom: 0,
+            right: w * 0.06,
+            child: _animated(
+              fade: controller.badgeFade,
+              slide: controller.badgeSlide,
+              child: Transform.rotate(
+                angle: 0.21, // ≈ 12°
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: badgePadH,
+                    vertical: badgePadV,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _C.badgeBg,
+                    borderRadius: BorderRadius.circular(999),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.03),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Transform.rotate(
+                        angle: 0.0, // arrow ↑
+                        child: Icon(
+                          Icons.arrow_upward,
+                          size: badgeIconSize,
+                          color: _C.badgeText,
+                        ),
+                      ),
+                      SizedBox(width: 8 * hScale),
+                      Text(
+                        'Lorem ipsum',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: badgeFontSize,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic,
+                          color: _C.badgeText,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-
-        // ── Floating badge ──
-        AnimatedBuilder(
-          animation: controller.animationController,
-          builder: (context, child) {
-            return SlideTransition(
-              position: controller.badgeSlide,
-              child: FadeTransition(
-                opacity: controller.badgeFade,
-                child: child,
-              ),
-            );
-          },
-          child: Positioned(
-            top: 40,
-            right: screenWidth * 0.05,
-            child: Image.network(
-              'https://lh3.googleusercontent.com/aida-public/AB6AXuBWEuimbVQ_SjRIsVe8SfhK-rFuDhnVAP4N_xb55ONtWVCyTpxCmNieU8Lr9Fv0SVCI7dD9b93uVp0apX-UsVphHj9ZJnPmofAMKT5ymr96r1uAGJB9M1pRzW8CSeDZXsdCfY3lccKVsARqw_sMm2JBVJLHahU45KdCL1vWvxj7uR-aLVoy7Tje_N9jFMDoBkOdLCIa2Mm8fVSxzh83vsjmErF6cmTsxRPtDhSZAx8qCBWtX7-sW0oUX1irIo4sikwMwoSO20uJYAsJ',
-              width: 140,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return _buildBadgePlaceholder();
-              },
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return _buildBadgePlaceholder();
-              },
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  /// Bottom content section — headline, description, and CTA button.
-  Widget _buildBottomContent(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller.animationController,
-      builder: (context, child) {
-        return SlideTransition(
-          position: controller.contentSlide,
-          child: FadeTransition(
-            opacity: controller.contentFade,
-            child: child,
-          ),
-        );
-      },
+  // ──────────────────────────────────────────────────────────────────────────
+  //  BOTTOM SECTION — headline, body, CTA button
+  // ──────────────────────────────────────────────────────────────────────────
+
+  Widget _buildBottomContent(
+    BuildContext context,
+    double bottomPadding,
+    double vScale,
+    double hScale,
+  ) {
+    // ── Responsive typography ──
+    final double headlineFontSize = (50 * vScale).clamp(36.0, 60.0);
+    final double bodyFontSize = (15 * vScale).clamp(13.0, 18.0);
+    final double btnFontSize = (16 * vScale).clamp(14.0, 18.0);
+    final double btnHeight = (56 * vScale).clamp(44.0, 64.0);
+    final double hPad = (24 * hScale).clamp(16.0, 32.0);
+    final double topContentPad = (32 * vScale).clamp(16.0, 40.0);
+    final double headlineBodyGap = (16 * vScale).clamp(8.0, 20.0);
+
+    return _animated(
+      fade: controller.contentFade,
+      slide: controller.contentSlide,
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: _AppColors.background.withValues(alpha: 0.85),
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(28),
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(28),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // ── Headline ──
-                Text(
-                  'Good finances,\nbetter life.',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 42,
-                    fontWeight: FontWeight.w600,
-                    height: 1.1,
-                    color: _AppColors.textHeading,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ── Description ──
-                Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing '
-                  'elit. Sed do eiusmod tempor incididunt ut labore et '
-                  'dolore magna aliqua.',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    height: 1.5,
-                    color: _AppColors.textBody,
-                  ),
-                ),
-
-                const SizedBox(height: 28),
-
-                // ── CTA Button ──
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: controller.onGetStarted,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _AppColors.primary,
-                      foregroundColor: _AppColors.onPrimary,
-                      elevation: 0,
-                      shadowColor: _AppColors.primary.withValues(alpha: 0.3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9999),
+        color: _C.background,
+        padding: EdgeInsets.fromLTRB(hPad, topContentPad, hPad, 0),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ── Headline ──
+                      Text(
+                        'Good\nfinances,\nbetter life.',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: headlineFontSize,
+                          fontWeight: FontWeight.w600, // SemiBold
+                          height: 1.1,
+                          color: _C.headingText,
+                          letterSpacing: -1.0,
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Get started',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.14,
+
+                      SizedBox(height: headlineBodyGap),
+
+                      // ── Body text ──
+                      Text(
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                        'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: bodyFontSize,
+                          fontWeight: FontWeight.w400,
+                          height: 1.5,
+                          color: _C.secondary.withValues(alpha: 0.85),
+                        ),
                       ),
-                    ),
+
+                      const Spacer(),
+
+                      SizedBox(height: headlineBodyGap),
+
+                      // ── CTA Button ──
+                      _animated(
+                        fade: controller.buttonFade,
+                        slide: controller.buttonSlide,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: btnHeight,
+                          child: ElevatedButton(
+                            onPressed: controller.onGetStarted,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _C.primary,
+                              foregroundColor: _C.onPrimary,
+                              elevation: 0,
+                              shadowColor: _C.primary.withValues(alpha: 0.25),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              'Get started',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: btnFontSize,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: bottomPadding > 0 ? bottomPadding : 24),
+                    ],
                   ),
                 ),
-
-                const SizedBox(height: 16),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
-  // ─── Placeholder widgets (shown while images load or on error) ───
+  // ──────────────────────────────────────────────────────────────────────────
+  //  HELPERS
+  // ──────────────────────────────────────────────────────────────────────────
 
-  Widget _buildPlaceholderCard(double screenWidth) {
-    return Container(
-      width: screenWidth * 0.85,
-      height: 250,
-      decoration: BoxDecoration(
-        color: _AppColors.surfaceContainer.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Center(
-        child: Icon(
-          Icons.bar_chart_rounded,
-          size: 64,
-          color: _AppColors.primary.withValues(alpha: 0.3),
-        ),
-      ),
+  /// Wraps [child] with coordinated fade + slide transitions.
+  Widget _animated({
+    required Animation<double> fade,
+    required Animation<Offset> slide,
+    required Widget child,
+  }) {
+    return AnimatedBuilder(
+      animation: controller.animationController,
+      builder: (context, ch) {
+        return SlideTransition(
+          position: slide,
+          child: FadeTransition(opacity: fade, child: ch),
+        );
+      },
+      child: child,
     );
   }
 
-  Widget _buildCharacterPlaceholder() {
-    return Center(
-      child: Container(
-        width: 200,
-        height: 300,
-        decoration: BoxDecoration(
-          color: _AppColors.surfaceContainer.withValues(alpha: 0.4),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Icon(
-          Icons.person_outline_rounded,
-          size: 80,
-          color: _AppColors.primary.withValues(alpha: 0.25),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBadgePlaceholder() {
-    return Container(
-      width: 140,
-      height: 60,
-      decoration: BoxDecoration(
-        color: _AppColors.accent.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Center(
-        child: Icon(
-          Icons.notifications_active_rounded,
-          size: 28,
-          color: _AppColors.textHeading.withValues(alpha: 0.5),
-        ),
-      ),
+  /// "Natural Drop" shadow per DESIGN.md — soft, diffused, warm-tinted.
+  BoxShadow _naturalShadow() {
+    return BoxShadow(
+      color: const Color(0xFF201B10).withValues(alpha: 0.10),
+      blurRadius: 20,
+      offset: const Offset(0, 10),
+      spreadRadius: -5,
     );
   }
 }

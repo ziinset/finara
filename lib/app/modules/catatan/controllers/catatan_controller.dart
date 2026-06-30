@@ -272,6 +272,23 @@ class CatatanController extends GetxController {
         tanggal: DateTime(now.year, now.month, now.day, 10, 15),
         catatan: 'Pembayaran project desain logo',
       ),
+      CatatanModel(
+        id: '3_1',
+        nama: 'Beli Kopi Sore',
+        tipe: TipeCatatan.pengeluaran,
+        kategori: 'Kuliner',
+        nominal: 25000,
+        tanggal: DateTime(now.year, now.month, now.day, 15, 30),
+        catatan: 'Kopi susu gula aren',
+      ),
+      CatatanModel(
+        id: '3_2',
+        nama: 'Bayar Parkir',
+        tipe: TipeCatatan.pengeluaran,
+        kategori: 'Transportasi',
+        nominal: 5000,
+        tanggal: DateTime(now.year, now.month, now.day, 16, 00),
+      ),
 
       // ── Kemarin ──
       CatatanModel(

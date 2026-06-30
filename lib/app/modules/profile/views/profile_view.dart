@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../controllers/profile_controller.dart';
+import 'profil_saya_view.dart';
+import 'keamanan_view.dart';
+import 'notifikasi_view.dart';
+import 'ekspor_data_view.dart';
 
 class _C {
   _C._();
@@ -10,6 +14,7 @@ class _C {
   static const Color primaryGreen = Color(0xFF3A6043);
   static const Color textDark = Color(0xFF2D2D2D);
   static const Color textBrown = Color(0xFF4A3933);
+  static const Color textRed = Color(0xFFD32F2F);
 }
 
 class ProfileView extends GetView<ProfileController> {
@@ -55,21 +60,32 @@ class ProfileView extends GetView<ProfileController> {
             ),
             const SizedBox(height: 24),
 
-            // ─── Menu Section ───
+            // ─── Menu Sections ───
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Akun',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: _C.textBrown,
+                  _buildSectionTitle('Akun'),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildMenuItem(icon: Icons.person_outline, title: 'Profil Saya', onTap: () => Get.to(() => const ProfilSayaView())),
+                        _buildDivider(),
+                        _buildMenuItem(icon: Icons.lock_outline, title: 'Keamanan', onTap: () => Get.to(() => const KeamananView())),
+                        _buildDivider(),
+                        _buildMenuItem(icon: Icons.notifications_none, title: 'Notifikasi', onTap: () => Get.to(() => const NotifikasiView())),
+                      ],
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  
+                  _buildSectionTitle('Fitur Premium'),
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
@@ -79,37 +95,88 @@ class ProfileView extends GetView<ProfileController> {
                     child: Column(
                       children: [
                         _buildMenuItem(
-                          icon: Icons.person,
-                          title: 'Profil Saya',
-                          onTap: () {},
-                        ),
-                        _buildDivider(),
-                        _buildMenuItem(
-                          icon: Icons.lock,
-                          title: 'Keamanan',
-                          onTap: () {},
-                        ),
-                        _buildDivider(),
-                        _buildMenuItem(
-                          icon: Icons.notifications,
-                          title: 'Preferensi',
-                          onTap: () {},
-                        ),
-                        _buildDivider(),
-                        _buildMenuItem(
-                          icon: Icons.help,
-                          title: 'Bantuan dan Informasi',
-                          onTap: () {},
-                        ),
-                        _buildDivider(),
-                        _buildMenuItem(
-                          icon: Icons.info,
-                          title: 'Tentang "Aplikasi ini"',
-                          onTap: () {},
+                          icon: Icons.download_rounded, 
+                          title: 'Ekspor Data', 
+                          isPremium: true,
+                          onTap: () => Get.to(() => const EksporDataView()),
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 24),
+
+                  _buildSectionTitle('Lainnya'),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildMenuItem(icon: Icons.info_outline, title: 'Tentang Finara', onTap: () {
+                          Get.defaultDialog(
+                            title: 'Tentang Finara',
+                            middleText: 'Versi 1.0.0\nAplikasi Pencatat Keuangan Berbasis Wallet.',
+                            textConfirm: 'Tutup',
+                            confirmTextColor: Colors.white,
+                            buttonColor: const Color(0xFF3A6043),
+                            onConfirm: () => Get.back(),
+                          );
+                        }),
+                        _buildDivider(),
+                        _buildMenuItem(icon: Icons.support_agent, title: 'Hubungi Dukungan', onTap: () {
+                          Get.snackbar('Dukungan Finara', 'Silakan hubungi kami via email di support@finara.id', backgroundColor: Colors.white);
+                        }),
+                        _buildDivider(),
+                        _buildMenuItem(
+                          icon: Icons.person_off_outlined, 
+                          title: 'Hapus Akun', 
+                          textColor: _C.textRed,
+                          iconColor: _C.textRed,
+                          onTap: () {
+                            Get.defaultDialog(
+                              title: 'Hapus Akun',
+                              middleText: 'Yakin ingin menghapus akun secara permanen? Semua data keuangan Anda akan hilang dan tidak dapat dikembalikan.',
+                              textConfirm: 'Hapus',
+                              textCancel: 'Batal',
+                              confirmTextColor: Colors.white,
+                              buttonColor: _C.textRed,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                                Get.snackbar('Berhasil', 'Akun berhasil dihapus.', backgroundColor: Colors.white);
+                              },
+                            );
+                          },
+                        ),
+                        _buildDivider(),
+                        _buildMenuItem(
+                          icon: Icons.logout, 
+                          title: 'Keluar', 
+                          textColor: _C.textRed,
+                          iconColor: _C.textRed,
+                          hideArrow: true,
+                          onTap: () {
+                            Get.defaultDialog(
+                              title: 'Keluar',
+                              middleText: 'Apakah Anda yakin ingin keluar dari akun ini?',
+                              textConfirm: 'Keluar',
+                              textCancel: 'Batal',
+                              confirmTextColor: Colors.white,
+                              buttonColor: _C.textRed,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                                Get.snackbar('Berhasil', 'Anda telah berhasil logout.', backgroundColor: Colors.white);
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  
                   // Bottom spacing
                   const SizedBox(height: 100),
                 ],
@@ -117,6 +184,18 @@ class ProfileView extends GetView<ProfileController> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: _C.textBrown,
       ),
     );
   }
@@ -258,6 +337,10 @@ class ProfileView extends GetView<ProfileController> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    Color? textColor,
+    Color? iconColor,
+    bool hideArrow = false,
+    bool isPremium = false,
   }) {
     return InkWell(
       onTap: onTap,
@@ -269,25 +352,45 @@ class ProfileView extends GetView<ProfileController> {
             Icon(
               icon,
               size: 24,
-              color: _C.textBrown,
+              color: iconColor ?? _C.textBrown,
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: _C.textBrown,
+                  color: textColor ?? _C.textBrown,
                 ),
               ),
             ),
-            const Icon(
-              Icons.chevron_right,
-              size: 24,
-              color: Colors.black,
-            ),
+            if (isPremium)
+              Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFFFD700)),
+                ),
+                child: const Text(
+                  'PREMIUM',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFB8860B),
+                  ),
+                ),
+              ),
+            if (!hideArrow)
+              Icon(
+                Icons.chevron_right,
+                size: 24,
+                color: textColor ?? Colors.black,
+              ),
           ],
         ),
       ),

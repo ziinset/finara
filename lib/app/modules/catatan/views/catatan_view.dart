@@ -236,6 +236,8 @@ class CatatanView extends GetView<CatatanController> {
 
                     for (final dateKey in dateKeys) {
                       final items = controller.groupedCatatan[dateKey]!;
+                      final bool hasMore = items.length > 3;
+                      final int limit = hasMore ? 3 : items.length;
 
                       // Date header
                       if (index == currentIndex) {
@@ -244,14 +246,22 @@ class CatatanView extends GetView<CatatanController> {
                       currentIndex++;
 
                       // Catatan items
-                      for (int i = 0; i < items.length; i++) {
+                      for (int i = 0; i < limit; i++) {
                         if (index == currentIndex) {
                           return _buildCatatanItem(
                             context,
                             items[i],
                             currencyFormat,
-                            isLast: i == items.length - 1,
+                            isLast: !hasMore && i == limit - 1,
                           );
+                        }
+                        currentIndex++;
+                      }
+                      
+                      // Lihat Selengkapnya button
+                      if (hasMore) {
+                        if (index == currentIndex) {
+                          return _buildSeeMoreButton(context, dateKey, items, currencyFormat);
                         }
                         currentIndex++;
                       }
@@ -272,7 +282,13 @@ class CatatanView extends GetView<CatatanController> {
     int count = 1; // analysis card
     for (final key in dateKeys) {
       count += 1; // date header
-      count += controller.groupedCatatan[key]!.length;
+      final items = controller.groupedCatatan[key]!;
+      if (items.length > 3) {
+        count += 3; // Max 3 items shown
+        count += 1; // "Lihat Selengkapnya" button
+      } else {
+        count += items.length;
+      }
     }
     return count;
   }
@@ -650,6 +666,83 @@ class CatatanView extends GetView<CatatanController> {
           ],
         ),
       ),
+    );
+  }
+
+  // ─── Lihat Selengkapnya ───
+  Widget _buildSeeMoreButton(
+      BuildContext context, DateTime dateKey, List<CatatanModel> items, NumberFormat currencyFormat) {
+    final remainingCount = items.length - 3;
+    return GestureDetector(
+      onTap: () {
+        _showFullDayCatatanModal(context, dateKey, items, currencyFormat);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 24),
+        child: Center(
+          child: Text(
+            '*Lihat Selengkapnya ($remainingCount catatan lainnya)*',
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: _primaryGreen,
+              decoration: TextDecoration.underline,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showFullDayCatatanModal(
+      BuildContext context, DateTime date, List<CatatanModel> items, NumberFormat currencyFormat) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.85,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: const BoxDecoration(
+            color: _bgColor,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildDateHeader(date),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return _buildCatatanItem(
+                      context,
+                      items[index],
+                      currencyFormat,
+                      isLast: index == items.length - 1,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

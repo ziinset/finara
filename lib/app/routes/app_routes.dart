@@ -10,6 +10,8 @@ abstract class Routes {
   static const CATATAN = _Paths.CATATAN;
   static const PROFILE = _Paths.PROFILE;
   static const STATISTIK = _Paths.STATISTIK;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const WALLET = _Paths.WALLET;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const CATATAN = '/catatan';
   static const PROFILE = '/profile';
   static const STATISTIK = '/statistik';
+  static const NOTIFICATION = '/notification';
+  static const WALLET = '/wallet';
 }

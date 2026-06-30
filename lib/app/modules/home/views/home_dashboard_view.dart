@@ -251,7 +251,7 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                     // Main account row
                     Padding(
                       padding: const EdgeInsets.only(top: 0),
-                      child: Text('Main account', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 16, fontWeight: FontWeight.w600)),
+                      child: Obx(() => Text(controller.selectedWalletName.value, style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 16, fontWeight: FontWeight.w600))),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -317,37 +317,43 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 13),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.swap_horiz, color: Color(0xFF3A6043), size: 16),
-                                SizedBox(width: 8),
-                                Text('Switch wallet', style: TextStyle(color: Color(0xFF3A6043), fontWeight: FontWeight.bold)),
-                              ],
+                          child: GestureDetector(
+                            onTap: () => Get.toNamed('/wallet'),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.swap_horiz, color: Color(0xFF3A6043), size: 16),
+                                  SizedBox(width: 8),
+                                  Text('Switch wallet', style: TextStyle(color: Color(0xFF3A6043), fontWeight: FontWeight.bold)),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 13),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF6B8C6C),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.account_balance_wallet, color: Colors.white, size: 16),
-                                SizedBox(width: 8),
-                                Text('Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                              ],
+                          child: GestureDetector(
+                            onTap: () => Get.toNamed('/wallet'),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF6B8C6C),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.account_balance_wallet, color: Colors.white, size: 16),
+                                  SizedBox(width: 8),
+                                  Text('Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
                             ),
                           ),
                         ),

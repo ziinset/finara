@@ -52,15 +52,30 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
   Color _getCategoryColor(String category) {
     switch (category) {
       case 'Makan':
-        return const Color(0xFFFF9F43);
+        return const Color(0xFFFFB3A7); // pastel coral
       case 'Transportasi':
-        return const Color(0xFF00CFE8);
+        return const Color(0xFFA7D8FF); // pastel sky blue
       case 'Belanja':
-        return const Color(0xFF7367F0);
+        return const Color(0xFFCDB4FF); // pastel lavender
       case 'Pemasukan':
-        return const Color(0xFF28C76F);
+        return const Color(0xFFA8E6CF); // pastel mint green
       default:
-        return Colors.grey;
+        return const Color(0xFFD1D1D1); // pastel grey
+    }
+  }
+
+  String _getCategoryDescription(String category) {
+    switch (category) {
+      case 'Makan':
+        return 'Jajan, restoran, dan kebutuhan makan';
+      case 'Transportasi':
+        return 'Bensin, tol, dan transportasi umum';
+      case 'Belanja':
+        return 'Belanja kebutuhan dan hiburan';
+      case 'Pemasukan':
+        return 'Gaji, bonus, dan pendapatan lain';
+      default:
+        return 'Pengeluaran lainnya';
     }
   }
 
@@ -133,22 +148,22 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
           final List recentTransactions = data['recentTransactions'] ?? [];
 
           return Container(
-            color: Colors.white,
+            color: const Color(0xFF161616),
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildNewHeaderCard(context, balance, income, expense),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 2),
                   _buildFinancialInsightBanner(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
 
                 // ─── Bottom Section with White Background ───
                 Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xFF161616),
                   ),
                   padding: const EdgeInsets.only(top: 0, bottom: 30),
                   child: Column(
@@ -176,196 +191,234 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
   }
 
   Widget _buildNewHeaderCard(BuildContext context, num balance, num income, num expense) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(32), bottomRight: Radius.circular(32)),
-        gradient: RadialGradient(
-          center: Alignment.topLeft,
-          radius: 1.5,
-          colors: [
-            Color(0xFF7CAE8D), // Lighter top-left
-            Color(0xFF3A6043), // Main green
-            Color(0xFF2A4530), // Darker bottom-right
-          ],
-        ),
-      ),
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Top Row: Profile, Greeting, Notification
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const CircleAvatar(
-                radius: 22,
-                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop'),
-              ),
-              const SizedBox(width: 12),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Haloo!!', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                    Text('Kharisma Aretha', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              GestureDetector(
-                onTap: () => Get.to(() => const NotificationView()),
-                child: CircleAvatar(
-                  radius: 22,
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  child: const Icon(Icons.notifications_none, color: Colors.white, size: 22),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          
-          // Inner Transparent Card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
+    return Stack(
+      children: [
+        // Background image positioned higher, covers down to the bottom of the header card padding
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 24,
+          child: Opacity(
+            opacity: 0.8,
+            child: Image.asset(
+              'assets/images/bg12.png',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              errorBuilder: (context, error, stackTrace) => const SizedBox(),
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                  right: -10,
-                  top: 20,
-                  child: Image.asset(
-                    'assets/images/uang.png',
-                    width: 145,
+          ),
+        ),
+        // Main content
+        Container(
+          width: double.infinity,
+          color: Colors.transparent,
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Row: Profile, Greeting, Notification
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CircleAvatar(
+                    radius: 22,
+                    backgroundImage: NetworkImage('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop'),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Main account row
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: Obx(() => Text(controller.selectedWalletName.value, style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 16, fontWeight: FontWeight.w600))),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _formatRupiah(balance),
-                      style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    
-                    // Picture 2 Layout for Income & Expense
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(color: Color(0xFF4CAF50), shape: BoxShape.circle),
-                                  child: const Icon(Icons.arrow_downward, color: Colors.white, size: 12),
-                                ),
-                                const SizedBox(width: 8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Pemasukan', style: TextStyle(color: Colors.white70, fontSize: 11)),
-                                    Text(_formatRupiah(income), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ),
-                          Container(width: 1, height: 24, color: Colors.white.withOpacity(0.3)),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(color: Color(0xFFE53935), shape: BoxShape.circle),
-                                  child: const Icon(Icons.arrow_upward, color: Colors.white, size: 12),
-                                ),
-                                const SizedBox(width: 8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Pengeluaran', style: TextStyle(color: Colors.white70, fontSize: 11)),
-                                    Text(_formatRupiah(expense), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Buttons inside transparent card
-                    const SizedBox(height: 16),
-                    Row(
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => Get.toNamed('/wallet'),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 13),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.swap_horiz, color: Color(0xFF3A6043), size: 16),
-                                  SizedBox(width: 8),
-                                  Text('Switch wallet', style: TextStyle(color: Color(0xFF3A6043), fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                          ),
+                        Text('Hello, Sajibur', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 2),
+                        Text('Selamat datang kembali', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Get.to(() => const NotificationView()),
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 24,
+                          backgroundColor: Colors.white.withOpacity(0.08),
+                          child: const Icon(Icons.notifications_none, color: Colors.white, size: 25),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => Get.toNamed('/wallet'),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 13),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF6B8C6C),
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.account_balance_wallet, color: Colors.white, size: 16),
-                                  SizedBox(width: 8),
-                                  Text('Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                ],
-                              ),
+                        Positioned(
+                          right: 2,
+                          top: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF82C836),
+                              shape: BoxShape.circle,
                             ),
+                            child: const Text('2', style: TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              
+              // Inner Dark Card with grey bg + image overlay
+              Container(
+                width: double.infinity,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF232323),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.white.withOpacity(0.1), width: 0.8),
+                ),
+                child: Stack(
+                  children: [
+                    // Subtle top inner glow
+                    Positioned(
+                      top: -30,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            center: Alignment.topCenter,
+                            radius: 1.2,
+                            colors: [
+                              Colors.white.withOpacity(0.07),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Right side image (1.png)
+                    Positioned(
+                      right: -10,
+                      top: 10,
+                      bottom: 10,
+                      child: Opacity(
+                        opacity: 0.15,
+                        child: Image.asset(
+                          'assets/images/1.png',
+                          height: 140,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => const SizedBox(),
+                        ),
+                      ),
+                    ),
+                    // Card content
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('My Balance', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Text('Add Card', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                                    SizedBox(width: 4),
+                                    Icon(Icons.add, color: Colors.white70, size: 14),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _formatRupiah(balance),
+                            style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            '+22.7%', 
+                            style: TextStyle(color: Color(0xFF82C836), fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 16),
+                          
+                          // Income & Expense Bar
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.06),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(color: Color(0xFF4CAF50), shape: BoxShape.circle),
+                                          child: const Icon(Icons.arrow_downward, color: Colors.white, size: 12),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const Text('Pemasukan', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                                              Text(_formatRupiah(income), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(width: 1, height: 30, color: Colors.white.withOpacity(0.3)),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 12),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(color: Color(0xFFE53935), shape: BoxShape.circle),
+                                          child: const Icon(Icons.arrow_upward, color: Colors.white, size: 12),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const Text('Pengeluaran', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                                              Text(_formatRupiah(expense), style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -375,19 +428,11 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF5A8565), // Highlight
-              Color(0xFF3A6043), // Base
-              Color(0xFF26422D), // Shadow
-            ],
-            stops: [0.0, 0.4, 1.0],
-          ),
+          color: const Color(0xFF1E1E1E),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white30, width: 0.8),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         child: Row(
           children: [
             Expanded(
@@ -399,28 +444,27 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                     'Amankan Masa Depan,\nKelola Keuangan Lebih Terarah',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 13.5,
                       height: 1.3,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3A6043),
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(color: Colors.white54, width: 0.8),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           'Ayo mulai',
-                          style: TextStyle(color: Colors.white, fontSize: 11),
+                          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 4),
-                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 10),
+                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 11),
                       ],
                     ),
                   ),
@@ -432,14 +476,17 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               flex: 1,
               child: Transform.scale(
                 scale: 1.8,
-                child: Image.asset(
-                  'assets/images/koin.png',
-                  width: 80,
-                  height: 80,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.monetization_on,
-                    color: Colors.amber,
-                    size: 50,
+                child: Opacity(
+                  opacity: 0.9,
+                  child: Image.asset(
+                    'assets/images/koin2.png',
+                    width: 60,
+                    height: 60,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.monetization_on,
+                      color: Colors.amber,
+                      size: 50,
+                    ),
                   ),
                 ),
               ),
@@ -451,8 +498,6 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
   }
 
   Widget _buildTopSpendingCategories(List categories) {
-    final greyColor = const Color(0xFFD5D5D5); // Slightly darker grey
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -466,15 +511,14 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF40342B),
+                  color: Colors.white,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color(0xFF232323),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
                 ),
                 child: ValueListenableBuilder<String>(
                   valueListenable: _selectedMonthNotifier,
@@ -483,8 +527,9 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                       child: DropdownButton<String>(
                         value: selected,
                         isDense: true,
-                        icon: const Icon(Icons.keyboard_arrow_down, size: 16),
-                        style: const TextStyle(fontSize: 12, color: Colors.black87, fontWeight: FontWeight.bold),
+                        icon: const Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.white),
+                        dropdownColor: const Color(0xFF232323),
+                        style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
                         onChanged: (val) {
                           if (val != null) _selectedMonthNotifier.value = val;
                         },
@@ -496,126 +541,128 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          ...categories.map((cat) {
-            final String name = cat['name'] ?? '';
-            final double percentage = (cat['percentage'] as num?)?.toDouble() ?? 0.0;
-            final num amount = cat['amount'] ?? 0;
-            if (percentage == 0) return const SizedBox.shrink();
-
-            // Description map per category
-            final Map<String, String> categoryDesc = {
-              'Belanja': 'Pengeluaran belanja bulan ini',
-              'Makan': 'Pengeluaran makan & minuman',
-              'Transportasi': 'Biaya transportasi & bensin',
-            };
-            final desc = categoryDesc[name] ?? 'Kategori pengeluaran';
-            final lighterGrey = const Color(0xFFE8E8E8);
-
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: lighterGrey,
-                borderRadius: BorderRadius.circular(20),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(
+                child: _buildBentoTopCard(categories.isNotEmpty ? categories[0] : null),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Top white section
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: lighterGrey, width: 2),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Icon
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFE5F8ED),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            _getCategoryIcon(name),
-                            color: const Color(0xFF2DC872),
-                            size: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        // Left: Title + desc
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                desc,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        // Right: Percentage + progress bar
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${percentage.toInt()}%',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 13,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: 60,
-                              child: LinearProgressIndicator(
-                                value: percentage / 100,
-                                backgroundColor: Colors.grey.shade200,
-                                color: const Color(0xFF3A6043),
-                                minHeight: 6,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Bottom grey section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      '- ${_formatRupiah(amount)}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildBentoTopCard(categories.length > 1 ? categories[1] : null),
               ),
-            );
-          }),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _buildBentoBottomCard(categories.length > 2 ? categories[2] : null),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBentoTopCard(dynamic cat) {
+    if (cat == null) return const SizedBox();
+    final String name = cat['name'] ?? '';
+    final num amount = cat['amount'] ?? 0;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF232323),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2D2D2D),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(_getCategoryIcon(name), color: _getCategoryColor(name), size: 22),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 2),
+                    Text(name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text(
+                      _getCategoryDescription(name),
+                      style: const TextStyle(color: Colors.white54, fontSize: 11, height: 1.3),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              _formatRupiah(amount),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBentoBottomCard(dynamic cat) {
+    if (cat == null) return const SizedBox();
+    final String name = cat['name'] ?? '';
+    final num amount = cat['amount'] ?? 0;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF232323),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Color(0xFF2D2D2D),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(_getCategoryIcon(name), color: _getCategoryColor(name), size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15)),
+                const SizedBox(height: 4),
+                Text(_getCategoryDescription(name), style: const TextStyle(color: Colors.white54, fontSize: 12)),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Text('Rp', style: TextStyle(color: Colors.white54, fontSize: 11)),
+              const SizedBox(height: 2),
+              Text(
+                amount.toInt().toString().replaceAllMapped(
+                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                  (Match m) => '${m[1]}.',
+                ),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -634,40 +681,45 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF40342B),
+                color: Colors.white,
               ),
             ),
-            TextButton(
-              onPressed: () => controller.changePage(1),
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF3A6043),
-              ),
-              child: const Row(
-                children: [
-                  Text(
-                    'Lihat Semua',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(width: 4),
-                  Icon(Icons.arrow_forward_ios, size: 12),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(right: 0),
+              child: TextButton(
+                onPressed: () => controller.changePage(1),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.only(right: 0, left: 8),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Lihat Semua',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    SizedBox(width: 4),
+                    Icon(Icons.arrow_forward_ios, size: 12, color: Colors.white),
+                  ],
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         if (transactions.isEmpty)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: const Color(0xFF2A2A2A),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Center(
               child: Text(
                 'Belum ada transaksi di periode ini',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: Colors.white54),
               ),
             ),
           )
@@ -676,7 +728,11 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: transactions.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.white.withOpacity(0.2),
+              height: 1,
+              thickness: 0.6,
+            ),
             itemBuilder: (context, index) {
               final tx = transactions[index];
               final String title = tx['title'] ?? '';
@@ -685,44 +741,21 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
               final num amount = tx['amount'] ?? 0;
               final isExpense = amount < 0;
 
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    )
-                  ],
-                ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Row(
                   children: [
-                    // Icon Category Circle with Progress
-                    SizedBox(
-                      width: 44,
-                      height: 44,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            value: isExpense ? 1.0 : 0.35,
-                            backgroundColor: Colors.grey.shade100,
-                            color: isExpense ? Colors.red.shade400 : Colors.green.shade400,
-                            strokeWidth: 3,
-                          ),
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              _getCategoryIcon(category),
-                              color: _getCategoryColor(category),
-                              size: 18,
-                            ),
-                          ),
-                        ],
+                    // Icon Category Circle with pastel bg
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF2D2D2D),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _getCategoryIcon(category),
+                        color: _getCategoryColor(category),
+                        size: 20,
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -735,29 +768,42 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
-                              color: Color(0xFF40342B),
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: const Color(0xFF40342B).withOpacity(0.45),
+                            category,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white54,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Text(
-                      isExpense
-                          ? '- ${_formatRupiah(amount.abs())}'
-                          : '+ ${_formatRupiah(amount)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: isExpense ? Colors.red.shade600 : Colors.green.shade600,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          time,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.white54,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          isExpense
+                              ? '- ${_formatRupiah(amount.abs())}'
+                              : '+ ${_formatRupiah(amount)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: isExpense ? Colors.red.shade400 : Colors.green.shade400,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -32,7 +32,7 @@ class StatistikView extends GetView<StatistikController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Statistik', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        centerTitle: false,
+        centerTitle: true,
         titleSpacing: 32,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -50,6 +50,8 @@ class StatistikView extends GetView<StatistikController> {
               _buildCashflowChart(),
               const SizedBox(height: 16),
               _buildCategoryDonutChart(context),
+              const SizedBox(height: 24),
+              _buildRecentTransactions(),
               const SizedBox(height: 32), // bottom padding
             ],
           ),
@@ -109,7 +111,7 @@ class StatistikView extends GetView<StatistikController> {
               child: _buildSummaryCard(
                 title: 'Pemasukan',
                 amount: _formatRupiah(controller.totalIncome.value),
-                icon: Icons.arrow_drop_up,
+                icon: Icons.arrow_upward_rounded,
                 color: const Color(0xFF3ED598),
                 progress: 0.7,
               ),
@@ -119,7 +121,7 @@ class StatistikView extends GetView<StatistikController> {
               child: _buildSummaryCard(
                 title: 'Pengeluaran',
                 amount: _formatRupiah(controller.totalExpense.value),
-                icon: Icons.arrow_drop_down,
+                icon: Icons.arrow_downward_rounded,
                 color: const Color(0xFFFF5C5C),
                 progress: 0.4,
               ),
@@ -131,45 +133,54 @@ class StatistikView extends GetView<StatistikController> {
   }
 
   Widget _buildSummaryCard({required String title, required String amount, required IconData icon, required Color color, required double progress}) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 40,
-          height: 40,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              CircularProgressIndicator(
-                value: progress,
-                strokeWidth: 3.5,
-                backgroundColor: color.withOpacity(0.15),
-                valueColor: AlwaysStoppedAnimation<Color>(color),
-              ),
-              Center(
-                child: Icon(icon, color: color, size: 22),
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200, width: 1.0),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 44,
+            height: 44,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CircularProgressIndicator(
+                  value: progress,
+                  strokeWidth: 4,
+                  backgroundColor: color.withOpacity(0.2),
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  strokeCap: StrokeCap.round,
+                ),
+                Center(
+                  child: Icon(icon, color: color, size: 24),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: TextStyle(fontSize: 12, color: Colors.grey.shade400, fontWeight: FontWeight.w500)),
-              const SizedBox(height: 2),
-              Text(amount, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87)),
-            ],
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(fontSize: 12, color: Colors.grey.shade400, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 4),
+                Text(amount, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87)),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildCashflowChart() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -178,42 +189,13 @@ class StatistikView extends GetView<StatistikController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Cashflow', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87)),
-                    const SizedBox(height: 4),
-                    Obx(() => Text(
-                      _formatRupiah(controller.netBalance),
-                      style: TextStyle(fontSize: 14, color: Colors.grey.shade600, fontWeight: FontWeight.w600, letterSpacing: -0.5),
-                    )),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF3A6043), shape: BoxShape.circle)),
-                      const SizedBox(width: 4),
-                      Text('Pemasukan', style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
-                      const SizedBox(width: 12),
-                      Container(width: 8, height: 8, decoration: BoxDecoration(color: Colors.grey.shade400, shape: BoxShape.circle)),
-                      const SizedBox(width: 4),
-                      Text('Pengeluaran', style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
+          const Text('Cashflow', style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 4),
+          Obx(() => Text(
+            _formatRupiah(controller.netBalance),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87, letterSpacing: -0.5),
+          )),
+          const SizedBox(height: 24),
           SizedBox(
             height: 240,
             child: Obx(() {
@@ -226,11 +208,33 @@ class StatistikView extends GetView<StatistikController> {
               }
               maxVal = maxVal * 1.3;
 
-              List<FlSpot> incomeSpots = controller.cashflowData.map((e) => FlSpot(e.x.toDouble(), e.income)).toList();
-              List<FlSpot> expenseSpots = controller.cashflowData.map((e) => FlSpot(e.x.toDouble(), e.expense)).toList();
+              List<BarChartGroupData> barGroups = [];
+              for (int i = 0; i < controller.cashflowData.length; i++) {
+                final data = controller.cashflowData[i];
+                barGroups.add(
+                  BarChartGroupData(
+                    x: i,
+                    barsSpace: 6,
+                    barRods: [
+                      BarChartRodData(
+                        toY: data.income,
+                        color: Colors.grey.shade800,
+                        width: 8,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      BarChartRodData(
+                        toY: data.expense,
+                        color: const Color(0xFF3A6043),
+                        width: 8,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ],
+                  )
+                );
+              }
 
-              return LineChart(
-                LineChartData(
+              return BarChart(
+                BarChartData(
                   gridData: FlGridData(
                     show: true,
                     drawVerticalLine: false,
@@ -244,7 +248,7 @@ class StatistikView extends GetView<StatistikController> {
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 48,
+                        reservedSize: 40,
                         getTitlesWidget: (value, meta) {
                           if (value == 0 || value == maxVal) return const SizedBox.shrink();
                           return Padding(
@@ -275,50 +279,37 @@ class StatistikView extends GetView<StatistikController> {
                     ),
                   ),
                   borderData: FlBorderData(show: false),
-                  minX: 0,
-                  maxX: (controller.cashflowData.length - 1).toDouble(),
-                  minY: 0,
                   maxY: maxVal,
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: incomeSpots,
-                      isCurved: false,
-                      color: const Color(0xFF3A6043),
-                      barWidth: 2.5,
-                      isStrokeCapRound: false,
-                      dotData: const FlDotData(show: false),
-                    ),
-                    LineChartBarData(
-                      spots: expenseSpots,
-                      isCurved: false,
-                      color: Colors.grey.shade400,
-                      barWidth: 2.5,
-                      isStrokeCapRound: false,
-                      dotData: const FlDotData(show: false),
-                    ),
-                  ],
-                  lineTouchData: LineTouchData(
-                    handleBuiltInTouches: true,
-                    touchTooltipData: LineTouchTooltipData(
-                      getTooltipColor: (touchedSpot) => Colors.black87,
-                      getTooltipItems: (touchedSpots) {
-                        return touchedSpots.map((LineBarSpot touchedSpot) {
-                          return LineTooltipItem(
-                            _compactCurrency(touchedSpot.y),
-                            const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
-                            ),
-                          );
-                        }).toList();
-                      },
+                  barGroups: barGroups,
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipColor: (group) => Colors.black87,
+                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                        return BarTooltipItem(
+                          _compactCurrency(rod.toY),
+                          const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11),
+                        );
+                      }
                     ),
                   ),
                 ),
               );
             }),
           ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(width: 8, height: 8, decoration: BoxDecoration(color: Colors.grey.shade800, shape: BoxShape.circle)),
+              const SizedBox(width: 6),
+              Text('Pemasukan', style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 16),
+              Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF3A6043), shape: BoxShape.circle)),
+              const SizedBox(width: 6),
+              Text('Pengeluaran', style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
+            ],
+          )
         ],
       ),
     );
@@ -561,6 +552,107 @@ class StatistikView extends GetView<StatistikController> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildRecentTransactions() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Transaksi Terakhir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+              Text('Lihat Semua >', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: const Color(0xFF3A6043))),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildTransactionItem(
+            icon: Icons.shopping_bag_outlined,
+            title: 'ZARA Fashion Indonesia',
+            date: 'Kemarin • 14:20',
+            category: 'Gaya Hidup',
+            amount: '-Rp 750.000',
+            isExpense: true,
+          ),
+          const SizedBox(height: 12),
+          _buildTransactionItem(
+            icon: Icons.account_balance_wallet_outlined,
+            title: 'Gaji Bulanan PT Maju Jaya',
+            date: '20 Okt 2023 • 09:00',
+            category: 'Pendapatan',
+            amount: '+Rp 15.000.000',
+            isExpense: false,
+          ),
+          const SizedBox(height: 12),
+          _buildTransactionItem(
+            icon: Icons.restaurant_outlined,
+            title: 'Bakmi GM Thamrin',
+            date: '20 Okt 2023 • 12:45',
+            category: 'Makanan',
+            amount: '-Rp 85.000',
+            isExpense: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransactionItem({
+    required IconData icon,
+    required String title,
+    required String date,
+    required String category,
+    required String amount,
+    required bool isExpense,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200, width: 1.0),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isExpense ? const Color(0xFF3A6043).withOpacity(0.1) : const Color(0xFF3ED598).withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: isExpense ? const Color(0xFF3A6043) : const Color(0xFF3ED598), size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                const SizedBox(height: 4),
+                Text(date, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                amount,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: isExpense ? const Color(0xFFB3261E) : const Color(0xFF3ED598),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(category, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import '../modules/catatan/bindings/catatan_binding.dart';
 import '../modules/catatan/views/catatan_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
+import '../modules/navbar/views/navbar_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
@@ -29,7 +30,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => const HomeView(),
+      page: () => const NavbarView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -71,6 +72,11 @@ class AppPages {
       name: _Paths.WALLET,
       page: () => const WalletView(),
       binding: WalletBinding(),
+    ),
+    GetPage(
+      name: _Paths.NAVBAR,
+      page: () => const NavbarView(),
+      binding: NavbarBinding(),
     ),
   ];
 }

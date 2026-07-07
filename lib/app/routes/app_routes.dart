@@ -12,6 +12,7 @@ abstract class Routes {
   static const STATISTIK = _Paths.STATISTIK;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const WALLET = _Paths.WALLET;
+  static const NAVBAR = _Paths.NAVBAR;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const STATISTIK = '/statistik';
   static const NOTIFICATION = '/notification';
   static const WALLET = '/wallet';
+  static const NAVBAR = '/navbar';
 }

@@ -1,25 +1,9 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../controllers/onboarding_controller.dart';
-
-/// Design-system colors from DESIGN.md — "Organic Growth" palette.
-class _C {
-  _C._();
-  static const Color primary = Color(0xFF3A6043);
-  static const Color onPrimary = Color(0xFFFFFFFF);
-  static const Color secondary = Color(0xFF5D5F58);
-  static const Color tertiaryFixed = Color(0xFFFFE25F);
-  static const Color onTertiaryContainer = Color(0xFF4B3F00);
-  static const Color background = Color(0xFFEBEBE0);
-
-  // Semantic / component-specific
-  static const Color headingText = Color(0xFF4A3933);
-  static const Color badgeBg = Color(0xFFFFFFFF);
-  static const Color badgeText = Color(0xFF4A3933);
-}
 
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({super.key});
@@ -29,360 +13,386 @@ class OnboardingView extends GetView<OnboardingController> {
     final mq = MediaQuery.of(context);
     final screenH = mq.size.height;
     final screenW = mq.size.width;
-    final topPad = mq.padding.top;
-    final botPad = mq.padding.bottom;
-
-    // ── Responsive scale factor based on a 812pt reference height (iPhone X) ──
-    final double vScale = (screenH / 812).clamp(0.55, 1.3);
-    final double hScale = (screenW / 375).clamp(0.55, 1.3);
-
-    // ── Illustration section gets ~55% of available height on reference,
-    //    but adapts for short screens ──
-    final double illustrationHeight = screenH * (vScale < 0.85 ? 0.48 : 0.55);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark.copyWith(
+      value: SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: _C.background,
-        body: SizedBox.expand(
-          child: Column(
-            children: [
-              // ─── Top illustration section (fixed height) ───
-              SizedBox(
-                height: illustrationHeight,
-                child: _buildIllustrationSection(
-                  context,
-                  screenW,
-                  illustrationHeight,
-                  topPad,
-                  vScale,
-                  hScale,
+        backgroundColor: const Color(0xFF111111),
+        body: Stack(
+          children: [
+            // ── Dark base overlay for blackish atmosphere ──
+            Positioned.fill(
+              child: Container(
+                color: const Color(0xFF0A0A0A).withOpacity(0.45),
+              ),
+            ),
+
+            // ── Green glow: bottom-left, very large, super-blurred (darker green) ──
+            Positioned(
+              left: -screenW * 0.35,
+              bottom: -screenH * 0.08,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 180, sigmaY: 180),
+                child: Container(
+                  width: screenW * 1.1,
+                  height: screenW * 1.1,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E4A2A).withOpacity(0.55),
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
+            ),
 
-              // ─── Bottom content section (fills remaining, scrollable) ───
-              Expanded(
-                child: _buildBottomContent(context, botPad, vScale, hScale),
+            // ── Main content ──
+            SizedBox.expand(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ── Top spacer + headline pushed down for visual centering ──
+                  SizedBox(height: mq.padding.top + screenH * 0.12),
+
+                  // ── Headline + description ──
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: _animated(
+                      fade: controller.contentFade,
+                      slide: controller.contentSlide,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Manage\nYour Finances',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 44,
+                              fontWeight: FontWeight.w400, // regular, not bold
+                              height: 1.1,
+                              color: Colors.white,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          const Text(
+                            'Empower your money,\nsimplify your life.',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              height: 1.5,
+                              color: Color(0xFFAAAAAA),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // ── Cards section grows to fill remaining space ──
+                  Expanded(
+                    child: _animated(
+                      fade: controller.blackCardFade,
+                      slide: controller.blackCardSlide,
+                      child: _buildCardsSection(screenW, screenH),
+                    ),
+                  ),
+
+                  // ── Bottom: Dots + Arrow button ──
+                  _animated(
+                    fade: controller.buttonFade,
+                    slide: controller.buttonSlide,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                          28, 0, 28, mq.padding.bottom + 32),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Page dots
+                          Row(
+                            children: List.generate(3, (i) {
+                              final isActive = i == 0;
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                margin: const EdgeInsets.only(right: 7),
+                                width: isActive ? 28 : 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color: isActive
+                                      ? Colors.white
+                                      : Colors.white.withOpacity(0.25),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              );
+                            }),
+                          ),
+
+                          // Arrow button
+                          GestureDetector(
+                            onTap: controller.onGetStarted,
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF5CBB7A),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                                size: 26,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  // ──────────────────────────────────────────────────────────────────────────
-  //  TOP SECTION — logo + overlapping card illustrations + character + badge
-  // ──────────────────────────────────────────────────────────────────────────
+  Widget _buildCardsSection(double screenW, double screenH) {
+    final cardW = screenW * 0.82; // lebih besar
+    final cardH = cardW * 0.58;
 
-  Widget _buildIllustrationSection(
-    BuildContext context,
-    double w,
-    double sectionH,
-    double topPad,
-    double vScale,
-    double hScale,
-  ) {
-    // Scale element sizes proportionally
-    final double logoW = 42 * hScale;
-    final double logoH = 56 * vScale;
-    final double plusSize = (60 * vScale).clamp(44.0, 72.0);
-    final double plusIcon = (32 * vScale).clamp(24.0, 40.0);
-    final double badgePadH = (24 * hScale).clamp(16.0, 32.0);
-    final double badgePadV = (14 * vScale).clamp(10.0, 20.0);
-    final double badgeFontSize = (15 * hScale).clamp(12.0, 18.0);
-    final double badgeIconSize = (18 * hScale).clamp(14.0, 24.0);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final areaH = constraints.maxHeight;
 
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(color: _C.background),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // ── Logo (top-left) ──
-          Positioned(
-            top: topPad + 32 * vScale,
-            left: 24 * hScale,
-            child: _animated(
-              fade: controller.logoFade,
-              slide: controller.logoSlide,
-              child: SvgPicture.asset(
-                'assets/svg/logo.svg',
-                width: logoW,
-                height: logoH,
-              ),
-            ),
-          ),
-
-          // ── Black card — behind, tilted left ──
-          Positioned(
-            left: -w * 0.05,
-            top: sectionH * 0.14,
-            child: _animated(
-              fade: controller.blackCardFade,
-              slide: controller.blackCardSlide,
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // ── Card behind: dark, tilted clockwise ──
+            Positioned(
+              left: screenW * 0.06,
+              top: areaH * 0.12,
               child: Transform.rotate(
-                angle: -0.21, // ≈ -12°
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [_naturalShadow()],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: SvgPicture.asset(
-                      'assets/svg/kartu-hitam-onboarding.svg',
-                      width: w * 0.62,
-                    ),
-                  ),
+                angle: 0.18,
+                child: _buildFinanceCard(
+                  width: cardW,
+                  height: cardH,
+                  backgroundColor: const Color(0xFF252525),
+                  balance: '\$7,630.25',
+                  label: 'Balance',
+                  showContactless: false,
+                  showVisa: false,
+                  showDots: false,
+                  showName: false,
+                  isTransparent: false,
                 ),
               ),
             ),
-          ),
 
-          // ── Green card — overlapping, tilted right ──
-          Positioned(
-            right: -w * 0.02,
-            bottom: sectionH * 0.04,
-            child: _animated(
-              fade: controller.greenCardFade,
-              slide: controller.greenCardSlide,
+            // ── Card front: glassmorphism, more transparent ──
+            Positioned(
+              left: screenW * 0.04,
+              top: areaH * 0.30,
               child: Transform.rotate(
-                angle: 0.052, // ≈ 3°
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [_naturalShadow()],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: SvgPicture.asset(
-                      'assets/svg/kartu-hijau-onboarding.svg',
-                      width: w * 0.78,
-                    ),
-                  ),
+                angle: -0.06,
+                child: _buildFinanceCard(
+                  width: cardW,
+                  height: cardH,
+                  backgroundColor: const Color(0xFF1A1A1A).withOpacity(0.10),
+                  balance: '\$3,424.31',
+                  label: 'Balance',
+                  showContactless: true,
+                  showVisa: true,
+                  showDots: true,
+                  showName: true,
+                  cardNumSuffix: '2314',
+                  cardOwner: 'Elena Maty',
+                  isTransparent: true,
                 ),
               ),
             ),
-          ),
-
-          // ── Yellow "+" floating button ──
-          Positioned(
-            top: sectionH * 0.08,
-            right: w * 0.32,
-            child: _animated(
-              fade: controller.plusButtonFade,
-              slide: controller.plusButtonSlide,
-              child: Container(
-                width: plusSize,
-                height: plusSize,
-                decoration: BoxDecoration(
-                  color: _C.tertiaryFixed,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: _C.tertiaryFixed.withValues(alpha: 0.35),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.add_rounded,
-                  color: _C.onTertiaryContainer,
-                  size: plusIcon,
-                ),
-              ),
-            ),
-          ),
-
-          // ── Character illustration ──
-          Positioned(
-            right: -w * 0.06,
-            bottom: -sectionH * 0.08,
-            child: _animated(
-              fade: controller.characterFade,
-              slide: controller.characterSlide,
-              child: Image.asset(
-                'assets/images/ilustrasi_cewek_onboarding.png',
-                height: sectionH * 1.15,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-
-          // ── Floating badge ("Lorem ipsum") ──
-          Positioned(
-            bottom: 0,
-            right: w * 0.06,
-            child: _animated(
-              fade: controller.badgeFade,
-              slide: controller.badgeSlide,
-              child: Transform.rotate(
-                angle: 0.21, // ≈ 12°
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: badgePadH,
-                    vertical: badgePadV,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _C.badgeBg,
-                    borderRadius: BorderRadius.circular(999),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.08),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Transform.rotate(
-                        angle: 0.0, // arrow ↑
-                        child: Icon(
-                          Icons.arrow_upward,
-                          size: badgeIconSize,
-                          color: _C.badgeText,
-                        ),
-                      ),
-                      SizedBox(width: 8 * hScale),
-                      Text(
-                        'Lorem ipsum',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: badgeFontSize,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.italic,
-                          color: _C.badgeText,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 
-  // ──────────────────────────────────────────────────────────────────────────
-  //  BOTTOM SECTION — headline, body, CTA button
-  // ──────────────────────────────────────────────────────────────────────────
+  Widget _buildFinanceCard({
+    required double width,
+    required double height,
+    required Color backgroundColor,
+    required String balance,
+    required String label,
+    bool showContactless = false,
+    bool showVisa = false,
+    bool showDots = false,
+    bool showName = false,
+    bool isTransparent = false,
+    String cardNumSuffix = '',
+    String cardOwner = '',
+  }) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(22),
+      child: BackdropFilter(
+        filter: isTransparent
+            ? ImageFilter.blur(sigmaX: 32, sigmaY: 32)
+            : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(22),
+            border: isTransparent
+                ? Border.all(
+                    color: Colors.white.withOpacity(0.08),
+                    width: 1,
+                  )
+                : null,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.45),
+                blurRadius: 40,
+                spreadRadius: 2,
+                offset: const Offset(0, 18),
+              )
+            ],
+          ),
+         padding: EdgeInsets.zero,
+child: Stack(
+  children: [
 
-  Widget _buildBottomContent(
-    BuildContext context,
-    double bottomPadding,
-    double vScale,
-    double hScale,
-  ) {
-    // ── Responsive typography ──
-    final double headlineFontSize = (50 * vScale).clamp(36.0, 60.0);
-    final double bodyFontSize = (15 * vScale).clamp(13.0, 18.0);
-    final double btnFontSize = (16 * vScale).clamp(14.0, 18.0);
-    final double btnHeight = (56 * vScale).clamp(44.0, 64.0);
-    final double hPad = (24 * hScale).clamp(16.0, 32.0);
-    final double topContentPad = (32 * vScale).clamp(16.0, 40.0);
-    final double headlineBodyGap = (16 * vScale).clamp(8.0, 20.0);
+    Padding(
+      padding: const EdgeInsets.fromLTRB(
+        20,
+        20,
+        95,
+        20,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-    return _animated(
-      fade: controller.contentFade,
-      slide: controller.contentSlide,
-      child: Container(
-        width: double.infinity,
-        color: _C.background,
-        padding: EdgeInsets.fromLTRB(hPad, topContentPad, hPad, 0),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // ── Headline ──
-                      Text(
-                        'Good\nfinances,\nbetter life.',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: headlineFontSize,
-                          fontWeight: FontWeight.w600, // SemiBold
-                          height: 1.1,
-                          color: _C.headingText,
-                          letterSpacing: -1.0,
-                        ),
-                      ),
+          // Top row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color(0xFF888888),
+                  fontSize: 12,
+                  fontFamily: 'Inter',
+                ),
+              ),
+              if (showContactless)
+                const Icon(
+                  Icons.wifi,
+                  color: Color(0xFF888888),
+                  size: 18,
+                ),
+            ],
+          ),
 
-                      SizedBox(height: headlineBodyGap),
+          const SizedBox(height: 6),
 
-                      // ── Body text ──
-                      Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                        'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: bodyFontSize,
-                          fontWeight: FontWeight.w400,
-                          height: 1.5,
-                          color: _C.secondary.withValues(alpha: 0.85),
-                        ),
-                      ),
+          Text(
+            balance,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
 
-                      const Spacer(),
+          const Spacer(),
 
-                      SizedBox(height: headlineBodyGap),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
 
-                      // ── CTA Button ──
-                      _animated(
-                        fade: controller.buttonFade,
-                        slide: controller.buttonSlide,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: btnHeight,
-                          child: ElevatedButton(
-                            onPressed: controller.onGetStarted,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: _C.primary,
-                              foregroundColor: _C.onPrimary,
-                              elevation: 0,
-                              shadowColor: _C.primary.withValues(alpha: 0.25),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              'Get started',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: btnFontSize,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.1,
+              if (showDots || showName)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    if (showDots)
+                      Row(
+                        children: [
+                          ...List.generate(
+                            4,
+                            (_) => Container(
+                              width: 5,
+                              height: 5,
+                              margin: const EdgeInsets.only(right: 3),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF3A7A50), // hijau lebih gelap
+                                shape: BoxShape.circle,
                               ),
                             ),
                           ),
-                        ),
+
+                          const SizedBox(width: 6),
+
+                          Text(
+                            cardNumSuffix,
+                            style: const TextStyle(
+                              color: Color(0xFFAAAAAA),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
 
-                      SizedBox(height: bottomPadding > 0 ? bottomPadding : 24),
+                    if (showName) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        cardOwner,
+                        style: const TextStyle(
+                          color: Color(0xFFCCCCCC),
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
+                  ],
+                )
+              else
+                const SizedBox(),
+
+              if (showVisa)
+                const Text(
+                  'VISA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.5,
                   ),
                 ),
-              ),
-            );
-          },
+            ],
+          ),
+        ],
+      ),
+    ),
+
+    if (isTransparent)
+      Positioned(
+        right: 4,
+        bottom: -2,
+        child: Opacity(
+          opacity: 0.38, // lebih transparan
+          child: Image.asset(
+            'assets/images/1.png',
+            width: width * 0.44,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+  ],
+),
         ),
       ),
     );
@@ -392,7 +402,6 @@ class OnboardingView extends GetView<OnboardingController> {
   //  HELPERS
   // ──────────────────────────────────────────────────────────────────────────
 
-  /// Wraps [child] with coordinated fade + slide transitions.
   Widget _animated({
     required Animation<double> fade,
     required Animation<Offset> slide,
@@ -407,16 +416,6 @@ class OnboardingView extends GetView<OnboardingController> {
         );
       },
       child: child,
-    );
-  }
-
-  /// "Natural Drop" shadow per DESIGN.md — soft, diffused, warm-tinted.
-  BoxShadow _naturalShadow() {
-    return BoxShadow(
-      color: const Color(0xFF201B10).withValues(alpha: 0.10),
-      blurRadius: 20,
-      offset: const Offset(0, 10),
-      spreadRadius: -5,
     );
   }
 }

@@ -46,7 +46,7 @@ class NavbarView extends GetView<HomeController> {
         Container(
           height: 70,
           decoration: BoxDecoration(
-            color: const Color(0xFF333333),
+            color: const Color(0xFF424242), // Lighter background
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
@@ -99,30 +99,23 @@ class NavbarView extends GetView<HomeController> {
 
         // Semi-circle notch behind FAB
         Positioned(
-          top: -18,
+          top: -22,
           child: Container(
-            width: 76,
-            height: 38,
+            width: 84,
+            height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFF333333),
+              color: const Color(0xFF424242), // Lighter background
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(38),
-                topRight: Radius.circular(38),
+                topLeft: Radius.circular(42),
+                topRight: Radius.circular(42),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  blurRadius: 8,
-                  offset: const Offset(0, -2),
-                ),
-              ],
             ),
           ),
         ),
 
         // Green FAB button
         Positioned(
-          top: -30,
+          top: -9, // Lowered to sit inside the notch
           child: GestureDetector(
             onTap: () => controller.toggleFab(),
             child: Obx(() => Container(
@@ -177,7 +170,7 @@ class _NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelected = currentIndex == index;
     const activeColor = Color(0xFF4CAF72);
-    const inactiveColor = Color(0xFF707070);
+    const inactiveColor = Color(0xFFB0B0B0); // Pastel grey
     final color = isSelected ? activeColor : inactiveColor;
 
     return GestureDetector(
@@ -185,37 +178,46 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 64,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        height: 70,
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
           children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              transitionBuilder: (child, anim) =>
-                  ScaleTransition(scale: anim, child: child),
-              child: Icon(
-                isSelected ? activeIcon : icon,
-                key: ValueKey<bool>(isSelected),
-                color: color,
-                size: 24,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  transitionBuilder: (child, anim) =>
+                      ScaleTransition(scale: anim, child: child),
+                  child: Icon(
+                    isSelected ? activeIcon : icon,
+                    key: ValueKey<bool>(isSelected),
+                    color: color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: color,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                color: color,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-              ),
-            ),
-            const SizedBox(height: 4),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              height: 2.5,
-              width: isSelected ? 20 : 0,
-              decoration: BoxDecoration(
-                color: activeColor,
-                borderRadius: BorderRadius.circular(2),
+            Positioned(
+              bottom: -4, // attached exactly to the bottom edge
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                height: 4.0, // made slightly thicker
+                width: isSelected ? 24 : 0,
+                decoration: BoxDecoration(
+                  color: activeColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
           ],

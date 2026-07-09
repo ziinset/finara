@@ -20,78 +20,107 @@ class OnboardingView extends GetView<OnboardingController> {
         statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFF111111),
+        backgroundColor: const Color(0xFF000000),
         body: Stack(
           children: [
-            // ── Dark base overlay for blackish atmosphere ──
-            Positioned.fill(
-              child: Container(
-                color: const Color(0xFF0A0A0A).withOpacity(0.45),
-              ),
-            ),
-
-            // ── Green glow: bottom-left, very large, super-blurred (darker green) ──
-            Positioned(
-              left: -screenW * 0.35,
-              bottom: -screenH * 0.08,
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 180, sigmaY: 180),
-                child: Container(
-                  width: screenW * 1.1,
-                  height: screenW * 1.1,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E4A2A).withOpacity(0.55),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ),
+            // ── Green glow pencahayaan – bottom-left ──
+          Positioned(
+  left: -screenW * 0.08,
+  bottom: -screenH * 0.14,
+  child: ImageFiltered(
+    imageFilter: ImageFilter.blur(
+      sigmaX: 80,
+      sigmaY: 80,
+    ),
+    child: Container(
+      width: screenW * 1.05,
+      height: screenW * 1.05,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+gradient: RadialGradient(
+  center: const Alignment(-0.15, 0.20),
+  radius: 1.15,
+  colors: [
+    const Color(0xFF6FD08A).withOpacity(0.30),
+    const Color(0xFF4F8B5C).withOpacity(0.18),
+    const Color(0xFF27452F).withOpacity(0.08),
+    Colors.transparent,
+  ],
+  stops: const [
+    0.0,
+    0.28,
+    0.62,
+    1.0,
+  ],
+),
+      ),
+    ),
+  ),
+),
 
             // ── Main content ──
             SizedBox.expand(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ── Top spacer + headline pushed down for visual centering ──
-                  SizedBox(height: mq.padding.top + screenH * 0.12),
+                  // Status bar spacer – judul agak ke bawah
+                  SizedBox(height: mq.padding.top + 72),
 
                   // ── Headline + description ──
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: _animated(
-                      fade: controller.contentFade,
-                      slide: controller.contentSlide,
+                  _animated(
+                    fade: controller.contentFade,
+                    slide: controller.contentSlide,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Manage\nYour Finances',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 44,
-                              fontWeight: FontWeight.w400, // regular, not bold
-                              height: 1.1,
-                              color: Colors.white,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-                          const Text(
-                            'Empower your money,\nsimplify your life.',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              height: 1.5,
-                              color: Color(0xFFAAAAAA),
-                            ),
-                          ),
+                          Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    const Text(
+      'Manage',
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 50,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+        letterSpacing: -0.8,
+      ),
+    ),
+
+    const Text(
+      'Your Finances',
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 50,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+        letterSpacing: -0.8,
+      ),
+    ),
+  ],
+),
+                          const SizedBox(height: 24),
+
+Text(
+  'Empower your money,\nsimplify your life.',
+  style: TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 21,
+    fontWeight: FontWeight.w500,
+    height: 1.50, // atau 1.48
+    color: const Color(0xFFA9A9A9), // sedikit lebih gelap dari sebelumnya
+  ),
+),
                         ],
                       ),
                     ),
                   ),
 
-                  // ── Cards section grows to fill remaining space ──
+                  const SizedBox(height: 24),
+
+                  // ── Cards section ──
                   Expanded(
                     child: _animated(
                       fade: controller.blackCardFade,
@@ -100,13 +129,17 @@ class OnboardingView extends GetView<OnboardingController> {
                     ),
                   ),
 
-                  // ── Bottom: Dots + Arrow button ──
+                  // ── Footer: dots + button ──
                   _animated(
                     fade: controller.buttonFade,
                     slide: controller.buttonSlide,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(
-                          28, 0, 28, mq.padding.bottom + 32),
+  32,
+  0,
+  32,
+  mq.padding.bottom + 56,
+),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -114,29 +147,32 @@ class OnboardingView extends GetView<OnboardingController> {
                           Row(
                             children: List.generate(3, (i) {
                               final isActive = i == 0;
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                margin: const EdgeInsets.only(right: 7),
-                                width: isActive ? 28 : 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: isActive
-                                      ? Colors.white
-                                      : Colors.white.withOpacity(0.25),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              );
+                        return AnimatedContainer(
+  duration: const Duration(milliseconds: 300),
+  margin: const EdgeInsets.only(right: 5),
+
+  // aktif lebih panjang, yang tidak aktif juga capsule
+  width: isActive ? 42 : 14,
+  height: 7,
+
+  decoration: BoxDecoration(
+    color: isActive
+        ? Colors.white
+        : Colors.white.withOpacity(0.28),
+    borderRadius: BorderRadius.circular(20),
+  ),
+);
                             }),
                           ),
 
-                          // Arrow button
+                          // Arrow button – darker green circle
                           GestureDetector(
                             onTap: controller.onGetStarted,
                             child: Container(
-                              width: 60,
-                              height: 60,
+                              width: 64,
+                              height: 64,
                               decoration: const BoxDecoration(
-                                color: Color(0xFF5CBB7A),
+                                color: Color(0xFF3A6043),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
@@ -159,58 +195,51 @@ class OnboardingView extends GetView<OnboardingController> {
     );
   }
 
+  // ─────────────────────────────────────────────────────────────────────────
+  //  CARDS SECTION
+  // ─────────────────────────────────────────────────────────────────────────
+
   Widget _buildCardsSection(double screenW, double screenH) {
-    final cardW = screenW * 0.82; // lebih besar
-    final cardH = cardW * 0.58;
+   const cardW = 305.0;
+const cardH = 195.0;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final areaH = constraints.maxHeight;
-
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            // ── Card behind: dark, tilted clockwise ──
+            // ── Back card – rotated +12°, lebih ke bawah & ke kanan ──
             Positioned(
-              left: screenW * 0.06,
-              top: areaH * 0.12,
+              left: screenW * 0.17,
+              top: areaH * 0.18,
               child: Transform.rotate(
-                angle: 0.18,
-                child: _buildFinanceCard(
-                  width: cardW,
-                  height: cardH,
-                  backgroundColor: const Color(0xFF252525),
-                  balance: '\$7,630.25',
-                  label: 'Balance',
-                  showContactless: false,
-                  showVisa: false,
-                  showDots: false,
-                  showName: false,
-                  isTransparent: false,
-                ),
+                angle: 0.21, // ~12 degrees
+                child:_buildGlassCard(
+  width: cardW,
+  height: cardH,
+  opacity: 0.82,
+  backgroundColor: const Color(0xFF3D3D3D),
+  showBorder: true,
+  child: _backCardContent(),
+),
               ),
             ),
 
-            // ── Card front: glassmorphism, more transparent ──
+            // ── Front card – rotated -5°, lebih ke bawah & ke kanan ──
             Positioned(
-              left: screenW * 0.04,
-              top: areaH * 0.30,
+              left: screenW * 0.10,
+              top: areaH * 0.18 + 80,
               child: Transform.rotate(
-                angle: -0.06,
-                child: _buildFinanceCard(
-                  width: cardW,
-                  height: cardH,
-                  backgroundColor: const Color(0xFF1A1A1A).withOpacity(0.10),
-                  balance: '\$3,424.31',
-                  label: 'Balance',
-                  showContactless: true,
-                  showVisa: true,
-                  showDots: true,
-                  showName: true,
-                  cardNumSuffix: '2314',
-                  cardOwner: 'Elena Maty',
-                  isTransparent: true,
-                ),
+                angle: -0.087, // ~-5 degrees
+                child:_buildGlassCard(
+  width: cardW,
+  height: cardH,
+  opacity: 1,
+  backgroundColor: Colors.white,
+  showBorder: false,
+  child: _frontCardContent(),
+),
               ),
             ),
           ],
@@ -219,188 +248,247 @@ class OnboardingView extends GetView<OnboardingController> {
     );
   }
 
-  Widget _buildFinanceCard({
-    required double width,
-    required double height,
-    required Color backgroundColor,
-    required String balance,
-    required String label,
-    bool showContactless = false,
-    bool showVisa = false,
-    bool showDots = false,
-    bool showName = false,
-    bool isTransparent = false,
-    String cardNumSuffix = '',
-    String cardOwner = '',
-  }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(22),
-      child: BackdropFilter(
-        filter: isTransparent
-            ? ImageFilter.blur(sigmaX: 32, sigmaY: 32)
-            : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-        child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(22),
-            border: isTransparent
-                ? Border.all(
-                    color: Colors.white.withOpacity(0.08),
-                    width: 1,
-                  )
-                : null,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.45),
-                blurRadius: 40,
-                spreadRadius: 2,
-                offset: const Offset(0, 18),
-              )
-            ],
-          ),
-         padding: EdgeInsets.zero,
-child: Stack(
-  children: [
+  // ── Glassmorphism card shell ──
+ Widget _buildGlassCard({
+  required double width,
+  required double height,
+  required Widget child,
+  double opacity = 1.0,
+  Color? backgroundColor,
+  bool showBorder = true,
+}) {
+    return Opacity(
+      opacity: opacity,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 45, sigmaY: 45),
+          child: Container(
+            width: width,
+            height: height,
+         decoration: BoxDecoration(
+  borderRadius: BorderRadius.circular(24),
 
-    Padding(
-      padding: const EdgeInsets.fromLTRB(
-        20,
-        20,
-        95,
-        20,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+  gradient: LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      backgroundColor!.withOpacity(0.12),
+      backgroundColor.withOpacity(0.08),
+      backgroundColor.withOpacity(0.04),
+    ],
+  ),
 
-          // Top row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Color(0xFF888888),
-                  fontSize: 12,
-                  fontFamily: 'Inter',
-                ),
-              ),
-              if (showContactless)
-                const Icon(
-                  Icons.wifi,
-                  color: Color(0xFF888888),
-                  size: 18,
-                ),
-            ],
-          ),
+  border: showBorder
+      ? Border.all(
+          color: Colors.white.withOpacity(0.35),
+          width: 1.3,
+        )
+      : null,
 
-          const SizedBox(height: 6),
-
-          Text(
-            balance,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-
-          const Spacer(),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-
-              if (showDots || showName)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    if (showDots)
-                      Row(
-                        children: [
-                          ...List.generate(
-                            4,
-                            (_) => Container(
-                              width: 5,
-                              height: 5,
-                              margin: const EdgeInsets.only(right: 3),
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF3A7A50), // hijau lebih gelap
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(width: 6),
-
-                          Text(
-                            cardNumSuffix,
-                            style: const TextStyle(
-                              color: Color(0xFFAAAAAA),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    if (showName) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        cardOwner,
-                        style: const TextStyle(
-                          color: Color(0xFFCCCCCC),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ],
-                )
-              else
-                const SizedBox(),
-
-              if (showVisa)
-                const Text(
-                  'VISA',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-            ],
-          ),
-        ],
-      ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.25),
+      blurRadius: 32,
+      offset: const Offset(0, 10),
     ),
-
-    if (isTransparent)
-      Positioned(
-        right: 4,
-        bottom: -2,
-        child: Opacity(
-          opacity: 0.38, // lebih transparan
-          child: Image.asset(
-            'assets/images/1.png',
-            width: width * 0.44,
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
   ],
 ),
+            child: child,
+          ),
         ),
       ),
     );
   }
 
-  // ──────────────────────────────────────────────────────────────────────────
-  //  HELPERS
-  // ──────────────────────────────────────────────────────────────────────────
+  // ── Back card content ($7,630.25) ──
+  Widget _backCardContent() {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Balance',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.60),
+                  fontSize: 12,
+                  fontFamily: 'Inter',
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                '\$7,630.25',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Inter',
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '•••• 3482',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.60),
+                  fontSize: 11,
+                  letterSpacing: 2,
+                  fontFamily: 'Inter',
+                ),
+              ),
+              // Mastercard-style double-circle
+              Stack(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.40),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Positioned(
+                    left: 14,
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.20),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Front card content ($3,424.31) ──
+  Widget _frontCardContent() {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Top row: balance + contactless icon
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Balance',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.60),
+                      fontSize: 12,
+                      fontFamily: 'Inter',
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    '\$3,424.31',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Inter',
+                    ),
+                  ),
+                ],
+              ),
+              // Contactless / NFC icon
+              Icon(
+                Icons.wifi,
+                color: Colors.white.withOpacity(0.80),
+                size: 22,
+              ),
+            ],
+          ),
+
+          // Bottom row: dots + name / VISA
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Card number dots + suffix
+                  Row(
+                    children: [
+                      ...List.generate(
+                        4,
+                        (_) => Container(
+                          width: 5,
+                          height: 5,
+                          margin: const EdgeInsets.only(right: 3),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        '2314',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'Elena Maty',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Inter',
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+              // VISA logo
+              Text(
+                'VISA',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.90),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.italic,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  //  ANIMATION HELPER
+  // ─────────────────────────────────────────────────────────────────────────
 
   Widget _animated({
     required Animation<double> fade,

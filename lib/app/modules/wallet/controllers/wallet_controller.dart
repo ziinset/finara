@@ -84,6 +84,7 @@ class WalletController extends GetxController {
       textCancel: 'Batal',
       confirmTextColor: Colors.white,
       buttonColor: const Color(0xFF3A6043),
+      radius: 12,
       onConfirm: () {
         Get.back(); // close dialog
         isPremium.value = true;

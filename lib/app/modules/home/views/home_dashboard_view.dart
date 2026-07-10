@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import 'notification_view.dart';
+import '../../wallet/controllers/wallet_controller.dart';
+import '../../wallet/views/create_wallet_view.dart';
 
 class HomeDashboardView extends GetView<HomeController> {
   const HomeDashboardView({super.key});
@@ -319,19 +321,34 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('My Balance', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Row(
+                              GestureDetector(
+                                onTap: () => _showWalletSelector(context),
+                                child: Row(
                                   children: [
-                                    Text('Add Card', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                                    SizedBox(width: 4),
-                                    Icon(Icons.add, color: Colors.white70, size: 14),
+                                    Obx(() => Text(
+                                      controller.selectedWalletName.value,
+                                      style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
+                                    )),
+                                    const SizedBox(width: 4),
+                                    const Icon(Icons.keyboard_arrow_down, color: Colors.white70, size: 16),
                                   ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => Get.to(() => const CreateWalletView()),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Text('Add Wallet', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                                      SizedBox(width: 4),
+                                      Icon(Icons.add, color: Colors.white70, size: 14),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -419,6 +436,94 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showWalletSelector(BuildContext context) {
+    final walletController = Get.find<WalletController>();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Pilih Wallet',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Obx(() => ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: walletController.wallets.length + 1,
+                    separatorBuilder: (context, index) => Divider(
+                      color: Colors.white.withOpacity(0.1),
+                      height: 1,
+                      thickness: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      if (index == walletController.wallets.length) {
+                        // "Semua Wallet" option
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.account_balance, color: Colors.white70, size: 20),
+                          ),
+                          title: const Text('Semua Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                          onTap: () {
+                            Get.back();
+                            // Implementation for all wallets
+                            Get.snackbar('Fitur', 'Tampilan Semua Wallet akan datang', colorText: Colors.white);
+                          },
+                        );
+                      }
+                      
+                      final wallet = walletController.wallets[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: wallet.color.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(wallet.icon, color: wallet.color, size: 20),
+                        ),
+                        title: Text(wallet.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                        subtitle: Text(
+                          _formatRupiah(wallet.balance),
+                          style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13),
+                        ),
+                        trailing: wallet.isActive
+                            ? const Icon(Icons.check_circle, color: Color(0xFF82C836), size: 24)
+                            : null,
+                        onTap: () {
+                          walletController.selectWallet(wallet.id);
+                          Get.back();
+                        },
+                      );
+                    },
+                  )),
+            ],
+          ),
+        );
+      },
     );
   }
 

@@ -18,47 +18,58 @@ class LoginView extends GetView<LoginController> {
         statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFF121212),
+        backgroundColor: const Color(0xFF0F0F0F),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(28, mq.padding.top + 12, 28, 32),
+            padding: EdgeInsets.fromLTRB(28, mq.padding.top + 55, 28, 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ── Back button row ──
-                _buildTopBar(context),
-
-                const SizedBox(height: 40),
-
+                SizedBox(height: 95),
                 // ── Title ──
+                
                 AnimatedBuilder(
-                  animation: controller.animationController,
-                  builder: (context, child) => FadeTransition(
-                    opacity: controller.illustrationFade,
-                    child: SlideTransition(
-                      position: controller.illustrationSlide,
-                      child: child,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Hey,\nWelcome\nBack',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 38,
-                          fontWeight: FontWeight.w700,
-                          height: 1.15,
-                          color: Colors.white,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+  animation: controller.animationController,
+  builder: (context, child) => FadeTransition(
+    opacity: controller.illustrationFade,
+    child: SlideTransition(
+      position: controller.illustrationSlide,
+      child: child,
+    ),
+  ),
+  child: Center(
+    child: Column(
+      children: const [
+        Text(
+          "Welcome Back!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
 
-                const SizedBox(height: 40),
+        SizedBox(height: 10),
+
+        Text(
+          "Login to your Finara account and\ncontinue managing your finances.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontSize: 14,
+            height: 1.5,
+            color: Colors.white54,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
+                const SizedBox(height: 65),
 
                 // ── Form fields ──
                 AnimatedBuilder(
@@ -74,26 +85,49 @@ class LoginView extends GetView<LoginController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Email
-                      _buildInputField(
-                        icon: Icons.mail_outline,
-                        hintText: 'Email id',
-                        obscure: false,
-                        textController: controller.usernameController,
-                      ),
+                      const Text(
+  "Email",
+  style: TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  ),
+),
 
-                      const SizedBox(height: 16),
+const SizedBox(height: 8),
+
+_buildInputField(
+  icon: Icons.mail_outline,
+  hintText: "Enter your email",
+  obscure: false,
+  textController: controller.usernameController,
+),
+
+const SizedBox(height: 18),
 
                       // Password
-                      Obx(() => _buildInputField(
-                            icon: Icons.lock_outline,
-                            hintText: 'Password',
-                            obscure: controller.isPasswordHidden.value,
-                            textController: controller.passwordController,
-                            isPassword: true,
-                          )),
+                     const Text(
+  "Password",
+  style: TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  ),
+),
 
-                      const SizedBox(height: 12),
+const SizedBox(height: 8),
 
+Obx(
+  () => _buildInputField(
+    icon: Icons.lock_outline,
+    hintText: "Password",
+    obscure: controller.isPasswordHidden.value,
+    textController: controller.passwordController,
+    isPassword: true,
+  ),
+),
+
+const SizedBox(height: 12),
                       // Forgot password
                       Align(
                         alignment: Alignment.centerRight,
@@ -118,26 +152,11 @@ class LoginView extends GetView<LoginController> {
                       const SizedBox(height: 28),
 
                       // Or divider
-                      _buildOrDivider(),
+                     _buildOrDivider(),
 
-                      const SizedBox(height: 24),
+const SizedBox(height: 28),
 
-                      // Continue with Apple
-                      _buildSocialButton(
-                        icon: Icons.apple,
-                        label: 'Continue with Apple',
-                        onTap: () {},
-                      ),
-
-                      const SizedBox(height: 14),
-
-                      // Continue with Google
-                      _buildGoogleButton(),
-
-                      const SizedBox(height: 32),
-
-                      // Footer: Don't have account? Sign up
-                      _buildFooter(),
+_buildFooter(),
                     ],
                   ),
                 ),
@@ -210,11 +229,11 @@ class LoginView extends GetView<LoginController> {
     bool isPassword = false,
   }) {
     return Container(
-      height: 54,
+      height: 58,
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.07)),
+        color: const Color(0xFF191919),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Row(
         children: [
@@ -292,34 +311,43 @@ class LoginView extends GetView<LoginController> {
   }
 
   Widget _buildOrDivider() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Colors.white.withOpacity(0.1),
-          ),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        width: 70,
+        height: 2,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(.18),
+          borderRadius: BorderRadius.circular(10),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Text(
-            'or',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 13,
-              color: Colors.white.withOpacity(0.4),
-            ),
-          ),
+      ),
+
+      const SizedBox(width: 14),
+
+      Text(
+        "OR",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.white.withOpacity(.45),
         ),
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Colors.white.withOpacity(0.1),
-          ),
+      ),
+
+      const SizedBox(width: 14),
+
+      Container(
+        width: 70,
+        height: 2,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(.18),
+          borderRadius: BorderRadius.circular(10),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   Widget _buildSocialButton({
     required IconData icon,

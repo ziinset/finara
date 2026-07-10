@@ -18,7 +18,7 @@ class RegisterView extends GetView<RegisterController> {
         statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFF121212),
+        backgroundColor: const Color(0xFF0F0F0F),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
@@ -27,34 +27,43 @@ class RegisterView extends GetView<RegisterController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ── Back button row ──
-                  _buildTopBar(context),
-
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 95),
 
                   // ── Title ──
                   _buildAnimated(
                     fade: controller.heroFade,
                     slide: controller.heroSlide,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Let's get\nStarted",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 38,
-                            fontWeight: FontWeight.w700,
-                            height: 1.15,
-                            color: Colors.white,
-                            letterSpacing: -0.5,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Create new account!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Text(
+                            "Create your Finara account and start\nmanaging your finances easily.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 14,
+                              height: 1.5,
+                              color: Colors.white54,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 65),
 
                   // ── Form fields ──
                   _buildAnimated(
@@ -63,53 +72,75 @@ class RegisterView extends GetView<RegisterController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Text(
+  "Full Name",
+  style: TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  ),
+),
+
+const SizedBox(height: 8),
+
+_buildInputField(
+  icon: Icons.person_outline,
+  hintText: "Enter your full name",
+  textController: controller.nameController,
+  focusNode: controller.nameFocus,
+),
+
+
+                        const SizedBox(height: 18),
                         // Email
-                        _buildInputField(
-                          icon: Icons.mail_outline,
-                          hintText: 'Email id',
-                          textController: controller.emailController,
-                          focusNode: controller.emailFocus,
-                          keyboardType: TextInputType.emailAddress,
-                        ),
+                       const Text(
+  "Email",
+  style: TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  ),
+),
 
-                        const SizedBox(height: 16),
+const SizedBox(height: 8),
 
-                        // Password
-                        _buildPasswordField(),
+_buildInputField(
+  icon: Icons.mail_outline,
+  hintText: "Enter your email",
+  textController: controller.emailController,
+  focusNode: controller.emailFocus,
+  keyboardType: TextInputType.emailAddress,
+),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 18),
 
-                        // Confirm Password
-                        _buildConfirmPasswordField(),
+const Text(
+  "Password",
+  style: TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  ),
+),
+
+const SizedBox(height: 8),
+
+_buildPasswordField(),
+
+                        const SizedBox(height: 18),
+
+
 
                         const SizedBox(height: 28),
+_buildSignUpButton(),
 
-                        // Sign Up button
-                        _buildSignUpButton(),
+const SizedBox(height: 28),
 
-                        const SizedBox(height: 28),
+_buildOrDivider(),
 
-                        // Or divider
-                        _buildOrDivider(),
+const SizedBox(height: 28),
 
-                        const SizedBox(height: 24),
-
-                        // Continue with Apple
-                        _buildSocialButton(
-                          icon: Icons.apple,
-                          label: 'Continue with Apple',
-                          onTap: () {},
-                        ),
-
-                        const SizedBox(height: 14),
-
-                        // Continue with Google
-                        _buildGoogleButton(),
-
-                        const SizedBox(height: 32),
-
-                        // Footer: Already have account? Login
-                        _buildFooter(),
+_buildFooter(),
                       ],
                     ),
                   ),
@@ -122,58 +153,7 @@ class RegisterView extends GetView<RegisterController> {
     );
   }
 
-  Widget _buildTopBar(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Get.back(),
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.07),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.white,
-              size: 18,
-            ),
-          ),
-        ),
-        const SizedBox(width: 14),
-        Text(
-          '< Back',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 15,
-            color: Colors.white.withOpacity(0.7),
-          ),
-        ),
 
-        // DEV: Skip button
-        const Spacer(),
-        GestureDetector(
-          onTap: () => Get.offAllNamed(Routes.HOME),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.07),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Text(
-              'Skip →',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 12,
-                color: Colors.white60,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildInputField({
     required IconData icon,
@@ -184,11 +164,11 @@ class RegisterView extends GetView<RegisterController> {
     bool obscure = false,
   }) {
     return Container(
-      height: 54,
+      height: 58,
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.07)),
+        color: const Color(0xFF191919),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Row(
         children: [
@@ -356,35 +336,44 @@ class RegisterView extends GetView<RegisterController> {
         ));
   }
 
-  Widget _buildOrDivider() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Colors.white.withOpacity(0.1),
-          ),
+ Widget _buildOrDivider() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        width: 70,
+        height: 2,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(10),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Text(
-            'or',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 13,
-              color: Colors.white.withOpacity(0.4),
-            ),
-          ),
+      ),
+
+      const SizedBox(width: 14),
+
+      Text(
+        "OR",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.white.withOpacity(.45),
         ),
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Colors.white.withOpacity(0.1),
-          ),
+      ),
+
+      const SizedBox(width: 14),
+
+      Container(
+        width: 70,
+        height: 2,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(10),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   Widget _buildSocialButton({
     required IconData icon,

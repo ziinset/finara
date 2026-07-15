@@ -158,8 +158,6 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                 children: [
                   _buildNewHeaderCard(context, balance, income, expense),
                   const SizedBox(height: 2),
-                  _buildFinancialInsightBanner(),
-                  const SizedBox(height: 28),
 
                 // ─── Bottom Section with White Background ───
                 Container(
@@ -167,15 +165,19 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
                   decoration: const BoxDecoration(
                     color: Color(0xFF161616),
                   ),
-                  padding: const EdgeInsets.only(top: 0, bottom: 30),
+                  padding: const EdgeInsets.only(top: 24, bottom: 120),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ─── Top 3 Spending Categories ───
                       if (expense > 0) ...[
                         _buildTopSpendingCategories(topCategories),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 40),
                       ],
+
+                      // ─── Tips Keuangan / Insight Card ───
+                      _buildInsightCard(),
+                      const SizedBox(height: 24),
 
                       // ─── Transaksi Terbaru ───
                       _buildRecentTransactions(recentTransactions),
@@ -527,80 +529,6 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
     );
   }
 
-  Widget _buildFinancialInsightBanner() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E1E1E),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white30, width: 0.8),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Amankan Masa Depan,\nKelola Keuangan Lebih Terarah',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13.5,
-                      height: 1.3,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white54, width: 0.8),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Ayo mulai',
-                          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 4),
-                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 11),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: Transform.scale(
-                scale: 1.8,
-                child: Opacity(
-                  opacity: 0.9,
-                  child: Image.asset(
-                    'assets/images/koin2.png',
-                    width: 60,
-                    height: 60,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.monetization_on,
-                      color: Colors.amber,
-                      size: 50,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildTopSpendingCategories(List categories) {
     return Padding(
@@ -925,92 +853,80 @@ class _HomeDashboardViewBodyState extends State<_HomeDashboardViewBody> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFEADD).withOpacity(0.85), // Warm sandy box
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFFEADD)),
-      ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Background floating accents
-          Positioned(
-            right: 0,
-            bottom: 0,
-            top: 0,
-            child: Opacity(
-              opacity: 0.15,
-              child: Image.network(
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuB06ywqykBPkc_QN_Js5cbyH63wUjwtS-2rjHO_9tze63lEHlWHF4eENniX-QQpJnaoXMAmFm_ER4LTmS1WIcBwiriXvzb43mdqRb-1FWmVeC3N2EsZmO3GROEHx1Jq9mz_PGmXD2mDpv9UQbEr1lpZJpnr5bF7BUwhUTKEAzJ2oHRyiB_CZTrt6Ra1OoLb9UMBlwaRTOB64hzeo0kCG0YsjeMZad7_hIaynSt-CJGjQoBfXHvOuTe_FyVm6bloMOxsNuAG5JRtJ-bR',
-                fit: BoxFit.cover,
-                width: 140,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFF3A6043),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withOpacity(0.12), width: 1.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // Floating Character Image on the Right
+            Positioned(
+              right: 4,
+              bottom: -10, // Overflow slightly at the bottom
+              top: -36,    // Overflow significantly at the top
+              child: SizedBox(
+                width: 120, // Larger width as requested
+                child: Image.network(
+                  'https://lh3.googleusercontent.com/aida-public/AB6AXuB06ywqykBPkc_QN_Js5cbyH63wUjwtS-2rjHO_9tze63lEHlWHF4eENniX-QQpJnaoXMAmFm_ER4LTmS1WIcBwiriXvzb43mdqRb-1FWmVeC3N2EsZmO3GROEHx1Jq9mz_PGmXD2mDpv9UQbEr1lpZJpnr5bF7BUwhUTKEAzJ2oHRyiB_CZTrt6Ra1OoLb9UMBlwaRTOB64hzeo0kCG0YsjeMZad7_hIaynSt-CJGjQoBfXHvOuTe_FyVm6bloMOxsNuAG5JRtJ-bR',
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomCenter,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.person_outline,
+                    size: 55,
+                    color: Colors.white38,
+                  ),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            // Text Content on the Left
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 120.0, top: 20.0, bottom: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.lightbulb_outline_rounded,
-                            color: Colors.amber.shade800,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            'Tips Keuangan',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Color(0xFF40342B),
-                            ),
-                          ),
-                        ],
+                      Icon(
+                        Icons.lightbulb_outline_rounded,
+                        color: Colors.amber.shade300,
+                        size: 20,
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '"$quote"',
-                        style: const TextStyle(
-                          fontSize: 13.5,
-                          fontStyle: FontStyle.italic,
-                          height: 1.4,
-                          color: Color(0xFF7A7067),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Tips Keuangan',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(width: 10),
-                // Small character image container
-                Container(
-                  width: 55,
-                  height: 75,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.network(
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuB06ywqykBPkc_QN_Js5cbyH63wUjwtS-2rjHO_9tze63lEHlWHF4eENniX-QQpJnaoXMAmFm_ER4LTmS1WIcBwiriXvzb43mdqRb-1FWmVeC3N2EsZmO3GROEHx1Jq9mz_PGmXD2mDpv9UQbEr1lpZJpnr5bF7BUwhUTKEAzJ2oHRyiB_CZTrt6Ra1OoLb9UMBlwaRTOB64hzeo0kCG0YsjeMZad7_hIaynSt-CJGjQoBfXHvOuTe_FyVm6bloMOxsNuAG5JRtJ-bR',
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.spa_outlined,
-                      size: 40,
-                      color: Color(0xFF3A6043),
+                  const SizedBox(height: 10),
+                  Text(
+                    '"$quote"',
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      fontStyle: FontStyle.italic,
+                      height: 1.4,
+                      color: Colors.white.withOpacity(0.9),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }

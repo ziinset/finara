@@ -1,0 +1,288 @@
+<!DOCTYPE html><html class="dark" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "primary-fixed": "#cdead1",
+                            "surface-tint": "#b1ceb5",
+                            "on-primary": "#00391a",
+                            "secondary-fixed": "#ffe262",
+                            "secondary-container": "#534600",
+                            "on-surface": "#e1e3de",
+                            "surface-dim": "#101411",
+                            "surface-container-lowest": "#0b0f0c",
+                            "surface-container-low": "#181d19",
+                            "on-tertiary-container": "#c6c7be",
+                            "primary-fixed-dim": "#b1ceb5",
+                            "on-error": "#690005",
+                            "on-surface-variant": "#c2c8c0",
+                            "surface": "#101411",
+                            "surface-container-highest": "#313531",
+                            "on-primary-container": "#cdead1",
+                            "primary-container": "#344c3a",
+                            "tertiary-fixed-dim": "#c6c7be",
+                            "surface-container-high": "#272b27",
+                            "on-secondary": "#3a3000",
+                            "on-primary-fixed": "#00210c",
+                            "surface-container": "#1d211e",
+                            "inverse-primary": "#4b6451",
+                            "on-tertiary-fixed-variant": "#454841",
+                            "on-secondary-container": "#ffe262",
+                            "inverse-on-surface": "#101411",
+                            "secondary-fixed-dim": "#e3c53c",
+                            "secondary": "#e3c53c",
+                            "on-background": "#e1e3de",
+                            "surface-variant": "#424843",
+                            "on-tertiary-fixed": "#1a1c17",
+                            "on-secondary-fixed-variant": "#534600",
+                            "primary": "#b1ceb5",
+                            "outline-variant": "#424843",
+                            "tertiary-fixed": "#e2e3d9",
+                            "on-error-container": "#ffdad6",
+                            "on-secondary-fixed": "#221b00",
+                            "background": "#101411",
+                            "tertiary-container": "#454841",
+                            "outline": "#8c9389",
+                            "inverse-surface": "#e1e3de",
+                            "surface-bright": "#363a37",
+                            "on-tertiary": "#3e413a",
+                            "on-primary-fixed-variant": "#344c3a",
+                            "tertiary": "#c6c7be",
+                            "error-container": "#93000a",
+                            "error": "#ffb4ab"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.5rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px",
+                            "2xl": "1rem",
+                            "3xl": "1.5rem"
+                        },
+                        "spacing": {
+                            "container-padding-mobile": "20px",
+                            "unit": "8px",
+                            "stack-md": "16px",
+                            "container-padding-desktop": "40px",
+                            "gutter": "16px",
+                            "stack-lg": "32px",
+                            "stack-sm": "8px"
+                        },
+                        "fontFamily": {
+                            "display-lg": ["Hanken Grotesk"],
+                            "body-lg": ["Inter"],
+                            "headline-lg-mobile": ["Hanken Grotesk"],
+                            "title-md": ["Hanken Grotesk"],
+                            "label-caps": ["Inter"],
+                            "headline-lg": ["Hanken Grotesk"],
+                            "body-sm": ["Inter"]
+                        },
+                        "fontSize": {
+                            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                        }
+                    },
+                },
+            }
+        } catch (_e) {}
+    </script>
+</head>
+<body class="min-h-screen font-body-lg bg-background text-on-surface" style="background-color: rgb(22, 22, 22);">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 px-container-padding-mobile py-4 flex justify-between items-center bg-gradient-to-b from-surface-container-lowest/80 via-surface-container-lowest/40 to-transparent backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center backdrop-blur-md border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-2xl">person</span>
+</div>
+<h1 class="font-headline-lg-mobile text-xl text-on-surface tracking-tight">Profil</h1>
+</div>
+<div class="flex gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-highest/40 backdrop-blur-md border border-outline-variant/20 text-on-surface-variant hover:bg-surface-container-highest transition-all active:scale-95">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-highest/40 backdrop-blur-md border border-outline-variant/20 text-on-surface-variant hover:bg-surface-container-highest transition-all active:scale-95">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+</button>
+</div>
+</header>
+<main class="pb-32">
+<!-- Sophisticated Profile Header -->
+<section class="relative px-container-padding-mobile pt-24 pb-16 overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-primary-container/20 via-primary-container/5 to-transparent -z-10"></div>
+<div class="flex flex-col items-center">
+<div class="relative">
+<div class="w-36 h-36 rounded-full border-[6px] border-surface-container-low shadow-2xl overflow-hidden relative ring-1 ring-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a smiling man named Goldi Arasseo with dark hair and a neat beard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHhcLJpjOZpXfpjfJ5ZBQbIl3f2lznaVPLGCvY4e7D9Chb54FkTlO_NHlCZ3anj1XxjGQ2y4N7akFtg8zGC0HsoEjs8mjxCWZb3z0guPi8XpSPloJ0IY7aPR2ZZo-Egdlw2iJizGwFugQB6XQwLefJprw0uZLmSRc9J0L4z63Tako29pigfa133UgvZ7bfq5DKXsBhcfTt8l6VxjXSoKABgRNhLghwXxe5bp4MRbCKm5qY5bbGpCB8ZhVlfjX8lXQ3cA">
+</div>
+<button class="absolute bottom-2 right-2 bg-primary text-on-primary w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:opacity-90 transition-transform active:scale-90 ring-4 ring-surface-container-low">
+<span class="material-symbols-outlined text-xl">camera_alt</span>
+</button>
+</div>
+<div class="mt-6 text-center space-y-1">
+<h2 class="font-headline-lg-mobile text-2xl text-on-surface">Goldi Arasseo</h2>
+<p class="font-body-lg text-on-surface-variant">goldiarasseo@example.com</p>
+<div class="pt-2">
+<span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-[13px] font-semibold tracking-wide border border-secondary/20">
+<span class="material-symbols-outlined text-[16px] leading-none" style="font-variation-settings: 'FILL' 1;">stars</span>
+                            PREMIUM MEMBER
+                        </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Profile Content Sections -->
+<div class="px-container-padding-mobile -mt-10 space-y-8">
+<!-- Account Information Card -->
+<section class="space-y-4"><div class="flex items-center gap-2 px-2 mb-4"><span class="material-symbols-outlined text-primary text-xl">person</span><h3 class="font-label-caps text-xs text-on-surface-variant uppercase tracking-[0.15em] font-bold">Profil</h3></div><div class="bg-surface-container-low rounded-3xl overflow-hidden shadow-xl border border-outline-variant/10" style="background-color: rgb(31, 31, 31);"><div class="flex items-center justify-between p-5 hover:bg-surface-container/50 transition-colors cursor-pointer group"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center text-primary group-hover:scale-105 transition-transform"><span class="material-symbols-outlined">edit</span></div><div><p class="font-title-md text-[17px] leading-tight text-on-surface">Edit Profil</p><p class="font-body-sm text-on-surface-variant mt-0.5">Ubah nama, foto, dan data diri</p></div></div><span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span></div></div></section>
+<!-- Security Section -->
+<section>
+<div class="flex items-center gap-2 px-2 mb-4">
+<span class="material-symbols-outlined text-primary text-xl">shield</span>
+<h3 class="font-label-caps text-xs text-on-surface-variant uppercase tracking-[0.15em] font-bold">Keamanan Akun</h3>
+</div>
+<div class="bg-surface-container-low rounded-3xl overflow-hidden shadow-xl border border-outline-variant/10 divide-y divide-outline-variant/10" style="background-color: rgb(31, 31, 31);">
+<div class="flex items-center justify-between p-5 hover:bg-surface-container/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">lock_open</span>
+</div>
+<div>
+<p class="font-title-md text-[17px] leading-tight text-on-surface">Ubah Kata Sandi</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Pembaruan rutin disarankan</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/50">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div>
+<p class="font-title-md text-[17px] leading-tight text-on-surface">Autentikasi 2 Faktor</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Amankan login Anda</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-12 h-7 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-on-primary after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-on-surface-variant after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Notifications Section -->
+<section>
+<div class="flex items-center gap-2 px-2 mb-4">
+<span class="material-symbols-outlined text-primary text-xl">notifications_active</span>
+<h3 class="font-label-caps text-xs text-on-surface-variant uppercase tracking-[0.15em] font-bold">Notifikasi &amp; Pengingat</h3>
+</div>
+<div class="bg-surface-container-low rounded-3xl overflow-hidden shadow-xl border border-outline-variant/10" style="background-color: rgb(31, 31, 31);">
+<!-- Daily Summary Toggle -->
+<div class="flex items-center justify-between p-5 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<div>
+<p class="font-title-md text-[17px] leading-tight text-on-surface">Ringkasan Harian</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Tiap hari jam 20:00 WIB</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-12 h-7 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-on-primary after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-on-surface-variant after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary shadow-inner"></div>
+</label>
+</div>
+<!-- Custom Reminders -->
+<div class="p-6 bg-surface-container/30">
+<div class="flex items-center justify-between mb-4">
+<p class="font-title-md text-on-surface">Pengingat Kustom</p>
+<button class="text-primary font-bold text-xs bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
+                                + TAMBAH
+                            </button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-2xl border border-outline-variant/10 shadow-md group">
+<div class="flex items-center gap-3">
+<div class="w-2 h-10 bg-primary/40 rounded-full"></div>
+<div>
+<p class="font-body-lg font-semibold text-on-surface">Pengingat Gajian</p>
+<p class="font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">event</span> Tgl 25 • 09:00 AM
+                                        </p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-1.5 hover:bg-surface-container-highest/40 rounded-lg">more_vert</button>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low/40 rounded-2xl border border-outline-variant/5 opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-2 h-10 bg-outline-variant/40 rounded-full"></div>
+<div>
+<p class="font-body-lg font-semibold text-on-surface">Bayar Listrik</p>
+<p class="font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">event</span> Tgl 05 • 10:00 AM
+                                        </p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-1.5 hover:bg-surface-container-highest/40 rounded-lg">more_vert</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Export Data Section -->
+<section>
+<div class="flex items-center justify-between px-2 mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">folder_zip</span>
+<h3 class="font-label-caps text-xs text-on-surface-variant uppercase tracking-[0.15em] font-bold">Ekspor Data</h3>
+</div>
+<span class="bg-primary/90 text-on-primary text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Premium Only</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-surface-container-low p-5 rounded-3xl shadow-xl border border-outline-variant/10 flex flex-col items-center gap-4 hover:bg-surface-container-highest/30 transition-all group active:scale-95" style="background-color: rgb(31, 31, 31);">
+<div class="w-14 h-14 rounded-2xl bg-primary-container/30 flex items-center justify-center text-primary ring-4 ring-primary-container/10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">description</span>
+</div>
+<div class="text-center">
+<p class="font-title-md text-on-surface">Excel</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Format .xlsx</p>
+</div>
+</button>
+<button class="bg-surface-container-low p-5 rounded-3xl shadow-xl border border-outline-variant/10 flex flex-col items-center gap-4 hover:bg-surface-container-highest/30 transition-all group active:scale-95" style="background-color: rgb(31, 31, 31);">
+<div class="w-14 h-14 rounded-2xl bg-error-container/20 flex items-center justify-center text-error ring-4 ring-error-container/10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+</div>
+<div class="text-center">
+<p class="font-title-md text-on-surface">PDF</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">Format .pdf</p>
+</div>
+</button>
+</div>
+</section>
+<!-- Logout Link -->
+<div class="pt-4 flex justify-center">
+<button class="flex items-center gap-2 text-error font-semibold px-8 py-4 rounded-2xl hover:bg-error/10 transition-colors border border-transparent hover:border-error/20">
+<span class="material-symbols-outlined">logout</span>
+                    Keluar dari Akun
+                </button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface-container-low/95 backdrop-blur-lg border-t border-outline-variant/10 shadow-[0_-8px_30px_rgb(0,0,0,0.3)] rounded-t-[2rem]"><a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 w-16" href="#"><span class="material-symbols-outlined text-2xl">home</span><span class="font-label-caps text-[10px]">Beranda</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 w-16" href="#"><span class="material-symbols-outlined text-2xl">description</span><span class="font-label-caps text-[10px]">Catatan</span></a><div class="relative -mt-12"><button class="w-16 h-16 bg-primary-container text-on-primary rounded-full shadow-2xl flex items-center justify-center border-4 border-background active:scale-90 transition-transform"><span class="material-symbols-outlined text-3xl">add</span></button></div><a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 w-16" href="#"><span class="material-symbols-outlined text-2xl">bar_chart</span><span class="font-label-caps text-[10px]">Grafik</span></a><a class="flex flex-col items-center justify-center text-primary gap-1 w-16 relative" href="#"><div class="absolute -top-1 w-1.5 h-1.5 bg-primary rounded-full"></div><span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">person</span><span class="font-label-caps text-[10px] font-bold">Profil</span></a></nav>
+
+
+</body></html>

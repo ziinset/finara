@@ -54,68 +54,55 @@ class CatatanDetailModal extends StatelessWidget {
               // ── Drag Handle ──
               Center(
                 child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 20),
+                  width: 60,
+                  height: 6,
+                  margin: const EdgeInsets.only(bottom: 24),
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
 
-              // ── Header: Icon + Tipe Badge ──
-              Row(
+              // ── Header: Judul + Badge tengah (tanpa icon) ──
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Ikon kategori
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: catatan.kategoriColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(
-                      catatan.kategoriIcon,
-                      color: catatan.kategoriColor,
-                      size: 26,
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      catatan.nama,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF2D2D2D),
+                        height: 1.3,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          catatan.nama,
-                          style: const TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF2D2D2D),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: catatan.tipeColor.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            catatan.tipeLabel,
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: catatan.tipeColor,
-                            ),
-                          ),
-                        ),
-                      ],
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: catatan.tipeColor.withValues(alpha: 0.10),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      catatan.tipeLabel,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: catatan.tipeColor,
+                      ),
                     ),
                   ),
                 ],
@@ -126,40 +113,80 @@ class CatatanDetailModal extends StatelessWidget {
               // ── Nominal ──
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 20,
+                ),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      catatan.tipeColor.withValues(alpha: 0.08),
-                      catatan.tipeColor.withValues(alpha: 0.03),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: const Color(0xFFF8F9FA), // abu abu pastel
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: catatan.tipeColor.withValues(alpha: 0.12),
-                  ),
                 ),
                 child: Column(
                   children: [
+                    // Lingkaran gradasi: terang di atas → gelap di bawah
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: catatan.tipe == TipeCatatan.pengeluaran
+                              ? [
+                                  const Color(0xFFFFEBEE), // terang atas
+                                  const Color(0xFFFFCDD2), // gelap bawah
+                                ]
+                              : [
+                                  const Color(0xFFE8F5E9), // terang atas
+                                  const Color(0xFFC8E6C9), // gelap bawah
+                                ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      child: Center(
+                        child: ShaderMask(
+                          shaderCallback: (bounds) => LinearGradient(
+                            colors: catatan.tipe == TipeCatatan.pengeluaran
+                                ? [
+                                    const Color(0xFFEF9A9A), // terang atas
+                                    const Color(0xFFC62828), // gelap bawah
+                                  ]
+                                : [
+                                    const Color(0xFF81C784), // terang atas
+                                    const Color(0xFF2E7D32), // gelap bawah
+                                  ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ).createShader(bounds),
+                          blendMode: BlendMode.srcIn,
+                          child: Icon(
+                            catatan.tipe == TipeCatatan.pengeluaran
+                                ? Icons.arrow_downward_rounded
+                                : Icons.arrow_upward_rounded,
+                            size: 26,
+                            color: Colors.white, // diperlukan agar ShaderMask bekerja
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Text(
                       'Nominal',
                       style: TextStyle(
                         fontFamily: 'Poppins',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
                         color: Colors.grey[600],
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '${catatan.nominalPrefix} ${currencyFormat.format(catatan.nominal)}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Poppins',
-                        fontSize: 28,
+                        fontSize: 26,
                         fontWeight: FontWeight.w700,
-                        color: catatan.tipeColor,
+                        color: Color(0xFF111111),
                       ),
                     ),
                   ],
@@ -168,24 +195,33 @@ class CatatanDetailModal extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // ── Detail fields ──
+              // ── Judul section detail ──
+              const Text(
+                'Detail Catatan',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF111111),
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // ── Detail fields (tanpa icon) ──
               _buildDetailRow(
-                icon: Icons.category_outlined,
                 label: 'Kategori',
                 value: catatan.kategori,
               ),
               _buildDetailRow(
-                icon: Icons.calendar_today_outlined,
                 label: 'Tanggal',
                 value: dateFormat.format(catatan.tanggal),
               ),
               _buildDetailRow(
-                icon: Icons.access_time_outlined,
                 label: 'Waktu',
                 value: timeFormat.format(catatan.tanggal),
               ),
 
-              // ── Catatan / Notes ──
+              // ── Catatan / Notes (tanpa icon) ──
               if (catatan.catatan != null && catatan.catatan!.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -198,24 +234,14 @@ class CatatanDetailModal extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.sticky_note_2_outlined,
-                            size: 16,
-                            color: Colors.grey[600],
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Catatan',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
+                      const Text(
+                        'Catatan',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF888888),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -238,33 +264,8 @@ class CatatanDetailModal extends StatelessWidget {
               // ── Action Buttons ──
               Row(
                 children: [
-                  // Hapus button
+                  // Edit button (besar, kiri)
                   Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: OutlinedButton.icon(
-                        onPressed: () => _showDeleteConfirmation(context),
-                        icon: const Icon(Icons.delete_outline, size: 20),
-                        label: const Text('Hapus'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFFE53935),
-                          side: const BorderSide(color: Color(0xFFE53935), width: 1.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          textStyle: const TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  // Edit button
-                  Expanded(
-                    flex: 2,
                     child: SizedBox(
                       height: 52,
                       child: ElevatedButton.icon(
@@ -290,6 +291,27 @@ class CatatanDetailModal extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 12),
+                  // Hapus button (kotak icon-only, kanan)
+                  SizedBox(
+                    width: 52,
+                    height: 52,
+                    child: OutlinedButton(
+                      onPressed: () => _showDeleteConfirmation(context),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFFE53935),
+                        padding: EdgeInsets.zero,
+                        side: const BorderSide(
+                          color: Color(0xFFE53935),
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: const Icon(Icons.delete_outline, size: 22),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -300,33 +322,41 @@ class CatatanDetailModal extends StatelessWidget {
   }
 
   Widget _buildDetailRow({
-    required IconData icon,
     required String label,
     required String value,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, size: 18, color: Colors.grey[500]),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey[500],
+          // Label (kiri)
+          Expanded(
+            flex: 4,
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF9E9E9E),
+              ),
             ),
           ),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF2D2D2D),
+          // Value (kanan)
+          Expanded(
+            flex: 6,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF2D2D2D),
+              ),
             ),
           ),
         ],

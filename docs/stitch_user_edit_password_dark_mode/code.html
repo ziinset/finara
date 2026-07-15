@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ubah Kata Sandi - Terra Finance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#b3d0b7",
+                        "on-primary": "#1e3726",
+                        "primary-container": "#354e3c",
+                        "on-primary-container": "#ceeccf",
+                        "secondary": "#dfc757",
+                        "on-secondary": "#3a3000",
+                        "secondary-container": "#534600",
+                        "on-secondary-container": "#fdec71",
+                        "tertiary": "#bfc9bc",
+                        "on-tertiary": "#293329",
+                        "tertiary-container": "#3f493f",
+                        "on-tertiary-container": "#dbe5d8",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "background": "#101411",
+                        "on-background": "#e1e3de",
+                        "surface": "#101411",
+                        "on-surface": "#e1e3de",
+                        "surface-variant": "#424842",
+                        "on-surface-variant": "#c2c8c1",
+                        "outline": "#8c938c",
+                        "outline-variant": "#424842",
+                        "inverse-surface": "#e1e3de",
+                        "inverse-on-surface": "#2d312e",
+                        "inverse-primary": "#4c6652",
+                        "surface-dim": "#101411",
+                        "surface-bright": "#363a37",
+                        "surface-container-lowest": "#0b0f0c",
+                        "surface-container-low": "#181d19",
+                        "surface-container": "#1c211d",
+                        "surface-container-high": "#262b27",
+                        "surface-container-highest": "#313632"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "20px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "container-padding-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #101411;
+            color: #e1e3de;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-card-shadow {
+            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #b3d0b7;
+            box-shadow: 0 0 0 2px rgba(179, 208, 183, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-lg text-body-lg bg-surface text-on-surface">
+<!-- Header / TopAppBar -->
+<header class="sticky top-0 z-50 bg-surface flex justify-between items-center px-container-padding-mobile py-stack-md w-full">
+<button class="p-2 -ml-2 hover:bg-surface-container-high rounded-full transition-colors active:scale-90 transition-transform" onclick="window.history.back()">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">Ubah Kata Sandi</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="flex-grow container mx-auto max-w-lg px-container-padding-mobile pt-stack-lg pb-32">
+<!-- Visual Illustration/Decoration -->
+<div class="mb-stack-lg flex justify-center">
+<div class="relative w-32 h-32 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">lock_reset</span>
+<div class="absolute -bottom-1 -right-1 w-10 h-10 bg-surface-container-highest rounded-full soft-card-shadow flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+</div>
+</div>
+<!-- Form Container -->
+<section class="bg-surface-container-low rounded-[32px] p-8 soft-card-shadow border border-outline-variant/50">
+<div class="mb-8">
+<h2 class="font-title-md text-title-md text-primary mb-2">Amankan Akun Anda</h2>
+<p class="text-on-surface-variant text-body-sm">Perbarui kata sandi Anda secara berkala untuk menjaga keamanan data finansial Anda di Terra Finance.</p>
+</div>
+<form class="space-y-6" id="passwordForm">
+<!-- Password Lama -->
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" for="old_password">Password Lama</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">key</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-highest/50 border border-outline-variant rounded-2xl font-body-lg text-on-surface input-focus-ring transition-all placeholder:text-on-surface-variant/50" id="old_password" placeholder="Masukkan password saat ini" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePassword('old_password', this)" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Password Baru -->
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" for="new_password">Password Baru</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-highest/50 border border-outline-variant rounded-2xl font-body-lg text-on-surface input-focus-ring transition-all placeholder:text-on-surface-variant/50" id="new_password" placeholder="Masukkan password baru" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePassword('new_password', this)" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Konfirmasi Password Baru -->
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" for="confirm_password">Konfirmasi Password Baru</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">verified_user</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-highest/50 border border-outline-variant rounded-2xl font-body-lg text-on-surface input-focus-ring transition-all placeholder:text-on-surface-variant/50" id="confirm_password" placeholder="Ulangi password baru" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePassword('confirm_password', this)" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Validation Note -->
+<div class="flex items-start gap-3 p-4 bg-primary-container/20 rounded-xl border border-primary/10">
+<span class="material-symbols-outlined text-primary text-xl">info</span>
+<p class="text-on-primary-container text-body-sm leading-relaxed">
+                        Minimal 8 karakter, kombinasi huruf dan angka.
+                    </p>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary rounded-2xl font-title-md text-title-md hover:brightness-110 active:scale-[0.98] transition-all soft-card-shadow mt-4 font-semibold" type="submit">
+                    Simpan Password
+                </button>
+</form>
+</section>
+<!-- Aesthetic Imagery Footer -->
+<div class="mt-stack-lg rounded-[32px] overflow-hidden relative h-48 soft-card-shadow group border border-outline-variant/30">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80" data-alt="A peaceful and high-end macro shot of organic textures like smooth stones and soft linen fabrics in cream and deep green tones. The lighting is ethereal and soft, creating a sense of financial serenity and grounded security. Minimalist aesthetic, ultra-high resolution, premium branding style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDrzVvuMwQXLpmtNwutrxrIRovIb34_WKDgc1F4AKj_htDfGxohiqP7LYmwlL1yJZRgHgszE53szOswEiwTcX869L9-2pQF-o57Y-FfjKxxMDmcGJT5VvU2-gwx8nRmbUGrk2uU6TR_aCi7xDFoL9I_lXi51WzIWr_t5xP2XwpoYy-2iVgbTdqHoxZwNrZLl4s0AwWAVo0xJ5ntB_PCKt3YM3y44U2RlaPHoD2ZZ3Phs28fnU42WzaX5F_Ffkhw7ETmdFUZTnydq8o')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent flex items-end p-6">
+<p class="text-on-surface font-medium italic">"Keamanan Anda adalah prioritas utama kami."</p>
+</div>
+</div>
+</main>
+<script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = `<span class="flex items-center justify-center gap-2">
+                <svg class="animate-spin h-5 w-5 text-on-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                Menyimpan...
+            </span>`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = `<span class="flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    Berhasil Diperbarui
+                </span>`;
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-primary');
+                    btn.classList.remove('bg-green-600');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body></html>

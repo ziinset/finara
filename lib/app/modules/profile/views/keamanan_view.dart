@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'edit_password_view.dart';
 
 class KeamananView extends StatefulWidget {
   const KeamananView({super.key});
@@ -14,7 +15,7 @@ class _KeamananViewState extends State<KeamananView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEBEBE0),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Keamanan',
@@ -41,7 +42,7 @@ class _KeamananViewState extends State<KeamananView> {
                 _buildMenuItem(
                   icon: Icons.lock_reset,
                   title: 'Set / Ubah Password',
-                  onTap: () => _showChangePasswordDialog(context),
+                  onTap: () => Get.to(() => const EditPasswordView()),
                 ),
               ]),
               const SizedBox(height: 24),
@@ -213,78 +214,4 @@ class _KeamananViewState extends State<KeamananView> {
     );
   }
 
-  void _showChangePasswordDialog(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 20, right: 20, top: 20,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Ubah Password',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A3933),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildPasswordInput('Password Lama'),
-              const SizedBox(height: 12),
-              _buildPasswordInput('Password Baru'),
-              const SizedBox(height: 12),
-              _buildPasswordInput('Konfirmasi Password Baru'),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.back();
-                    Get.snackbar('Berhasil', 'Password berhasil diubah', backgroundColor: Colors.white);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3A6043),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  child: const Text('Simpan Password Baru', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPasswordInput(String label) {
-    return TextFormField(
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: label,
-        filled: true,
-        fillColor: const Color(0xFFEBEBE0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        suffixIcon: const Icon(Icons.visibility_off, color: Colors.grey),
-      ),
-    );
-  }
 }

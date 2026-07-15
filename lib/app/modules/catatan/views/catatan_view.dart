@@ -13,9 +13,9 @@ class CatatanView extends GetView<CatatanController> {
   // ─── Design Tokens ───
   static const Color _bgColor = Color(0xFFEBEBE0);
   static const Color _primaryGreen = Color(0xFF3A6043);
-  static const Color _incomeColor = Color(0xFF4CAF50);
-  static const Color _expenseColor = Color(0xFFE53935);
-  static const Color _cardBg = Colors.white;
+
+  // ─── Icon bg: abu-abu muda ───
+  static const Color _iconBg = Color(0xFFF0F0F0);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class CatatanView extends GetView<CatatanController> {
                           decoration: BoxDecoration(
                             color: controller.isFilterActive
                                 ? _primaryGreen.withValues(alpha: 0.12)
-                                : _cardBg,
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: controller.isFilterActive
@@ -120,7 +120,7 @@ class CatatanView extends GetView<CatatanController> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _cardBg,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -191,7 +191,7 @@ class CatatanView extends GetView<CatatanController> {
                             TipeCatatan.pemasukan,
                         onTap: () =>
                             controller.setTipeFilter(TipeCatatan.pemasukan),
-                        color: _incomeColor,
+                        color: const Color(0xFF4CAF50),
                       ),
                       const SizedBox(width: 8),
                       _buildTipeChip(
@@ -200,7 +200,7 @@ class CatatanView extends GetView<CatatanController> {
                             TipeCatatan.pengeluaran,
                         onTap: () =>
                             controller.setTipeFilter(TipeCatatan.pengeluaran),
-                        color: _expenseColor,
+                        color: const Color(0xFFE53935),
                       ),
                     ],
                   )),
@@ -293,121 +293,243 @@ class CatatanView extends GetView<CatatanController> {
     return count;
   }
 
-  // ─── Analysis Card (like the reference image) ───
+  // ─── Insight Card (banner style, like reference top-right) ───
   Widget _buildAnalysisCard() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF3A6043),
-            Color(0xFF2E4A34),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: _primaryGreen.withValues(alpha: 0.25),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // ── Chart graphic decoration (right side) ──
-          Positioned(
-            right: -8,
-            top: -8,
-            bottom: -8,
-            child: Opacity(
-              opacity: 0.15,
-              child: const Icon(
-                Icons.show_chart,
-                size: 120,
-                color: Colors.white,
-              ),
+    return Obx(() {
+      final totalPemasukan = controller.totalPemasukan;
+      final totalPengeluaran = controller.totalPengeluaran;
+      final selisih = totalPemasukan - totalPengeluaran;
+      final isPositive = selisih >= 0;
+
+      return Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF3A6043).withValues(alpha: 0.18),
+              blurRadius: 18,
+              offset: const Offset(0, 6),
             ),
-          ),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
             children: [
-              // Label
-              Row(
-                children: [
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFFFD54F),
-                      shape: BoxShape.circle,
-                    ),
+              // ── Background gradient ──
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF2B5240),
+                      Color(0xFF3D7055),
+                      Color(0xFF4A8A64),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  const SizedBox(width: 6),
-                  const Text(
-                    'ANALISIS MINGGU INI',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                      color: Color(0xFFFFD54F),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-
-              // Main text
-              const Text(
-                'Pengeluaran Anda turun 12%',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  height: 1.3,
                 ),
               ),
-              const SizedBox(height: 14),
 
-              // CTA Button
-              GestureDetector(
-                onTap: () {
-                  // Navigate to statistik/chart
-                },
+              // ── Decorative circles ──
+              Positioned(
+                right: -30,
+                top: -30,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
+                  width: 130,
+                  height: 130,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.07),
                   ),
-                  child: const Text(
-                    'Lihat Laporan Lengkap',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                ),
+              ),
+              Positioned(
+                right: 20,
+                bottom: -40,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.05),
+                  ),
+                ),
+              ),
+
+              // ── Large icon illustration ──
+              Positioned(
+                right: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.20,
+                    child: Icon(
+                      Icons.insert_chart_outlined_rounded,
+                      size: 100,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
+
+              // ── Content ──
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Tag label
+                    Row(
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFFFD54F),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Text(
+                          'RINGKASAN CATATAN',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.4,
+                            color: Color(0xFFFFD54F),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Headline
+                    Text(
+                      isPositive
+                          ? 'Keuangan kamu sehat! 💚'
+                          : 'Pengeluaran melebihi pemasukan',
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        height: 1.3,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+
+                    // Stats row
+                    Row(
+                      children: [
+                        _buildInsightStat(
+                          label: 'Pemasukan',
+                          value: NumberFormat.compactCurrency(
+                            locale: 'id_ID',
+                            symbol: 'Rp ',
+                            decimalDigits: 0,
+                          ).format(totalPemasukan),
+                          icon: Icons.arrow_upward_rounded,
+                          iconColor: const Color(0xFF69F0AE),
+                        ),
+                        const SizedBox(width: 16),
+                        _buildInsightStat(
+                          label: 'Pengeluaran',
+                          value: NumberFormat.compactCurrency(
+                            locale: 'id_ID',
+                            symbol: 'Rp ',
+                            decimalDigits: 0,
+                          ).format(totalPengeluaran),
+                          icon: Icons.arrow_downward_rounded,
+                          iconColor: const Color(0xFFFF8A80),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+
+                    // CTA Button
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 9,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: const Text(
+                          'Lihat Laporan Lengkap →',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+      );
+    });
+  }
+
+  // ── Insight stat chip inside card ──
+  Widget _buildInsightStat({
+    required String label,
+    required String value,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return Row(
+      children: [
+        Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: iconColor.withValues(alpha: 0.18),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Icon(icon, size: 13, color: iconColor),
+        ),
+        const SizedBox(width: 6),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
+            ),
+            Text(
+              value,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -441,7 +563,7 @@ class CatatanView extends GetView<CatatanController> {
     );
   }
 
-  // ─── Catatan Item Card ───
+  // ─── Catatan Item Card (list style with thin border & tap highlight) ───
   Widget _buildCatatanItem(
     BuildContext context,
     CatatanModel catatan,
@@ -450,82 +572,68 @@ class CatatanView extends GetView<CatatanController> {
   }) {
     final timeFormat = DateFormat('HH:mm', 'id_ID');
 
-    return GestureDetector(
+    return _TappableCatatanCard(
       onTap: () => CatatanDetailModal.show(context, catatan),
-      child: Container(
-        margin: EdgeInsets.only(bottom: isLast ? 16 : 8),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: _cardBg,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+      isLast: isLast,
+      child: Row(
+        children: [
+          // ── Category Icon — abu-abu muda box, warna icon tebal ──
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: _iconBg,
+              borderRadius: BorderRadius.circular(12),
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // ── Category Icon ──
-            Container(
-              width: 46,
-              height: 46,
-              decoration: BoxDecoration(
-                color: catatan.kategoriColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Icon(
-                catatan.kategoriIcon,
-                color: catatan.kategoriColor,
-                size: 22,
-              ),
+            child: Icon(
+              catatan.kategoriIcon,
+              color: catatan.kategoriColor,
+              size: 22,
             ),
-            const SizedBox(width: 14),
+          ),
+          const SizedBox(width: 14),
 
-            // ── Title + Subtitle ──
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    catatan.nama,
-                    style: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF2D2D2D),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+          // ── Title + Subtitle ──
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  catatan.nama,
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF2D2D2D),
                   ),
-                  const SizedBox(height: 3),
-                  Text(
-                    '${catatan.kategori} · ${timeFormat.format(catatan.tanggal)}',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey[500],
-                    ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${catatan.kategori} · ${timeFormat.format(catatan.tanggal)}',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey[500],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
 
-            // ── Nominal ──
-            Text(
-              '${catatan.nominalPrefix} ${currencyFormat.format(catatan.nominal)}',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: catatan.tipeColor,
-              ),
+          // ── Nominal ──
+          Text(
+            '${catatan.nominalPrefix} ${currencyFormat.format(catatan.nominal)}',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: catatan.tipeColor,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -545,7 +653,7 @@ class CatatanView extends GetView<CatatanController> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? chipColor.withValues(alpha: 0.12) : _cardBg,
+          color: isSelected ? chipColor.withValues(alpha: 0.12) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? chipColor : Colors.grey[300]!,
@@ -743,6 +851,71 @@ class CatatanView extends GetView<CatatanController> {
           ),
         );
       },
+    );
+  }
+}
+
+// ─── Stateful wrapper: thin border, green border on tap ───
+class _TappableCatatanCard extends StatefulWidget {
+  final VoidCallback onTap;
+  final Widget child;
+  final bool isLast;
+
+  const _TappableCatatanCard({
+    required this.onTap,
+    required this.child,
+    this.isLast = false,
+  });
+
+  @override
+  State<_TappableCatatanCard> createState() => _TappableCatatanCardState();
+}
+
+class _TappableCatatanCardState extends State<_TappableCatatanCard>
+    with SingleTickerProviderStateMixin {
+  bool _pressed = false;
+  bool _hovered = false;
+
+  static const Color _primaryGreen = Color(0xFF3A6043);
+
+  void _onTapDown(TapDownDetails _) => setState(() => _pressed = true);
+  void _onTapUp(TapUpDetails _) {
+    setState(() => _pressed = false);
+    widget.onTap();
+  }
+  void _onTapCancel() => setState(() => _pressed = false);
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = _pressed || _hovered;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTapDown: _onTapDown,
+        onTapUp: _onTapUp,
+        onTapCancel: _onTapCancel,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          margin: EdgeInsets.only(bottom: widget.isLast ? 16 : 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          decoration: BoxDecoration(
+            color: isActive
+                ? _primaryGreen.withValues(alpha: 0.04)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isActive
+                  ? _primaryGreen
+                  : const Color(0xFFE0E0E0),
+              width: isActive ? 1.6 : 1.0,
+            ),
+          ),
+          child: widget.child,
+        ),
+      ),
     );
   }
 }

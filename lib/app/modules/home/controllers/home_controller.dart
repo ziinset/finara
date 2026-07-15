@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:get/get.dart';
+import 'package:finara/app/data/models/wallet_model.dart';
 
 class HomeController extends GetxController {
   var currentIndex = 0.obs;
@@ -8,9 +9,25 @@ class HomeController extends GetxController {
   // Dashboard Reactive States
   var isLoading = false.obs;
   var selectedPeriod = 'Bulan Ini'.obs;
-  var selectedWallet = 'Main account'.obs;
+  
+  // Wallet state
+  var selectedWalletName = 'Main account'.obs;
+  var activeWalletBalance = 114050000.0.obs;
+  
+  void updateActiveWallet(WalletModel wallet) {
+    selectedWalletName.value = wallet.name;
+    activeWalletBalance.value = wallet.balance;
+    
+    // In a real app, we would fetch transaction data for this specific wallet here.
+    // For now, we update the balance in the mock data.
+    if (periodData[selectedPeriod.value] != null) {
+       periodData[selectedPeriod.value]!['balance'] = wallet.balance;
+    }
+  }
+
   var isCardExpanded = true.obs;
   var activeQuoteIndex = 0.obs;
+
 
   final List<String> quotes = [
     "Amankan masa depanmu! Setiap rupiah yang kamu sisihkan hari ini adalah batu bata untuk ketenangan hidupmu esok hari.",

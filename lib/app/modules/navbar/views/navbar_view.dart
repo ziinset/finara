@@ -5,6 +5,7 @@ import '../../catatan/views/catatan_view.dart';
 import '../../statistik/views/statistik_view.dart';
 import '../../profile/views/profile_view.dart';
 import '../../home/views/home_dashboard_view.dart';
+import '../../../routes/app_pages.dart';
 
 class NavbarView extends GetView<HomeController> {
   const NavbarView({super.key});
@@ -117,8 +118,8 @@ class NavbarView extends GetView<HomeController> {
         Positioned(
           top: -9, // Lowered to sit inside the notch
           child: GestureDetector(
-            onTap: () => controller.toggleFab(),
-            child: Obx(() => Container(
+            onTap: () => Get.toNamed(Routes.CREATE_CATATAN),
+            child: Container(
               width: 58,
               height: 58,
               decoration: BoxDecoration(
@@ -136,12 +137,8 @@ class NavbarView extends GetView<HomeController> {
                   ),
                 ],
               ),
-              child: AnimatedRotation(
-                turns: controller.isFabOpen.value ? 0.125 : 0.0,
-                duration: const Duration(milliseconds: 250),
-                child: const Icon(Icons.add, color: Colors.white, size: 30),
-              ),
-            )),
+              child: const Icon(Icons.add, color: Colors.white, size: 30),
+            ),
           ),
         ),
       ],

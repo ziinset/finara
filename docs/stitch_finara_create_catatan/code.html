@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="id" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-secondary-fixed-variant": "#474747",
+                            "outline-variant": "#bfcab9",
+                            "on-primary": "#ffffff",
+                            "tertiary-container": "#358438",
+                            "error": "#ba1a1a",
+                            "on-tertiary-container": "#f7fff1",
+                            "on-primary-fixed-variant": "#005313",
+                            "surface-container-high": "#2a2d2a",
+                            "on-secondary": "#ffffff",
+                            "on-primary-container": "#f7fff1",
+                            "on-surface-variant": "#c1c9be",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "surface-dim": "#111411",
+                            "tertiary-fixed-dim": "#88d982",
+                            "secondary-fixed-dim": "#c8c6c6",
+                            "on-error": "#ffffff",
+                            "primary-container": "#268630",
+                            "on-tertiary": "#ffffff",
+                            "secondary-fixed": "#e4e2e1",
+                            "secondary-container": "#3f413f",
+                            "on-error-container": "#93000a",
+                            "inverse-on-surface": "#f1f1f1",
+                            "surface-container-highest": "#333632",
+                            "on-primary-fixed": "#002204",
+                            "on-tertiary-fixed": "#002204",
+                            "primary-fixed": "#98f994",
+                            "surface": "#1a1c1a",
+                            "error-container": "#ffdad6",
+                            "outline": "#8b9389",
+                            "surface-tint": "#006e1c",
+                            "primary-fixed-dim": "#7ddc7a",
+                            "tertiary-fixed": "#a3f69c",
+                            "surface-container-lowest": "#0c0f0c",
+                            "tertiary": "#186a22",
+                            "primary": "#7ddc7a",
+                            "surface-variant": "#414941",
+                            "surface-container-low": "#1d201d",
+                            "inverse-surface": "#e2e3e1",
+                            "surface-bright": "#373a36",
+                            "inverse-primary": "#006e1c",
+                            "background": "#1a1c1a",
+                            "on-surface": "#e2e3e1",
+                            "surface-container": "#212521",
+                            "secondary": "#c8c6c6",
+                            "on-background": "#e2e3e1",
+                            "on-secondary-container": "#d7d7d7",
+                            "on-tertiary-fixed-variant": "#005312"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                        },
+                        "spacing": {
+                            "md": "16px",
+                            "margin-desktop": "48px",
+                            "lg": "24px",
+                            "sm": "12px",
+                            "gutter": "16px",
+                            "margin-mobile": "16px",
+                            "xs": "4px",
+                            "xl": "32px",
+                            "base": "8px"
+                        },
+                        "fontFamily": {
+                            "body-md": ["Manrope"],
+                            "numeral-xl": ["Manrope"],
+                            "display-lg": ["Manrope"],
+                            "title-md": ["Manrope"],
+                            "headline-lg": ["Manrope"],
+                            "headline-lg-mobile": ["Manrope"],
+                            "body-lg": ["Manrope"],
+                            "label-md": ["Manrope"]
+                        },
+                        "fontSize": {
+                            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                            "numeral-xl": ["36px", {"lineHeight": "44px", "fontWeight": "700"}],
+                            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                        }
+                    },
+                },
+            }
+        } catch (_e) {}
+    }catch(_e){}</script></head><body class="flex flex-col min-h-screen text-on-surface bg-background">
+
+    <!-- TopAppBar -->
+    <header class="flex items-center w-full px-margin-mobile h-16 bg-surface border-b border-surface-container sticky top-0 z-50">
+        <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-on-surface" data-icon="arrow_back" data-original-icon="arrow_back">arrow_back</span>
+        </button>
+        <h1 class="ml-4 font-title-md text-title-md font-bold text-on-surface">Buat Catatan</h1>
+    </header>
+
+    <!-- Content Canvas -->
+    <main class="flex-1 overflow-y-auto px-margin-mobile pb-32">
+        <div class="max-w-[600px] mx-auto mt-6">
+            
+            <!-- Tipe Catatan (Segmented Control) -->
+            <div class="mb-8">
+                <label class="block font-label-md text-label-md text-on-surface-variant mb-3">TIPE CATATAN</label>
+                <div class="flex bg-surface-container-highest rounded-lg p-1 relative">
+                    <button id="btn-pemasukan" onclick="toggleType('pemasukan')" class="flex-1 py-2 font-body-md text-body-md z-10 transition-colors text-on-surface-variant">Pemasukan</button>
+                    <button id="btn-pengeluaran" onclick="toggleType('pengeluaran')" class="flex-1 py-2 font-body-md text-body-md z-10 transition-colors text-on-primary">Pengeluaran</button>
+                    <!-- Sliding indicator -->
+                    <div id="type-indicator" class="absolute top-1 bottom-1 right-1 w-[calc(50%-4px)] bg-tertiary-container rounded-md shadow-sm transition-all duration-200"></div>
+                </div>
+            </div>
+
+            <!-- Nominal Input -->
+            <div class="mb-8 text-center">
+                <label class="block font-label-md text-label-md text-on-surface-variant mb-1">JUMLAH NOMINAL</label>
+                <div class="flex items-center justify-center border-b-2 border-outline-variant focus-within:border-primary transition-all pb-2">
+                    <span class="font-numeral-xl text-numeral-xl text-on-surface opacity-70 mr-2">Rp</span>
+                    <input type="number" placeholder="0" class="w-full bg-transparent border-none focus:ring-0 font-numeral-xl text-numeral-xl text-on-surface placeholder:text-surface-container-highest">
+                </div>
+            </div>
+
+            <!-- Kategori Grid -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Kategori</label>
+                    <button class="text-primary font-label-md text-label-md">Kelola</button>
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <!-- Categories -->
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Kuliner</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="commute">commute</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Transportasi</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer selected" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant font-bold group-[.selected]:text-on-surface">Belanja</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Kesehatan</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="theater_comedy">theater_comedy</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Hiburan</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="school">school</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Pendidikan</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="payments">payments</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Tagihan</span>
+                    </div>
+                    <div class="category-item flex flex-col items-center gap-2 group cursor-pointer" onclick="selectCategory(this)">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center group-[.selected]:bg-primary-container group-[.selected]:text-on-primary-container transition-all">
+                            <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                        </div>
+                        <span class="font-label-md text-label-md text-on-surface-variant group-[.selected]:font-bold group-[.selected]:text-on-surface">Lainnya</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nama Catatan -->
+            <div class="mb-6">
+                <label class="block font-label-md text-label-md text-on-surface-variant mb-2">NAMA CATATAN</label>
+                <input type="text" placeholder="Contoh: Makan Siang" class="w-full px-4 py-3 bg-surface-container-low border border-outline/30 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-surface transition-all placeholder:text-on-surface-variant/50">
+            </div>
+
+            <!-- Notes/Catatan -->
+            <div class="mb-6">
+                <label class="block font-label-md text-label-md text-on-surface-variant mb-2">CATATAN TAMBAHAN (OPSIONAL)</label>
+                <textarea rows="3" placeholder="Tambahkan deskripsi detail di sini..." class="w-full px-4 py-3 bg-surface-container-low border border-outline/30 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-surface transition-all resize-none placeholder:text-on-surface-variant/50"></textarea>
+            </div>
+
+            <!-- Tanggal & Waktu -->
+            
+
+        </div>
+    </main>
+
+    <!-- Footer Action -->
+    <footer class="fixed bottom-0 left-0 w-full p-4 bg-surface/90 backdrop-blur-md border-t border-surface-container flex flex-col items-center gap-4 z-50">
+        <button class="w-full max-w-[600px] h-14 bg-tertiary-container text-on-tertiary-container rounded-full font-title-md text-title-md font-bold shadow-lg shadow-black/40 hover:bg-opacity-90 active:scale-95 transition-all">
+            Simpan Catatan
+        </button>
+    </footer>
+
+    <script>
+        // Set current time to the datetime picker
+        window.onload = function() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('datetime-picker').value = now.toISOString().slice(0, 16);
+        };
+
+        function toggleType(type) {
+            const indicator = document.getElementById('type-indicator');
+            const btnPemasukan = document.getElementById('btn-pemasukan');
+            const btnPengeluaran = document.getElementById('btn-pengeluaran');
+
+            if (type === 'pemasukan') {
+                indicator.style.left = '4px';
+                indicator.style.right = 'auto';
+                btnPemasukan.classList.remove('text-on-surface-variant');
+                btnPemasukan.classList.add('text-on-primary');
+                btnPengeluaran.classList.remove('text-on-primary');
+                btnPengeluaran.classList.add('text-on-surface-variant');
+            } else {
+                indicator.style.left = 'calc(50% + 1px)';
+                indicator.style.right = '4px';
+                btnPengeluaran.classList.remove('text-on-surface-variant');
+                btnPengeluaran.classList.add('text-on-primary');
+                btnPemasukan.classList.remove('text-on-primary');
+                btnPemasukan.classList.add('text-on-surface-variant');
+            }
+        }
+
+        function selectCategory(el) {
+            // Remove selected class from all
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('selected');
+                const iconDiv = item.querySelector('div');
+                iconDiv.classList.remove('bg-primary-container', 'text-on-primary-container');
+                iconDiv.classList.add('bg-surface-container');
+                const span = item.querySelector('span:not(.material-symbols-outlined)');
+                span.classList.remove('font-bold', 'text-on-surface');
+            });
+            
+            // Add to clicked
+            el.classList.add('selected');
+            const iconDiv = el.querySelector('div');
+            iconDiv.classList.remove('bg-surface-container');
+            iconDiv.classList.add('bg-primary-container', 'text-on-primary-container');
+            const span = el.querySelector('span:not(.material-symbols-outlined)');
+            span.classList.add('font-bold', 'text-on-surface');
+        }
+    </script>
+
+</body></html>

@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/catatan/bindings/catatan_binding.dart';
 import '../modules/catatan/views/catatan_view.dart';
+import '../modules/create_catatan/bindings/create_catatan_binding.dart';
+import '../modules/create_catatan/views/create_catatan_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/navbar/views/navbar_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -52,6 +54,13 @@ class AppPages {
       name: _Paths.CATATAN,
       page: () => const CatatanView(),
       binding: CatatanBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_CATATAN,
+      page: () => const CreateCatatanView(),
+      binding: CreateCatatanBinding(),
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: _Paths.STATISTIK,

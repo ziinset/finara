@@ -28,10 +28,11 @@ class NavbarView extends GetView<HomeController> {
 
           // Floating Navbar at bottom
           Positioned(
-            left: 20,
-            right: 20,
-            bottom: 24,
-            child: Obx(() => _buildFloatingNavBar(controller.currentIndex.value)),
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).padding.bottom + 12,
+            child: Obx(
+                () => _buildFloatingNavBar(controller.currentIndex.value)),
           ),
         ],
       ),
@@ -47,7 +48,7 @@ class NavbarView extends GetView<HomeController> {
         Container(
           height: 70,
           decoration: BoxDecoration(
-            color: const Color(0xFF424242), // Lighter background
+            color: const Color(0xFF424242),
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
@@ -57,44 +58,64 @@ class NavbarView extends GetView<HomeController> {
               ),
             ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _NavItem(
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home_rounded,
-                label: 'Home',
-                index: 0,
-                currentIndex: currentIdx,
-                onTap: () => controller.changePage(0),
-              ),
-              _NavItem(
-                icon: Icons.sticky_note_2_outlined,
-                activeIcon: Icons.sticky_note_2_rounded,
-                label: 'Catatan',
-                index: 1,
-                currentIndex: currentIdx,
-                onTap: () => controller.changePage(1),
-              ),
-              // Center spacer for FAB
-              const SizedBox(width: 72),
-              _NavItem(
-                icon: Icons.bar_chart_outlined,
-                activeIcon: Icons.bar_chart_rounded,
-                label: 'Grafik',
-                index: 2,
-                currentIndex: currentIdx,
-                onTap: () => controller.changePage(2),
-              ),
-              _NavItem(
-                icon: Icons.person_outline_rounded,
-                activeIcon: Icons.person_rounded,
-                label: 'Profil',
-                index: 3,
-                currentIndex: currentIdx,
-                onTap: () => controller.changePage(3),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                // Left nav items
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _NavItem(
+                        icon: Icons.home_outlined,
+                        activeIcon: Icons.home_rounded,
+                        label: 'Home',
+                        index: 0,
+                        currentIndex: currentIdx,
+                        onTap: () => controller.changePage(0),
+                      ),
+                      _NavItem(
+                        icon: Icons.sticky_note_2_outlined,
+                        activeIcon: Icons.sticky_note_2_rounded,
+                        label: 'Catatan',
+                        index: 1,
+                        currentIndex: currentIdx,
+                        onTap: () => controller.changePage(1),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Center spacer for FAB
+                const SizedBox(width: 64),
+
+                // Right nav items
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _NavItem(
+                        icon: Icons.bar_chart_outlined,
+                        activeIcon: Icons.bar_chart_rounded,
+                        label: 'Grafik',
+                        index: 2,
+                        currentIndex: currentIdx,
+                        onTap: () => controller.changePage(2),
+                      ),
+                      _NavItem(
+                        icon: Icons.person_outline_rounded,
+                        activeIcon: Icons.person_rounded,
+                        label: 'Profil',
+                        index: 3,
+                        currentIndex: currentIdx,
+                        onTap: () => controller.changePage(3),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
 
@@ -104,9 +125,9 @@ class NavbarView extends GetView<HomeController> {
           child: Container(
             width: 84,
             height: 42,
-            decoration: BoxDecoration(
-              color: const Color(0xFF424242), // Lighter background
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: Color(0xFF424242),
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(42),
                 topRight: Radius.circular(42),
               ),
@@ -116,7 +137,7 @@ class NavbarView extends GetView<HomeController> {
 
         // Green FAB button
         Positioned(
-          top: -9, // Lowered to sit inside the notch
+          top: -9,
           child: GestureDetector(
             onTap: () => Get.toNamed(Routes.CREATE_CATATAN),
             child: Container(
@@ -167,14 +188,14 @@ class _NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelected = currentIndex == index;
     const activeColor = Color(0xFF4CAF72);
-    const inactiveColor = Color(0xFFB0B0B0); // Pastel grey
+    const inactiveColor = Color(0xFFB0B0B0);
     final color = isSelected ? activeColor : inactiveColor;
 
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
-        width: 64,
+        width: 56,
         height: 70,
         child: Stack(
           clipBehavior: Clip.none,
@@ -200,16 +221,19 @@ class _NavItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 10,
                     color: color,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.w700 : FontWeight.normal,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ],
             ),
             Positioned(
-              bottom: -4, // attached exactly to the bottom edge
+              bottom: -4,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
-                height: 4.0, // made slightly thicker
+                height: 4.0,
                 width: isSelected ? 24 : 0,
                 decoration: BoxDecoration(
                   color: activeColor,

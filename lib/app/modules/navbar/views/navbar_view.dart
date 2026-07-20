@@ -12,6 +12,9 @@ class NavbarView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    // Sync tab aktif dengan route URL saat ini
+    controller.syncIndexFromRoute();
+
     final List<Widget> pages = [
       const HomeDashboardView(),
       const CatatanView(),

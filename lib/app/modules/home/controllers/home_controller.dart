@@ -1,10 +1,30 @@
 import 'dart:math';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 import 'package:finara/app/data/models/wallet_model.dart';
 
 class HomeController extends GetxController {
   var currentIndex = 0.obs;
   var isFabOpen = false.obs;
+
+  // Mapping index ke route path
+  static const List<String> tabRoutes = [
+    Routes.HOME,
+    Routes.CATATAN,
+    Routes.STATISTIK,
+    Routes.PROFILE,
+  ];
+
+  /// Sync currentIndex berdasarkan route yang sedang aktif
+  void syncIndexFromRoute() {
+    final route = Get.currentRoute;
+    final index = tabRoutes.indexOf(route);
+    if (index >= 0) {
+      currentIndex.value = index;
+    } else {
+      currentIndex.value = 0;
+    }
+  }
 
   // Dashboard Reactive States
   var isLoading = false.obs;
@@ -166,8 +186,11 @@ class HomeController extends GetxController {
   }
 
   void changePage(int index) {
-    currentIndex.value = index;
     isFabOpen.value = false;
+    if (currentIndex.value == index) return; // sudah di tab ini
+    currentIndex.value = index;
+    final targetRoute = tabRoutes[index];
+    Get.offAllNamed(targetRoute);
   }
 
   void toggleFab() {

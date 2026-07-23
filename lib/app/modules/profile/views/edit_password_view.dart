@@ -97,6 +97,11 @@ class _EditPasswordViewState extends State<EditPasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final screenH = mq.size.height;
+    final bottomPad = mq.padding.bottom + 24.0;
+    final topPad = screenH < 680 ? 12.0 : (screenH < 780 ? 20.0 : 28.0);
+
     return Scaffold(
       backgroundColor: _C.background,
       body: SafeArea(
@@ -109,19 +114,19 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(20, 32, 20, 40),
+                padding: EdgeInsets.fromLTRB(20, topPad, 20, bottomPad),
                 child: Column(
                   children: [
                     // ─── Ilustrasi Lock ───
-                    _buildIllustration(),
-                    const SizedBox(height: 32),
+                    _buildIllustration(screenH),
+                    SizedBox(height: screenH < 680 ? 16 : 24),
 
                     // ─── Form Card ───
                     _buildFormCard(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     // ─── Footer Banner ───
-                    _buildFooterBanner(),
+                    _buildFooterBanner(screenH),
                   ],
                 ),
               ),
@@ -136,89 +141,82 @@ class _EditPasswordViewState extends State<EditPasswordView> {
   Widget _buildAppBar() {
     return Container(
       color: _C.surface,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Tombol Kembali
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.transparent,
-              ),
-              child: const Icon(
-                Icons.arrow_back_rounded,
-                color: _C.onSurface,
-                size: 24,
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: _C.onSurfaceVariant,
+              size: 20,
+            ),
+          ),
+          const Expanded(
+            child: Text(
+              'Ubah Kata Sandi',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: _C.primary,
               ),
             ),
           ),
-
-          // Title
-          const Text(
-            'Ubah Kata Sandi',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              color: _C.primary,
-            ),
-          ),
-
           // Spacer untuk centering
-          const SizedBox(width: 40),
+          const SizedBox(width: 48),
         ],
       ),
     );
   }
 
   // ─── Ilustrasi Lock ──────────────────────────────────────────────────────────
-  Widget _buildIllustration() {
+  Widget _buildIllustration(double screenH) {
+    final circleSize = screenH < 680 ? 72.0 : (screenH < 780 ? 80.0 : 88.0);
+    final iconSize   = circleSize * 0.44;
+    final badgeSize  = circleSize * 0.32;
+    final badgeIcon  = badgeSize * 0.55;
     return Stack(
       alignment: Alignment.center,
       children: [
         // Lingkaran utama
         Container(
-          width: 128,
-          height: 128,
+          width: circleSize,
+          height: circleSize,
           decoration: BoxDecoration(
-            // primary-container/20 — sesuai HTML: bg-primary-container/20
             color: _C.primaryContainer.withValues(alpha: 0.20),
             shape: BoxShape.circle,
           ),
-          child: const Icon(
+          child: Icon(
             Icons.lock_reset_rounded,
             color: _C.primary,
-            size: 56,
+            size: iconSize,
           ),
         ),
-
         // Badge shield kecil di pojok kanan bawah
         Positioned(
-          bottom: 2,
-          right: 2,
+          bottom: 0,
+          right: 0,
           child: Container(
-            width: 40,
-            height: 40,
+            width: badgeSize,
+            height: badgeSize,
             decoration: BoxDecoration(
               color: _C.surfaceContHighest,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.40),
-                  blurRadius: 24,
-                  offset: const Offset(0, 4),
+                  color: Colors.black.withValues(alpha: 0.30),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.shield_rounded,
               color: _C.secondary,
-              size: 22,
+              size: badgeIcon,
             ),
           ),
         ),
@@ -229,19 +227,18 @@ class _EditPasswordViewState extends State<EditPasswordView> {
   // ─── Form Card ───────────────────────────────────────────────────────────────
   Widget _buildFormCard() {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // surface-container-low
         color: _C.surfaceContLow,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: _C.outlineVariant.withValues(alpha: 0.50),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.40),
-            blurRadius: 24,
+            color: Colors.black.withValues(alpha: 0.30),
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -256,26 +253,26 @@ class _EditPasswordViewState extends State<EditPasswordView> {
               'Amankan Akun Anda',
               style: TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
                 color: _C.primary,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             const Text(
               'Perbarui kata sandi Anda secara berkala untuk menjaga keamanan data finansial Anda di Finara.',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 14,
+                fontSize: 12,
                 color: _C.onSurfaceVariant,
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
 
             // ─── Password Lama ───
             _buildLabel('PASSWORD LAMA'),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             _buildPasswordField(
               controller: _oldPasswordController,
               hint: 'Masukkan password saat ini',
@@ -290,11 +287,11 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
 
             // ─── Password Baru ───
             _buildLabel('PASSWORD BARU'),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             _buildPasswordField(
               controller: _newPasswordController,
               hint: 'Masukkan password baru',
@@ -312,11 +309,11 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
 
             // ─── Konfirmasi Password ───
             _buildLabel('KONFIRMASI PASSWORD BARU'),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             _buildPasswordField(
               controller: _confirmPasswordController,
               hint: 'Ulangi password baru',
@@ -335,11 +332,11 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
 
             // ─── Info Note ───
             _buildInfoNote(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
             // ─── Submit Button ───
             _buildSubmitButton(),
@@ -378,64 +375,63 @@ class _EditPasswordViewState extends State<EditPasswordView> {
       validator: validator,
       style: const TextStyle(
         fontFamily: 'Inter',
-        fontSize: 16,
+        fontSize: 14,
         color: _C.onSurface,
       ),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
           fontFamily: 'Inter',
-          fontSize: 16,
+          fontSize: 14,
           color: _C.onSurfaceVariant.withValues(alpha: 0.50),
         ),
         filled: true,
-        // surface-container-highest/50 — sesuai HTML
         fillColor: _C.surfaceContHighest.withValues(alpha: 0.50),
-        prefixIcon: Icon(prefixIcon, color: _C.outline, size: 22),
+        prefixIcon: Icon(prefixIcon, color: _C.outline, size: 18),
         suffixIcon: IconButton(
           icon: Icon(
             isVisible
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
             color: _C.outline,
-            size: 22,
+            size: 18,
           ),
           onPressed: onToggleVisibility,
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 18,
+          horizontal: 14,
+          vertical: 12,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: _C.outlineVariant,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: _C.outlineVariant,
             width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
-            color: _C.primary, // forest green focus
+            color: _C.primary,
             width: 1.5,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: _C.error, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: _C.error, width: 1.5),
         ),
-        errorStyle: const TextStyle(color: _C.error),
+        errorStyle: const TextStyle(color: _C.error, fontSize: 11),
       ),
     );
   }
@@ -443,11 +439,10 @@ class _EditPasswordViewState extends State<EditPasswordView> {
   // ─── Info Note ───────────────────────────────────────────────────────────────
   Widget _buildInfoNote() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        // primary-container/20 + border primary/10
         color: _C.primaryContainer.withValues(alpha: 0.20),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: _C.primary.withValues(alpha: 0.10),
         ),
@@ -455,16 +450,16 @@ class _EditPasswordViewState extends State<EditPasswordView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline_rounded, color: _C.primary, size: 20),
-          const SizedBox(width: 12),
+          const Icon(Icons.info_outline_rounded, color: _C.primary, size: 16),
+          const SizedBox(width: 8),
           const Expanded(
             child: Text(
               'Minimal 8 karakter, kombinasi huruf dan angka.',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 14,
+                fontSize: 12,
                 color: _C.onPrimaryContainer,
-                height: 1.5,
+                height: 1.4,
               ),
             ),
           ),
@@ -477,6 +472,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
   Widget _buildSubmitButton() {
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         child: ElevatedButton(
@@ -486,19 +482,17 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             foregroundColor: _C.onPrimary,
             disabledBackgroundColor: _C.primaryContainer.withValues(alpha: 0.40),
             disabledForegroundColor: _C.onPrimaryContainer.withValues(alpha: 0.60),
-            padding: const EdgeInsets.symmetric(vertical: 18),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
             ),
             elevation: 0,
-            shadowColor: Colors.black.withValues(alpha: 0.40),
           ),
           child: _isLoading
               ? const SizedBox(
-                  width: 22,
-                  height: 22,
+                  width: 20,
+                  height: 20,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
+                    strokeWidth: 2,
                     color: _C.onPrimary,
                   ),
                 )
@@ -506,13 +500,13 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                   ? const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.check_circle_outline_rounded, size: 20),
-                        SizedBox(width: 8),
+                        Icon(Icons.check_circle_outline_rounded, size: 16),
+                        SizedBox(width: 6),
                         Text(
                           'Berhasil Diperbarui',
                           style: TextStyle(
                             fontFamily: 'Poppins',
-                            fontSize: 20,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -522,7 +516,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                       'Simpan Password',
                       style: TextStyle(
                         fontFamily: 'Poppins',
-                        fontSize: 20,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -532,11 +526,12 @@ class _EditPasswordViewState extends State<EditPasswordView> {
   }
 
   // ─── Footer Banner ───────────────────────────────────────────────────────────
-  Widget _buildFooterBanner() {
+  Widget _buildFooterBanner(double screenH) {
+    final bannerH = screenH < 680 ? 90.0 : (screenH < 780 ? 110.0 : 130.0);
     return Container(
-      height: 192,
+      height: bannerH,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: _C.outlineVariant.withValues(alpha: 0.30),
         ),
@@ -548,23 +543,16 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             _C.background,
           ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.40),
-            blurRadius: 24,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Stack(
         children: [
           // Dekoratif circle kanan atas
           Positioned(
-            top: -28,
-            right: -28,
+            top: -20,
+            right: -20,
             child: Container(
-              width: 120,
-              height: 120,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
                 color: _C.primary.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
@@ -573,11 +561,11 @@ class _EditPasswordViewState extends State<EditPasswordView> {
           ),
           // Dekoratif circle kiri bawah
           Positioned(
-            bottom: -20,
-            left: -14,
+            bottom: -14,
+            left: -10,
             child: Container(
-              width: 88,
-              height: 88,
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
                 color: _C.primary.withValues(alpha: 0.04),
                 shape: BoxShape.circle,
@@ -586,7 +574,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
           ),
           // Konten teks
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(16),
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Column(
@@ -596,18 +584,18 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                   Icon(
                     Icons.format_quote_rounded,
                     color: _C.onSurface.withValues(alpha: 0.30),
-                    size: 28,
+                    size: 20,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     '"Keamanan Anda adalah prioritas utama kami."',
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 14,
+                      fontSize: 12,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w500,
                       color: _C.onSurface.withValues(alpha: 0.80),
-                      height: 1.5,
+                      height: 1.4,
                     ),
                   ),
                 ],

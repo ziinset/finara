@@ -79,6 +79,9 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final bottomPad = mq.padding.bottom + 24.0;
+
     return Scaffold(
       backgroundColor: _C.background,
       body: SafeArea(
@@ -91,10 +94,10 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: 20,
                   right: 20,
-                  bottom: 40,
+                  bottom: bottomPad,
                 ),
                 child: Form(
                   key: _formKey,
@@ -124,42 +127,33 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
   // ─── Top App Bar ────────────────────────────────────────────────────────────
   Widget _buildAppBar() {
     return Container(
-      color: _C.background.withValues(alpha: 0.80),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      color: _C.background,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Tombol Kembali
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.transparent,
-              ),
-              child: const Icon(
-                Icons.arrow_back_rounded,
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: _C.onSurfaceVariant,
+              size: 20,
+            ),
+          ),
+          const Expanded(
+            child: Text(
+              'Edit Profil',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
                 color: _C.primary,
-                size: 24,
               ),
             ),
           ),
-
-          // Title
-          Text(
-            'Edit Profil',
-            style: const TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: _C.primary,
-            ),
-          ),
-
           // Spacer untuk centering
-          const SizedBox(width: 40),
+          const SizedBox(width: 48),
         ],
       ),
     );
@@ -168,7 +162,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
   // ─── Foto Profil Section ─────────────────────────────────────────────────────
   Widget _buildPhotoSection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -177,18 +171,18 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             children: [
               // Avatar circle
               Container(
-                width: 128,
-                height: 128,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: _C.surfaceContHighest,
-                    width: 4,
+                    width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.40),
-                      blurRadius: 20,
+                      blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
                   ],
@@ -201,7 +195,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
                       color: _C.surfaceCont,
                       child: const Icon(
                         Icons.person_rounded,
-                        size: 64,
+                        size: 38,
                         color: _C.onSurfaceVariant,
                       ),
                     ),
@@ -223,8 +217,8 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
                     );
                   },
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 28,
+                    height: 28,
                     decoration: BoxDecoration(
                       color: _C.secondary,
                       shape: BoxShape.circle,
@@ -232,17 +226,10 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
                         color: _C.surfaceContHighest,
                         width: 2,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.40),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
                     child: const Icon(
                       Icons.photo_camera_rounded,
-                      size: 20,
+                      size: 14,
                       color: _C.onSecondary,
                     ),
                   ),
@@ -250,14 +237,14 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
 
           // Nama Pengguna
           Text(
             'Goldi Arasseo',
             style: const TextStyle(
               fontFamily: 'Inter',
-              fontSize: 20,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
               color: _C.primary,
             ),
@@ -270,17 +257,17 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
   // ─── Card Informasi Profil ───────────────────────────────────────────────────
   Widget _buildInfoCard() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: _C.cardBg,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: _C.outlineVariant.withValues(alpha: 0.30),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.40),
-            blurRadius: 20,
+            color: Colors.black.withValues(alpha: 0.30),
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -294,22 +281,22 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
               const Icon(
                 Icons.person_outline_rounded,
                 color: _C.primary,
-                size: 22,
+                size: 16,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               const Text(
                 'INFORMASI PROFIL',
                 style: TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: _C.primary,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: _C.onSurfaceVariant,
                   letterSpacing: 2.0,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Nama Lengkap
           _buildInputField(
@@ -318,7 +305,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             validator: (val) =>
                 (val == null || val.trim().isEmpty) ? 'Nama tidak boleh kosong' : null,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           // Nama Pengguna
           _buildInputField(
@@ -328,7 +315,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             validator: (val) =>
                 (val == null || val.trim().isEmpty) ? 'Username tidak boleh kosong' : null,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           // Alamat Email
           _buildInputField(
@@ -341,7 +328,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
               return null;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           // Nomor Telepon (Opsional)
           _buildInputField(
@@ -350,7 +337,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             keyboardType: TextInputType.phone,
             hintText: '+62 812 3456 7890',
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           // Tanggal Bergabung (Read-only)
           _buildReadonlyField(
@@ -377,73 +364,71 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
         Text(
           label,
           style: const TextStyle(
-            fontFamily: 'Poppins',
+            fontFamily: 'Inter',
             fontSize: 12,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             color: _C.onSurfaceVariant,
-            letterSpacing: 0.6,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
           style: const TextStyle(
             fontFamily: 'Inter',
-            fontSize: 16,
+            fontSize: 14,
             color: _C.onSurfaceVariant,
           ),
           decoration: InputDecoration(
             filled: true,
-            // "inset" feel: slightly darker than card background
             fillColor: _C.surfaceContHighest,
             prefixText: prefixText,
             prefixStyle: const TextStyle(
               fontFamily: 'Inter',
-              fontSize: 16,
+              fontSize: 14,
               color: _C.onSurfaceVariant,
             ),
             hintText: hintText,
             hintStyle: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 16,
+              fontSize: 14,
               color: _C.onSurfaceVariant.withValues(alpha: 0.50),
             ),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 18,
+              horizontal: 14,
+              vertical: 12,
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
                 color: _C.outlineVariant.withValues(alpha: 0.30),
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
                 color: _C.outlineVariant.withValues(alpha: 0.30),
                 width: 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                color: _C.primary, // forest green focus border
+                color: _C.primary,
                 width: 1.5,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: _C.error, width: 1),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: _C.error, width: 1.5),
             ),
-            errorStyle: const TextStyle(color: _C.error),
+            errorStyle: const TextStyle(color: _C.error, fontSize: 11),
           ),
         ),
       ],
@@ -461,32 +446,29 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
         Text(
           label,
           style: const TextStyle(
-            fontFamily: 'Poppins',
+            fontFamily: 'Inter',
             fontSize: 12,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             color: _C.onSurfaceVariant,
-            letterSpacing: 0.6,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Container(
           width: double.infinity,
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: _C.surfaceContHighest,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: _C.outlineVariant.withValues(alpha: 0.30),
               width: 1,
             ),
           ),
-          alignment: Alignment.centerLeft,
           child: Text(
             value,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 16,
+              fontSize: 14,
               color: _C.onSurfaceVariant.withValues(alpha: 0.60),
             ),
           ),
@@ -499,27 +481,25 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: 48,
       child: ElevatedButton(
         onPressed: _isLoading ? null : _handleSave,
         style: ElevatedButton.styleFrom(
-          // primary-container bg + on-primary-container text (sesuai HTML)
           backgroundColor: _C.primaryContainer,
           foregroundColor: _C.onPrimaryContainer,
           disabledBackgroundColor: _C.primaryContainer.withValues(alpha: 0.40),
           disabledForegroundColor: _C.onPrimaryContainer.withValues(alpha: 0.50),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),
           ),
           elevation: 0,
-          shadowColor: Colors.black.withValues(alpha: 0.40),
         ),
         child: _isLoading
             ? const SizedBox(
-                width: 22,
-                height: 22,
+                width: 20,
+                height: 20,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
+                  strokeWidth: 2,
                   color: _C.onPrimaryContainer,
                 ),
               )
@@ -527,9 +507,8 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
                 'Simpan Perubahan',
                 style: TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.1,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
       ),

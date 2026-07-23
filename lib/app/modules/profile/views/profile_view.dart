@@ -81,7 +81,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       const SizedBox(height: 12),
                       _buildProfilCard(context),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
 
                       // Security Section
                       _buildSectionLabel(
@@ -90,7 +90,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       const SizedBox(height: 12),
                       _buildSecurityCard(context),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
 
                       // Notifications Section
                       _buildSectionLabel(
@@ -99,13 +99,13 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       const SizedBox(height: 12),
                       _buildNotifikasiCard(),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
 
                       // Export Data Section
                       _buildEksporHeader(),
                       const SizedBox(height: 12),
                       _buildEksporGrid(),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
 
                       // Logout Button
                       _buildLogoutButton(),
@@ -175,7 +175,7 @@ class ProfileView extends GetView<ProfileController> {
                   'Profil',
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: _C.onSurface,
                     letterSpacing: -0.3,
@@ -223,19 +223,19 @@ class ProfileView extends GetView<ProfileController> {
     final topPad = mq.padding.top;
 
     // Responsive avatar size: smaller on short screens
-    final avatarSize = screenH < 680 ? 100.0 : (screenH < 780 ? 120.0 : 144.0);
+    final avatarSize = screenH < 680 ? 72.0 : (screenH < 780 ? 84.0 : 100.0);
     final cameraSize = avatarSize * 0.27;
     final cameraIconSize = avatarSize * 0.13;
     // Header total height shrinks proportionally
-    final headerHeight = topPad + (screenH < 680 ? 220.0 : (screenH < 780 ? 260.0 : 310.0));
+    final headerHeight = topPad + (screenH < 680 ? 180.0 : (screenH < 780 ? 210.0 : 240.0));
     // Top padding before avatar
-    final avatarTopPad = topPad + (screenH < 680 ? 52.0 : (screenH < 780 ? 62.0 : 72.0));
+    final avatarTopPad = topPad + (screenH < 680 ? 44.0 : (screenH < 780 ? 52.0 : 60.0));
     // Name font size
-    final nameFontSize = screenH < 680 ? 18.0 : (screenH < 780 ? 21.0 : 24.0);
-    final emailFontSize = screenH < 680 ? 12.0 : 14.0;
-    final spacer1 = screenH < 680 ? 12.0 : (screenH < 780 ? 16.0 : 20.0);
-    final spacer2 = screenH < 680 ? 10.0 : 14.0;
-    final spacer3 = screenH < 680 ? 16.0 : 28.0;
+    final nameFontSize = screenH < 680 ? 15.0 : (screenH < 780 ? 17.0 : 18.0);
+    final emailFontSize = screenH < 680 ? 11.0 : 12.0;
+    final spacer1 = screenH < 680 ? 8.0 : (screenH < 780 ? 10.0 : 12.0);
+    final spacer2 = screenH < 680 ? 6.0 : 8.0;
+    final spacer3 = screenH < 680 ? 12.0 : 16.0;
 
     return Stack(
       children: [
@@ -362,8 +362,8 @@ class ProfileView extends GetView<ProfileController> {
                 // Premium Badge
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 7,
+                    horizontal: 12,
+                    vertical: 5,
                   ),
                   decoration: BoxDecoration(
                     color: _C.secondaryContainer,
@@ -377,18 +377,18 @@ class ProfileView extends GetView<ProfileController> {
                     children: [
                       Icon(
                         Icons.stars_rounded,
-                        size: 16,
+                        size: 13,
                         color: _C.onSecondaryContainer,
                       ),
-                      SizedBox(width: 6),
+                      SizedBox(width: 5),
                       Text(
                         'PREMIUM MEMBER',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 13,
+                          fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: _C.onSecondaryContainer,
-                          letterSpacing: 0.8,
+                          letterSpacing: 0.6,
                         ),
                       ),
                     ],
@@ -429,13 +429,13 @@ class ProfileView extends GetView<ProfileController> {
     return _DarkCard(
       child: InkWell(
         onTap: () => Get.to(() => const ProfilSayaView()),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           child: Row(
             children: [
               _iconBox(Icons.edit_outlined),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,7 +444,7 @@ class ProfileView extends GetView<ProfileController> {
                       'Edit Profil',
                       style: TextStyle(
                         fontFamily: 'Inter',
-                        fontSize: 17,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: _C.onSurface,
                       ),
@@ -454,7 +454,7 @@ class ProfileView extends GetView<ProfileController> {
                       'Ubah nama, foto, dan data diri',
                       style: TextStyle(
                         fontFamily: 'Inter',
-                        fontSize: 13,
+                        fontSize: 12,
                         color: _C.onSurfaceVariant,
                       ),
                     ),
@@ -463,6 +463,7 @@ class ProfileView extends GetView<ProfileController> {
               ),
               Icon(
                 Icons.chevron_right,
+                size: 20,
                 color: _C.onSurfaceVariant.withValues(alpha: 0.50),
               ),
             ],
@@ -480,13 +481,13 @@ class ProfileView extends GetView<ProfileController> {
           // Ubah Kata Sandi
           InkWell(
             onTap: () => Get.to(() => const EditPasswordView()),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: Row(
                 children: [
                   _iconBox(Icons.lock_open_outlined),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 12),
                   const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -495,7 +496,7 @@ class ProfileView extends GetView<ProfileController> {
                           'Ubah Kata Sandi',
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 17,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: _C.onSurface,
                           ),
@@ -505,7 +506,7 @@ class ProfileView extends GetView<ProfileController> {
                           'Pembaruan rutin disarankan',
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 13,
+                            fontSize: 12,
                             color: _C.onSurfaceVariant,
                           ),
                         ),
@@ -514,6 +515,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   Icon(
                     Icons.chevron_right,
+                    size: 20,
                     color: _C.onSurfaceVariant.withValues(alpha: 0.50),
                   ),
                 ],
@@ -552,7 +554,7 @@ class ProfileView extends GetView<ProfileController> {
 
           // Custom Reminders
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: _C.surfaceCont.withValues(alpha: 0.30),
             ),
@@ -566,7 +568,7 @@ class ProfileView extends GetView<ProfileController> {
                       'Pengingat Kustom',
                       style: TextStyle(
                         fontFamily: 'Inter',
-                        fontSize: 17,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: _C.onSurface,
                       ),
@@ -579,8 +581,8 @@ class ProfileView extends GetView<ProfileController> {
                       style: TextButton.styleFrom(
                         backgroundColor: _C.primary.withValues(alpha: 0.10),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: 10,
+                          vertical: 5,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(999),
@@ -592,22 +594,22 @@ class ProfileView extends GetView<ProfileController> {
                         '+ TAMBAH',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 11,
+                          fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: _C.primary,
-                          letterSpacing: 0.8,
+                          letterSpacing: 0.6,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 _buildReminderItem(
                   title: 'Pengingat Gajian',
                   time: 'Tgl 25 • 09:00 AM',
                   isActive: true,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 _buildReminderItem(
                   title: 'Bayar Listrik',
                   time: 'Tgl 05 • 10:00 AM',
@@ -629,27 +631,20 @@ class ProfileView extends GetView<ProfileController> {
     return Opacity(
       opacity: isActive ? 1.0 : 0.55,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: _C.surfaceContLow,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: _C.outlineVariant.withValues(alpha: 0.10),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.15),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
             // Accent bar
             Container(
-              width: 5,
-              height: 40,
+              width: 4,
+              height: 32,
               decoration: BoxDecoration(
                 color: isActive
                     ? _C.primary.withValues(alpha: 0.40)
@@ -657,7 +652,7 @@ class ProfileView extends GetView<ProfileController> {
                 borderRadius: BorderRadius.circular(999),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -666,25 +661,25 @@ class ProfileView extends GetView<ProfileController> {
                     title,
                     style: const TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: _C.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 2),
                   Row(
                     children: [
                       const Icon(
                         Icons.event_outlined,
-                        size: 13,
+                        size: 11,
                         color: _C.onSurfaceVariant,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 3),
                       Text(
                         time,
                         style: const TextStyle(
                           fontFamily: 'Inter',
-                          fontSize: 12,
+                          fontSize: 11,
                           color: _C.onSurfaceVariant,
                         ),
                       ),
@@ -698,7 +693,7 @@ class ProfileView extends GetView<ProfileController> {
                 Icons.more_vert,
                 color: _C.onSurfaceVariant,
               ),
-              iconSize: 20,
+              iconSize: 16,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               onPressed: () {},
@@ -798,49 +793,49 @@ class ProfileView extends GetView<ProfileController> {
       builder: (ctx) => GestureDetector(
         onTap: () => EksporDataModal.show(ctx, format: eksporFormat),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           decoration: BoxDecoration(
             color: _C.cardBg,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: _C.outlineVariant.withValues(alpha: 0.10),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
-                blurRadius: 20,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.20),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Column(
             children: [
               Container(
-                width: 56,
-                height: 56,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: iconBgColor,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: ringColor, width: 3),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ringColor, width: 2),
                 ),
-                child: Icon(icon, color: iconColor, size: 28),
+                child: Icon(icon, color: iconColor, size: 20),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               Text(
                 label,
                 style: const TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 17,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
                   color: _C.onSurface,
                 ),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: 2),
               Text(
                 format,
                 style: const TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 13,
+                  fontSize: 11,
                   color: _C.onSurfaceVariant,
                 ),
               ),
@@ -878,20 +873,20 @@ class ProfileView extends GetView<ProfileController> {
             },
           );
         },
-        icon: const Icon(Icons.logout, color: _C.error, size: 22),
+        icon: const Icon(Icons.logout, color: _C.error, size: 18),
         label: const Text(
           'Keluar dari Akun',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
-            fontSize: 15,
+            fontSize: 13,
             color: _C.error,
           ),
         ),
         style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             side: BorderSide(
               color: _C.error.withValues(alpha: 0.0),
             ),
@@ -908,13 +903,13 @@ class ProfileView extends GetView<ProfileController> {
   // ─── Shared icon box helper ──────────────────────────────────────────────────
   Widget _iconBox(IconData icon) {
     return Container(
-      width: 48,
-      height: 48,
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         color: _C.primaryContainer.withValues(alpha: 0.20),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(icon, color: _C.primary, size: 22),
+      child: Icon(icon, color: _C.primary, size: 18),
     );
   }
 }

@@ -151,7 +151,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
           Text(
             'Edit Profil',
             style: const TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Poppins',
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: _C.primary,
@@ -256,7 +256,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
           Text(
             'Goldi Arasseo',
             style: const TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Inter',
               fontSize: 20,
               fontWeight: FontWeight.w500,
               color: _C.primary,
@@ -300,7 +300,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
               const Text(
                 'INFORMASI PROFIL',
                 style: TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Poppins',
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: _C.primary,
@@ -377,7 +377,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
         Text(
           label,
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: _C.onSurfaceVariant,
@@ -390,7 +390,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
           keyboardType: keyboardType,
           validator: validator,
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Inter',
             fontSize: 16,
             color: _C.onSurfaceVariant,
           ),
@@ -400,13 +400,13 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             fillColor: _C.surfaceContHighest,
             prefixText: prefixText,
             prefixStyle: const TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Inter',
               fontSize: 16,
               color: _C.onSurfaceVariant,
             ),
             hintText: hintText,
             hintStyle: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Inter',
               fontSize: 16,
               color: _C.onSurfaceVariant.withValues(alpha: 0.50),
             ),
@@ -461,7 +461,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
         Text(
           label,
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: _C.onSurfaceVariant,
@@ -485,7 +485,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
           child: Text(
             value,
             style: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Inter',
               fontSize: 16,
               color: _C.onSurfaceVariant.withValues(alpha: 0.60),
             ),
@@ -526,7 +526,7 @@ class _ProfilSayaViewState extends State<ProfilSayaView> {
             : const Text(
                 'Simpan Perubahan',
                 style: TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Poppins',
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.1,

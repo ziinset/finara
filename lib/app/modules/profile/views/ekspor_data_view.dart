@@ -121,7 +121,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                             Text(
                               'Ekspor $_formatLabel',
                               style: const TextStyle(
-                                fontFamily: 'HankenGrotesk',
+                                fontFamily: 'Poppins',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 color: _C.onSurface,
@@ -131,7 +131,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                             Text(
                               'Format $_formatExt — sesuaikan filter lalu ekspor',
                               style: const TextStyle(
-                                fontFamily: 'HankenGrotesk',
+                                fontFamily: 'Inter',
                                 fontSize: 12,
                                 color: _C.onSurfaceVariant,
                               ),
@@ -217,7 +217,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         textStyle: const TextStyle(
-                          fontFamily: 'HankenGrotesk',
+                          fontFamily: 'Poppins',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                         ),
@@ -242,7 +242,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                       child: const Text(
                         'Batal',
                         style: TextStyle(
-                          fontFamily: 'HankenGrotesk',
+                          fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -269,7 +269,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
   Widget _buildSectionLabel(String text) => Text(
         text,
         style: const TextStyle(
-          fontFamily: 'HankenGrotesk',
+          fontFamily: 'Poppins',
           fontSize: 11,
           fontWeight: FontWeight.w700,
           color: _C.onSurfaceVariant,
@@ -297,7 +297,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
             Text(
               label,
               style: const TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Poppins',
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 color: _C.onSurfaceVariant,
@@ -311,7 +311,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                   child: Text(
                     value,
                     style: const TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: 'Inter',
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                       color: _C.onSurface,
@@ -352,7 +352,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
               child: Text(
                 value,
                 style: const TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: _C.onSurface,
@@ -406,7 +406,7 @@ class _EksporDataModalState extends State<EksporDataModal> {
                   title: Text(
                     opt,
                     style: TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: isSelected ? 'Poppins' : 'Inter',
                       fontSize: 14,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                       color: isSelected ? _accentColor : _C.onSurface,

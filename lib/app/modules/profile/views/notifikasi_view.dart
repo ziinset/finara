@@ -153,7 +153,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
         title: const Text(
           'Notifikasi & Pengingat',
           style: TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: _C.onSurface,
@@ -217,7 +217,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
                 label: const Text(
                   'Tambah',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
@@ -239,7 +239,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
         Text(
           label,
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 11,
             fontWeight: FontWeight.w700,
             color: _C.onSurfVar,
@@ -347,7 +347,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Poppins',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: locked ? _C.secondary : _C.onSurface,
@@ -357,7 +357,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
                 Text(
                   subtitle,
                   style: const TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Inter',
                     fontSize: 11,
                     color: _C.onSurfVar,
                   ),
@@ -405,7 +405,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
                   const Text(
                     'PENGINGAT KUSTOM',
                     style: TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: 'Poppins',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: _C.onSurfVar,
@@ -423,7 +423,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
                     child: Text(
                       '${_pengingat.length}/$_maxPengingat',
                       style: const TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Poppins',
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         color: _C.primary,
@@ -436,7 +436,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
               Text(
                 '$aktifCount pengingat aktif',
                 style: const TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Inter',
                   fontSize: 12,
                   color: _C.onSurfVar,
                 ),
@@ -472,7 +472,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
           const Text(
             'Belum ada pengingat kustom',
             style: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Poppins',
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: _C.onSurface,
@@ -483,7 +483,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
             'Buat pengingat personal untuk rutinitas\nkeuanganmu. Maksimal 5 pengingat aktif.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Inter',
               fontSize: 13,
               color: _C.onSurfVar,
               height: 1.5,
@@ -510,7 +510,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
             child: Text(
               'Batas maksimum 5 pengingat kustom telah tercapai. Hapus salah satu untuk menambah yang baru.',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Inter',
                 fontSize: 12,
                 color: _C.secondary,
                 height: 1.4,
@@ -554,7 +554,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
         title: const Text(
           'Hapus Pengingat?',
           style: TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 17,
             fontWeight: FontWeight.w700,
             color: _C.onSurface,
@@ -563,7 +563,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
         content: Text(
           'Pengingat "${p.nama}" akan dihapus permanen.',
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Inter',
             fontSize: 13,
             color: _C.onSurfVar,
             height: 1.5,
@@ -575,7 +575,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
             child: const Text(
               'Batal',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Inter',
                 color: _C.onSurfVar,
                 fontWeight: FontWeight.w500,
               ),
@@ -594,7 +594,7 @@ class _NotifikasiViewState extends State<NotifikasiView>
             ),
             child: const Text(
               'Hapus',
-              style: TextStyle(fontFamily: 'HankenGrotesk', fontWeight: FontWeight.w700),
+              style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),
             ),
           ),
         ],
@@ -667,7 +667,7 @@ class _PengingatCard extends StatelessWidget {
                         Text(
                           p.nama,
                           style: const TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: _C.onSurface,
@@ -681,7 +681,7 @@ class _PengingatCard extends StatelessWidget {
                             Text(
                               p.jadwalLabel,
                               style: const TextStyle(
-                                fontFamily: 'HankenGrotesk',
+                                fontFamily: 'Inter',
                                 fontSize: 12,
                                 color: _C.onSurfVar,
                               ),
@@ -727,7 +727,7 @@ class _PengingatCard extends StatelessWidget {
                         child: Text(
                           p.pesan,
                           style: const TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Inter',
                             fontSize: 12,
                             color: _C.onSurfVar,
                             fontStyle: FontStyle.italic,
@@ -756,7 +756,7 @@ class _PengingatCard extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: _C.primary,
                       textStyle: const TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -770,7 +770,7 @@ class _PengingatCard extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: _C.error,
                       textStyle: const TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -879,7 +879,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
                 Text(
                   _isEdit ? 'Edit Pengingat' : 'Pengingat Baru',
                   style: const TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Poppins',
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: _C.onSurface,
@@ -966,7 +966,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
                         child: Text(
                           _isEdit ? 'Simpan Perubahan' : 'Buat Pengingat',
                           style: const TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                           ),
@@ -986,7 +986,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
                         child: const Text(
                           'Batal',
                           style: TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Inter',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1008,7 +1008,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
   Widget _buildFieldLabel(String text) => Text(
         text,
         style: const TextStyle(
-          fontFamily: 'HankenGrotesk',
+          fontFamily: 'Poppins',
           fontSize: 11,
           fontWeight: FontWeight.w700,
           color: _C.onSurfVar,
@@ -1028,7 +1028,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
       maxLength: maxLength,
       maxLines: maxLines,
       style: const TextStyle(
-        fontFamily: 'HankenGrotesk',
+        fontFamily: 'Inter',
         fontSize: 14,
         color: _C.onSurface,
       ),
@@ -1090,7 +1090,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
                   Text(
                     f.label,
                     style: TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: selected ? 'Poppins' : 'Inter',
                       fontSize: 11,
                       fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
                       color: selected ? _C.primary : _C.onSurfVar,
@@ -1122,7 +1122,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
             child: Text(
               'Tanggal $_tanggal setiap bulan',
               style: const TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Inter',
                 fontSize: 13,
                 color: _C.onSurface,
               ),
@@ -1161,7 +1161,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
             child: Text(
               _hariOptions[i],
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: selected ? 'Poppins' : 'Inter',
                 fontSize: 12,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
                 color: selected ? _C.primary : _C.onSurfVar,
@@ -1194,7 +1194,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
               child: Text(
                 timeStr,
                 style: const TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Poppins',
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: _C.onSurface,
@@ -1216,7 +1216,7 @@ class _PengingatFormSheetState extends State<_PengingatFormSheet> {
         Text(
           '$_tanggal',
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 14,
             fontWeight: FontWeight.w700,
             color: _C.onSurface,

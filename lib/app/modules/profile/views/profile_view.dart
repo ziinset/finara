@@ -48,17 +48,25 @@ class ProfileView extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    // ── Responsive helpers ──
+    final mq = MediaQuery.of(context);
+    final screenH = mq.size.height;
+    final bottomInset = mq.padding.bottom;
+    // Nav bar is typically ~80 logical pixels. Add safe area + extra buffer so
+    // the logout button is always fully visible.
+    final scrollBottomPad = bottomInset + 100.0;
+
     return Scaffold(
       backgroundColor: _C.background,
       body: Stack(
         children: [
           // Scrollable content
           SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 32),
+            padding: EdgeInsets.only(bottom: scrollBottomPad),
             child: Column(
               children: [
                 // ─── Profile Header ───
-                _buildProfileHeader(context),
+                _buildProfileHeader(context, screenH),
 
                 // ─── Content Sections ───
                 Padding(
@@ -101,7 +109,7 @@ class ProfileView extends GetView<ProfileController> {
 
                       // Logout Button
                       _buildLogoutButton(),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
@@ -166,7 +174,7 @@ class ProfileView extends GetView<ProfileController> {
                 const Text(
                   'Profil',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: _C.onSurface,
@@ -210,14 +218,31 @@ class ProfileView extends GetView<ProfileController> {
   }
 
   // ─── Profile Header ─────────────────────────────────────────────────────────
-  Widget _buildProfileHeader(BuildContext context) {
-    final topPad = MediaQuery.of(context).padding.top;
+  Widget _buildProfileHeader(BuildContext context, double screenH) {
+    final mq = MediaQuery.of(context);
+    final topPad = mq.padding.top;
+
+    // Responsive avatar size: smaller on short screens
+    final avatarSize = screenH < 680 ? 100.0 : (screenH < 780 ? 120.0 : 144.0);
+    final cameraSize = avatarSize * 0.27;
+    final cameraIconSize = avatarSize * 0.13;
+    // Header total height shrinks proportionally
+    final headerHeight = topPad + (screenH < 680 ? 220.0 : (screenH < 780 ? 260.0 : 310.0));
+    // Top padding before avatar
+    final avatarTopPad = topPad + (screenH < 680 ? 52.0 : (screenH < 780 ? 62.0 : 72.0));
+    // Name font size
+    final nameFontSize = screenH < 680 ? 18.0 : (screenH < 780 ? 21.0 : 24.0);
+    final emailFontSize = screenH < 680 ? 12.0 : 14.0;
+    final spacer1 = screenH < 680 ? 12.0 : (screenH < 780 ? 16.0 : 20.0);
+    final spacer2 = screenH < 680 ? 10.0 : 14.0;
+    final spacer3 = screenH < 680 ? 16.0 : 28.0;
+
     return Stack(
       children: [
         // Gradient tonal background overlay
         Container(
           width: double.infinity,
-          height: topPad + 310,
+          height: headerHeight,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -233,7 +258,7 @@ class ProfileView extends GetView<ProfileController> {
 
         // Avatar + Info
         Padding(
-          padding: EdgeInsets.only(top: topPad + 72),
+          padding: EdgeInsets.only(top: avatarTopPad),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,8 +268,8 @@ class ProfileView extends GetView<ProfileController> {
                   alignment: Alignment.center,
                   children: [
                     Container(
-                      width: 144,
-                      height: 144,
+                      width: avatarSize,
+                      height: avatarSize,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -265,9 +290,9 @@ class ProfileView extends GetView<ProfileController> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => Container(
                             color: _C.surfaceCont,
-                            child: const Icon(
+                            child: Icon(
                               Icons.person,
-                              size: 60,
+                              size: avatarSize * 0.42,
                               color: _C.onSurfaceVariant,
                             ),
                           ),
@@ -275,19 +300,19 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ),
                     Positioned(
-                      bottom: 6,
-                      right: 6,
+                      bottom: 4,
+                      right: 4,
                       child: GestureDetector(
                         onTap: () {},
                         child: Container(
-                          width: 38,
-                          height: 38,
+                          width: cameraSize,
+                          height: cameraSize,
                           decoration: BoxDecoration(
                             color: _C.primary,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: _C.surfaceContLow,
-                              width: 4,
+                              width: 3,
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -297,25 +322,25 @@ class ProfileView extends GetView<ProfileController> {
                               ),
                             ],
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.camera_alt,
                             color: _C.onPrimary,
-                            size: 18,
+                            size: cameraIconSize,
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: spacer1),
 
                 // Name
-                const Text(
+                Text(
                   'Goldi Arasseo',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
-                    fontSize: 24,
+                    fontFamily: 'Poppins',
+                    fontSize: nameFontSize,
                     fontWeight: FontWeight.w600,
                     color: _C.onSurface,
                   ),
@@ -323,16 +348,16 @@ class ProfileView extends GetView<ProfileController> {
                 const SizedBox(height: 4),
 
                 // Email
-                const Text(
+                Text(
                   'goldiarasseo@example.com',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
-                    fontSize: 14,
+                    fontFamily: 'Inter',
+                    fontSize: emailFontSize,
                     color: _C.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: spacer2),
 
                 // Premium Badge
                 Container(
@@ -359,7 +384,7 @@ class ProfileView extends GetView<ProfileController> {
                       Text(
                         'PREMIUM MEMBER',
                         style: TextStyle(
-                          fontFamily: 'HankenGrotesk',
+                          fontFamily: 'Poppins',
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: _C.onSecondaryContainer,
@@ -369,7 +394,7 @@ class ProfileView extends GetView<ProfileController> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: spacer3),
               ],
             ),
           ),
@@ -388,7 +413,7 @@ class ProfileView extends GetView<ProfileController> {
         Text(
           label.toUpperCase(),
           style: const TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: _C.onSurfaceVariant,
@@ -418,7 +443,7 @@ class ProfileView extends GetView<ProfileController> {
                     Text(
                       'Edit Profil',
                       style: TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Inter',
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         color: _C.onSurface,
@@ -428,7 +453,7 @@ class ProfileView extends GetView<ProfileController> {
                     Text(
                       'Ubah nama, foto, dan data diri',
                       style: TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Inter',
                         fontSize: 13,
                         color: _C.onSurfaceVariant,
                       ),
@@ -469,7 +494,7 @@ class ProfileView extends GetView<ProfileController> {
                         Text(
                           'Ubah Kata Sandi',
                           style: TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Inter',
                             fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: _C.onSurface,
@@ -479,7 +504,7 @@ class ProfileView extends GetView<ProfileController> {
                         Text(
                           'Pembaruan rutin disarankan',
                           style: TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Inter',
                             fontSize: 13,
                             color: _C.onSurfaceVariant,
                           ),
@@ -540,7 +565,7 @@ class ProfileView extends GetView<ProfileController> {
                     const Text(
                       'Pengingat Kustom',
                       style: TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Inter',
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                         color: _C.onSurface,
@@ -566,7 +591,7 @@ class ProfileView extends GetView<ProfileController> {
                       child: const Text(
                         '+ TAMBAH',
                         style: TextStyle(
-                          fontFamily: 'HankenGrotesk',
+                          fontFamily: 'Poppins',
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: _C.primary,
@@ -640,7 +665,7 @@ class ProfileView extends GetView<ProfileController> {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: 'Poppins',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: _C.onSurface,
@@ -658,7 +683,7 @@ class ProfileView extends GetView<ProfileController> {
                       Text(
                         time,
                         style: const TextStyle(
-                          fontFamily: 'HankenGrotesk',
+                          fontFamily: 'Inter',
                           fontSize: 12,
                           color: _C.onSurfaceVariant,
                         ),
@@ -700,7 +725,7 @@ class ProfileView extends GetView<ProfileController> {
             const Text(
               'EKSPOR DATA',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Poppins',
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: _C.onSurfaceVariant,
@@ -718,7 +743,7 @@ class ProfileView extends GetView<ProfileController> {
           child: const Text(
             'PREMIUM ONLY',
             style: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Poppins',
               fontSize: 10,
               fontWeight: FontWeight.w700,
               color: _C.onPrimary,
@@ -804,7 +829,7 @@ class ProfileView extends GetView<ProfileController> {
               Text(
                 label,
                 style: const TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Inter',
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   color: _C.onSurface,
@@ -814,7 +839,7 @@ class ProfileView extends GetView<ProfileController> {
               Text(
                 format,
                 style: const TextStyle(
-                  fontFamily: 'HankenGrotesk',
+                  fontFamily: 'Inter',
                   fontSize: 13,
                   color: _C.onSurfaceVariant,
                 ),
@@ -857,7 +882,7 @@ class ProfileView extends GetView<ProfileController> {
         label: const Text(
           'Keluar dari Akun',
           style: TextStyle(
-            fontFamily: 'HankenGrotesk',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
             fontSize: 15,
             color: _C.error,
@@ -958,7 +983,7 @@ class _TwoFAToggleItemState extends State<_TwoFAToggleItem> {
                 Text(
                   'Autentikasi 2 Faktor',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Inter',
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     color: _C.onSurface,
@@ -968,7 +993,7 @@ class _TwoFAToggleItemState extends State<_TwoFAToggleItem> {
                 Text(
                   'Amankan login Anda',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Inter',
                     fontSize: 13,
                     color: _C.onSurfaceVariant,
                   ),
@@ -1039,7 +1064,7 @@ class _DailyReminderToggleItemState extends State<_DailyReminderToggleItem> {
                 Text(
                   'Ringkasan Harian',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Inter',
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     color: _C.onSurface,
@@ -1049,7 +1074,7 @@ class _DailyReminderToggleItemState extends State<_DailyReminderToggleItem> {
                 Text(
                   'Tiap hari jam 20:00 WIB',
                   style: TextStyle(
-                    fontFamily: 'HankenGrotesk',
+                    fontFamily: 'Inter',
                     fontSize: 13,
                     color: _C.onSurfaceVariant,
                   ),

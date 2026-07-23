@@ -162,7 +162,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
           const Text(
             'Ubah Kata Sandi',
             style: TextStyle(
-              fontFamily: 'HankenGrotesk',
+              fontFamily: 'Poppins',
               fontSize: 24,
               fontWeight: FontWeight.w700,
               color: _C.primary,
@@ -255,7 +255,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             const Text(
               'Amankan Akun Anda',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Poppins',
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
                 color: _C.primary,
@@ -265,7 +265,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             const Text(
               'Perbarui kata sandi Anda secara berkala untuk menjaga keamanan data finansial Anda di Finara.',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Inter',
                 fontSize: 14,
                 color: _C.onSurfaceVariant,
                 height: 1.5,
@@ -354,7 +354,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
     return Text(
       text,
       style: const TextStyle(
-        fontFamily: 'HankenGrotesk',
+        fontFamily: 'Poppins',
         fontSize: 12,
         fontWeight: FontWeight.w600,
         color: _C.onSurfaceVariant,
@@ -377,14 +377,14 @@ class _EditPasswordViewState extends State<EditPasswordView> {
       obscureText: !isVisible,
       validator: validator,
       style: const TextStyle(
-        fontFamily: 'HankenGrotesk',
+        fontFamily: 'Inter',
         fontSize: 16,
         color: _C.onSurface,
       ),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
-          fontFamily: 'HankenGrotesk',
+          fontFamily: 'Inter',
           fontSize: 16,
           color: _C.onSurfaceVariant.withValues(alpha: 0.50),
         ),
@@ -461,7 +461,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
             child: Text(
               'Minimal 8 karakter, kombinasi huruf dan angka.',
               style: TextStyle(
-                fontFamily: 'HankenGrotesk',
+                fontFamily: 'Inter',
                 fontSize: 14,
                 color: _C.onPrimaryContainer,
                 height: 1.5,
@@ -511,7 +511,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                         Text(
                           'Berhasil Diperbarui',
                           style: TextStyle(
-                            fontFamily: 'HankenGrotesk',
+                            fontFamily: 'Poppins',
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -521,7 +521,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                   : const Text(
                       'Simpan Password',
                       style: TextStyle(
-                        fontFamily: 'HankenGrotesk',
+                        fontFamily: 'Poppins',
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
@@ -602,7 +602,7 @@ class _EditPasswordViewState extends State<EditPasswordView> {
                   Text(
                     '"Keamanan Anda adalah prioritas utama kami."',
                     style: TextStyle(
-                      fontFamily: 'HankenGrotesk',
+                      fontFamily: 'Inter',
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w500,
